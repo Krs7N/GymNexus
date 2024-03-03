@@ -33,7 +33,7 @@ public class Product
     [Required]
     [MaxLength(ProductDescriptionMaxLength)]
     [Comment("The description of the product")]
-    public string Description { get; set; } = string.Empty;
+    public string Description { get; set; } = null!;
 
     /// <summary>
     /// The URL representation of the product's image.
@@ -49,6 +49,7 @@ public class Product
     [Required]
     [Range(typeof(decimal), ProductPriceMinValue, ProductPriceMaxValue)]
     [Comment("The price of the product")]
+    [Column(TypeName = "decimal(4,2)")]
     public decimal Price { get; set; }
 
     /// <summary>

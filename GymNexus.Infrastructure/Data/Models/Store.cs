@@ -33,7 +33,7 @@ public class Store
     [Required]
     [MaxLength(StoreDescriptionMaxLength)]
     [Comment("The description of the store")]
-    public string Description { get; set; } = string.Empty;
+    public string Description { get; set; } = null!;
 
     /// <summary>
     /// The date and time when the store was added to the system, and created. It is required.
@@ -47,6 +47,7 @@ public class Store
     /// </summary>
     [DefaultValue(0.00m)]
     [Comment("The average rating that the store has received up to this moment")]
+    [Column(TypeName = "decimal(2,2)")]
     public decimal AverageRating { get; set; }
 
     /// <summary>
@@ -55,6 +56,13 @@ public class Store
     [DefaultValue(0)]
     [Comment("The count of all ratings that the store has received up to this moment")]
     public int RatingsCount { get; set; }
+
+    /// <summary>
+    /// The status of the store. If it is active or not. Defaults to true.
+    /// </summary>
+    [DefaultValue(true)]
+    [Comment("The status of the store. If it is active or not")]
+    public bool IsActive { get; set; }
 
     /// <summary>
     /// The unique identifier of the store's owner. It is required.

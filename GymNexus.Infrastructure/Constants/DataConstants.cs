@@ -15,4 +15,8 @@ public static class DataConstants
     // Store
     public const int StoreNameMaxLength = 40;
     public const int StoreDescriptionMaxLength = 500;
+
+    // Category
+    public const int CategoryNameMaxLength = 50;
+    public const int CategoryDescriptionMaxLength = 500;
 }
