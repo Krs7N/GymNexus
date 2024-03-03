@@ -15,4 +15,8 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.26.0" />
+  </ItemGroup>
+
 </Project>

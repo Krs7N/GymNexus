@@ -7,5 +7,5 @@ namespace GymNexus.Infrastructure.Data;
 public class ApplicationUser : IdentityUser
 {
     [MaxLength(ProfilePictureMaxLength)]
-    public string? ProfilePicture { get; set; }
+    public string? ProfilePictureUrl { get; set; }
 }
