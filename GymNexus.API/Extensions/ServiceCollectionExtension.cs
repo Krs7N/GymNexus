@@ -1,4 +1,6 @@
-﻿using GymNexus.Infrastructure.Data;
+﻿using GymNexus.Core.Contracts;
+using GymNexus.Core.Services;
+using GymNexus.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +10,8 @@ public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
+        services.AddScoped<ICloudinaryService, CloudinaryService>();
+
         return services;
     }
 
