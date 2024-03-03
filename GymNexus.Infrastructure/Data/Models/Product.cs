@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static GymNexus.Infrastructure.Constants.DataConstants;
@@ -8,7 +9,7 @@ namespace GymNexus.Infrastructure.Data.Models;
 /// <summary>
 /// Represents a product or products in the system, which are sold by a store.
 /// </summary>
-[Comment("Product representation in a user's store")]
+[Comment("Product entity representation in a user's store")]
 public class Product
 {
     /// <summary>
@@ -29,6 +30,7 @@ public class Product
     /// <summary>
     /// The description of the product.
     /// </summary>
+    [Required]
     [MaxLength(ProductDescriptionMaxLength)]
     [Comment("The description of the product")]
     public string Description { get; set; } = string.Empty;
@@ -57,6 +59,13 @@ public class Product
     public DateTime CreatedOn { get; set; }
 
     /// <summary>
+    /// Determines whether the product is still active in the system or not. Usually refers to if it has been deleted
+    /// </summary>
+    [DefaultValue(true)]
+    [Comment("Determines whether the product is still active in the system or not")]
+    public bool IsActive { get; set; }
+
+    /// <summary>
     /// The unique identifier of the store that is selling the current product.
     /// </summary>
     [Required]
@@ -64,10 +73,10 @@ public class Product
     public int StoreId { get; set; }
 
     /// <summary>
-    /// The store entity representation that is selling the current product.
+    /// The store entity representation (Navigation property) that is selling the current product.
     /// </summary>
     [ForeignKey(nameof(StoreId))]
-    public Store Store { get; set; }
+    public Store Store { get; set; } = null!;
 
     /// <summary>
     /// The unique identifier of the category that the product belongs to.
@@ -77,8 +86,8 @@ public class Product
     public int CategoryId { get; set; }
 
     /// <summary>
-    /// The category entity representation that the product belongs to.
+    /// The category entity representation (Navigation property) that the product belongs to.
     /// </summary>
     [ForeignKey(nameof(CategoryId))]
-    public Category Category { get; set; }
+    public Category Category { get; set; } = null!;
 }
