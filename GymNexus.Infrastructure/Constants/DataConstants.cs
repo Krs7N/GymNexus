@@ -24,4 +24,9 @@ public static class DataConstants
     public const int MarketplaceNameMaxLength = 50;
     public const int MarketplaceDescriptionMaxLength = 500;
     public const int MarketplaceAddressMaxLength = 150;
+
+    // Post
+    public const int PostTitleMaxLength = 50;
+    public const int PostContentMaxLength = 500;
+    public const int PostImageUrlMaxLength = 250;
 }

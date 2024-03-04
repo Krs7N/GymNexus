@@ -65,4 +65,9 @@ public class Marketplace
     [DefaultValue(true)]
     [Comment("The status of the marketplace. If it is active or not")]
     public bool IsActive { get; set; }
+
+    /// <summary>
+    /// The stores that are signed to this marketplace.
+    /// </summary>
+    public virtual IEnumerable<Store> Stores { get; set; } = new List<Store>();
 }
