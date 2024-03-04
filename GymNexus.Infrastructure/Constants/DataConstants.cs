@@ -19,4 +19,9 @@ public static class DataConstants
     // Category
     public const int CategoryNameMaxLength = 50;
     public const int CategoryDescriptionMaxLength = 500;
+
+    // Marketplace
+    public const int MarketplaceNameMaxLength = 50;
+    public const int MarketplaceDescriptionMaxLength = 500;
+    public const int MarketplaceAddressMaxLength = 150;
 }
