@@ -29,4 +29,7 @@ public static class DataConstants
     public const int PostTitleMaxLength = 50;
     public const int PostContentMaxLength = 500;
     public const int PostImageUrlMaxLength = 250;
+
+    // Comment
+    public const int CommentContentMaxLength = 250;
 }

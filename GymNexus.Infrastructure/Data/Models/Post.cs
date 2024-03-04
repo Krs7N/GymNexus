@@ -68,4 +68,9 @@ public class Post
     /// </summary>
     [ForeignKey(nameof(CreatedBy))]
     public ApplicationUser Creator { get; set; }
+
+    /// <summary>
+    /// The comments that are added to this post (Navigation property).
+    /// </summary>
+    public virtual IEnumerable<Comment> PostComments { get; set; } = new List<Comment>();
 }

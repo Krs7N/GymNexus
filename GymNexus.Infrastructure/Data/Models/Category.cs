@@ -40,4 +40,9 @@ public class Category
     [DefaultValue(true)]
     [Comment("The status of the category. If it is active or not")]
     public bool IsActive { get; set; }
+
+    /// <summary>
+    /// The products that are related to the current category. A category can have many products. It is a navigation property.
+    /// </summary>
+    public virtual IEnumerable<Product> Products { get; set; }
 }
