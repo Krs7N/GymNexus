@@ -67,7 +67,7 @@ public class Post
     /// The creator entity representation (Navigation property) of the post.
     /// </summary>
     [ForeignKey(nameof(CreatedBy))]
-    public ApplicationUser Creator { get; set; }
+    public ApplicationUser Creator { get; set; } = null!;
 
     /// <summary>
     /// The comments that are added to this post (Navigation property).

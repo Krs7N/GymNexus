@@ -29,7 +29,7 @@ public class Order
     /// The store entity representation (Navigation property) from which the order was made. It is required.
     /// </summary>
     [ForeignKey(nameof(StoreId))]
-    public Store Store { get; set; }
+    public Store Store { get; set; } = null!;
 
     /// <summary>
     /// The unique identifier of the user who made the order. It is required. It is a foreign key to the ApplicationUser entity.
@@ -42,7 +42,7 @@ public class Order
     /// The user entity representation (Navigation property) who made the order. It is required.
     /// </summary>
     [ForeignKey(nameof(CreatedBy))]
-    public ApplicationUser Creator { get; set; }
+    public ApplicationUser Creator { get; set; } = null!;
 
     /// <summary>
     /// The date and time when the order was made. Set on creation of the order. It is required.

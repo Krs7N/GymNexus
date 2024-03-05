@@ -45,7 +45,7 @@ public class Store
     /// <summary>
     /// The average rating that the store has received up to this moment. Defaults to 0.00 if the store has not been given rating yet.
     /// </summary>
-    [DefaultValue(0.00m)]
+    [DefaultValue(typeof(decimal), "0.00")]
     [Comment("The average rating that the store has received up to this moment")]
     [Column(TypeName = "decimal(2,2)")]
     public decimal AverageRating { get; set; }

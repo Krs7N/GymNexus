@@ -45,7 +45,7 @@ public class Comment
     /// The post entity representation (Navigation property) that the comment is related to. It is required.
     /// </summary>
     [ForeignKey(nameof(PostId))]
-    public Post Post { get; set; }
+    public Post Post { get; set; } = null!;
 
     /// <summary>
     /// The date and time when the comment was added to the system. It is required. It is set when the entity is created.
@@ -65,5 +65,5 @@ public class Comment
     /// The user entity representation (Navigation property) that the comment is related to. It is required.
     /// </summary>
     [ForeignKey(nameof(CreatedBy))]
-    public ApplicationUser Creator { get; set; }
+    public ApplicationUser Creator { get; set; } = null!;
 }
