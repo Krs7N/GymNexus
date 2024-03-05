@@ -144,6 +144,22 @@ public static class ConfigurationHelper
         };
     }
 
+    public static Store[] GetSeedStores()
+    {
+        return new Store[]
+        {
+            new Store()
+            {
+                Id = 1,
+                Name = "Root's local Gym Shop",
+                Description = "This is the Root's store that is created to be useful for you and easier to start with. It is owned by the root user.",
+                CreatedOn = DateTime.Now,
+                MarketplaceId = 1,
+                OwnerId = RootApplicationUser.UserName
+            }
+        };
+    }
+
     private static ApplicationUser GetRootApplicationUser()
     {
         var hasher = new PasswordHasher<ApplicationUser>();
