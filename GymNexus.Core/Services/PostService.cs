@@ -27,7 +27,16 @@ public class PostService : IPostService
                 Content = p.Content,
                 ImageUrl = p.ImageUrl,
                 CreatedOn = p.CreatedOn.ToString(DateTimeFormat),
-                CreatedBy = p.Creator.UserName
+                CreatedBy = p.Creator.UserName,
+                Likes = p.PostsLikes.Count(pl => pl.PostId == p.Id),
+                Comments = p.Comments
+                    .Select(c => new CommentDto()
+                    {
+                        Content = c.Content,
+                        CreatedOn = c.CreatedOn,
+                        CreatedBy = c.Creator.UserName
+                    })
+                    .ToArray()
             })
             .ToListAsync();
     }

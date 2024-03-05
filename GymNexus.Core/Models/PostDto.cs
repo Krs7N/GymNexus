@@ -11,4 +11,8 @@ public class PostDto
     public string CreatedOn { get; set; } = null!;
 
     public string CreatedBy { get; set; } = null!;
+
+    public int Likes { get; set; }
+
+    public CommentDto[] Comments { get; set; } = null!;
 }
