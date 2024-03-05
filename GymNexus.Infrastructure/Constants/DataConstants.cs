@@ -43,4 +43,8 @@ public static class DataConstants
     // Comment
     public const int CommentContentMinLength = 5;
     public const int CommentContentMaxLength = 250;
+
+    // Order
+    public const int OrderStatusMaxLength = 20;
+    public const int OrderPaymentMethodMaxLength = 20;
 }
