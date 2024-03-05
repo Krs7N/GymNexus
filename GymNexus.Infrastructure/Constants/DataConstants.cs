@@ -2,6 +2,9 @@
 
 public static class DataConstants
 {
+    // Common
+    public const string DateTimeFormat = "dd/MM/yyyy HH:mm";
+
     // User
     public const int ProfilePictureMaxLength = 250;
 
