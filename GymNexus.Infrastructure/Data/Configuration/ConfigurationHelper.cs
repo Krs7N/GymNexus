@@ -116,6 +116,34 @@ public static class ConfigurationHelper
         };
     }
 
+    public static Product[] GetSeedProducts()
+    {
+        return new Product[]
+        {
+            new Product()
+            {
+                Id = 1,
+                Name = "Kevin Levrone's Whey Protein",
+                Description =
+                    "Special whey protein made by Kevin Levrone's own brand. Comes in 2000 grams package, with a spoon that is 30g and recommended daily usage of 30g",
+                CategoryId = 1,
+                CreatedOn = DateTime.Now.AddDays(-5),
+                ImageUrl = "https://www.kevinlevrone.com/wp-content/uploads/2021/06/levrone-whey-protein-2000g.jpg",
+                Price = 50.00m,
+            },
+            new Product()
+            {
+                Id = 2,
+                Name = "Protein",
+                Description = "This is the default brand of proteins that we can give you for now. Comes in 1000 grams package, with a spoon that is 30g and recommended daily usage of 30g",
+                CategoryId = 2,
+                CreatedOn = DateTime.Now.AddMonths(-2),
+                ImageUrl = "https://gymbeam.bg/media/catalog/product/cache/bf5a31e851f50f3ed6850cbbf183db11/j/u/just_whey_chocolate_milkshake_1_kg_gymbeam_1.png",
+                Price = 26.00m,
+            }
+        };
+    }
+
     private static ApplicationUser GetRootApplicationUser()
     {
         var hasher = new PasswordHasher<ApplicationUser>();
