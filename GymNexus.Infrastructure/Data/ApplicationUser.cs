@@ -28,4 +28,9 @@ public class ApplicationUser : IdentityUser
     /// The collection of comments that the current user has created. A user can add many comments to a post. It is a navigation property.
     /// </summary>
     public virtual IEnumerable<Comment> Comments { get; set; } = new List<Comment>();
+
+    /// <summary>
+    /// The collection of stores that the current user has created. A user can have many stores. It is a navigation property.
+    /// </summary>
+    public virtual IEnumerable<Store> Stores { get; set; } = new List<Store>();
 }
