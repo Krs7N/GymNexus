@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { postsRoutes } from './posts.routes';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
 import { PostsComponent } from './posts/posts.component';
+import { MaterialModule } from '../shared/material.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -12,9 +11,8 @@ import { PostsComponent } from './posts/posts.component';
   ],
   imports: [
     RouterModule.forChild(postsRoutes),
-    CommonModule,
-    MatCardModule,
-    MatButtonModule
+    MaterialModule,
+    SharedModule,
   ]
 })
 export class PostsModule { }

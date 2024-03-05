@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PostsService } from '../posts.service';
 import { PostViewModel } from '../post-view-model';
 import { Subject, takeUntil } from 'rxjs';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-posts',
@@ -11,6 +12,7 @@ import { Subject, takeUntil } from 'rxjs';
 export class PostsComponent implements OnInit, OnDestroy {
 
   posts: PostViewModel[] = [];
+  newComment!: string;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -21,6 +23,26 @@ export class PostsComponent implements OnInit, OnDestroy {
     this._postsService.getAllPosts().pipe(takeUntil(this._unsubscribeAll)).subscribe(posts => {
       this.posts = posts;
     });
+  }
+
+  toggleLike(post: PostViewModel): void {
+    // Increment likes for the post; replace with real API call if needed
+    if (!post.likes) {
+      post.likes = 0;
+    }
+    post.likes += 1;
+  }
+
+  addComment(post: PostViewModel): void {
+    if (!post.comments) {
+      post.comments = [];
+    }
+
+    const date = new Date();
+    const formattedDate = format(date, 'dd/MM/yyyy HH:mm');
+
+    post.comments.push({ createdBy: 'root@abv.bg', createdOn: formattedDate, content: this.newComment });
+    this.newComment = '';
   }
 
   ngOnDestroy(): void {
