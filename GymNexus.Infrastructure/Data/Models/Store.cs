@@ -60,9 +60,8 @@ public class Store
     /// <summary>
     /// The status of the store. If it is active or not. Defaults to true.
     /// </summary>
-    [DefaultValue(true)]
     [Comment("The status of the store. If it is active or not")]
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; } = true;
 
     /// <summary>
     /// The unique identifier of the store's owner. It is required.
@@ -93,4 +92,9 @@ public class Store
     /// The collection of all products that the store is selling (Navigation property).
     /// </summary>
     public virtual IEnumerable<Product> Products { get; set; } = new List<Product>();
+
+    /// <summary>
+    /// The collection of all orders that the store has made (Navigation property).
+    /// </summary>
+    public virtual IEnumerable<Order> Orders { get; set; } = new List<Order>();
 }

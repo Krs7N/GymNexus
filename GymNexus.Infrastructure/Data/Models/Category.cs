@@ -37,9 +37,8 @@ public class Category
     /// <summary>
     /// The status of the category. Represents if it is active or not.
     /// </summary>
-    [DefaultValue(true)]
     [Comment("The status of the category. If it is active or not")]
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; } = true;
 
     /// <summary>
     /// The products that are related to the current category. A category can have many products. It is a navigation property.

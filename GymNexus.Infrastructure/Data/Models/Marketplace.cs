@@ -62,9 +62,8 @@ public class Marketplace
     /// <summary>
     /// The current status of the marketplace. Represents if it is active or not.
     /// </summary>
-    [DefaultValue(true)]
     [Comment("The status of the marketplace. If it is active or not")]
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; } = true;
 
     /// <summary>
     /// The stores that are signed to this marketplace.

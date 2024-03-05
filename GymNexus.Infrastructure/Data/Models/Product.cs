@@ -62,9 +62,8 @@ public class Product
     /// <summary>
     /// Determines whether the product is still active in the system or not. Usually refers to if it has been deleted
     /// </summary>
-    [DefaultValue(true)]
     [Comment("Determines whether the product is still active in the system or not")]
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; } = true;
 
     /// <summary>
     /// The unique identifier of the store that is selling the current product.

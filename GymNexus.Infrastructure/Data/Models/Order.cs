@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static GymNexus.Infrastructure.Constants.DataConstants;
 
 namespace GymNexus.Infrastructure.Data.Models;
 
@@ -78,6 +79,7 @@ public class Order
     /// The status of the order. It is required. It represents the current status of the order. It can be "In Progress" or "Completed".
     /// </summary>
     [Required]
+    [MaxLength(OrderStatusMaxLength)]
     [Comment("The status of the order")]
     public string Status { get; set; } = null!;
 
@@ -85,15 +87,15 @@ public class Order
     /// The payment method for the order. It is required. It represents the method that the user used to pay for the order. It can be "In cash", "By Card" or "Paypal"
     /// </summary>
     [Required]
+    [MaxLength(OrderPaymentMethodMaxLength)]
     [Comment("The payment method for the order")]
     public string PaymentMethod { get; set; } = null!;
 
     /// <summary>
     /// The status of the order. Represents if it is active or not. Set to true by default.
     /// </summary>
-    [DefaultValue(true)]
     [Comment("The status of the order. Represents if it is active or not. Set to true by default")]
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; } = true;
 
     /// <summary>
     /// The collection of all order details that the order has. It is a navigation property. Gets the other products that could be in this order

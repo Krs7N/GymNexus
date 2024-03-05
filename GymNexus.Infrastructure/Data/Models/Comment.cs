@@ -30,9 +30,8 @@ public class Comment
     /// <summary>
     /// The status of the comment. Represents if it is active or not. Comments could be deleted. Set to true by default when posted.
     /// </summary>
-    [DefaultValue(true)]
     [Comment("The status of the comment. Represents if it is active or not. Comments could be deleted")]
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; } = true;
 
     /// <summary>
     /// The unique identifier of the post that the comment is related to. It is required. It is a foreign key to the Post entity.

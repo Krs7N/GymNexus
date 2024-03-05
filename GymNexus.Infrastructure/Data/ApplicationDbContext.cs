@@ -36,8 +36,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         builder.ApplyConfiguration(new CategoryConfiguration());
         builder.ApplyConfiguration(new MarketplaceConfiguration());
         builder.ApplyConfiguration(new PostConfiguration());
-        builder.ApplyConfiguration(new ProductConfiguration());
         builder.ApplyConfiguration(new StoreConfiguration());
+        builder.ApplyConfiguration(new ProductConfiguration());
         builder.ApplyConfiguration(new OrderDetailConfiguration());
         builder.ApplyConfiguration(new PostLikeConfiguration());
         builder.ApplyConfiguration(new ProductLikeConfiguration());

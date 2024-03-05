@@ -45,9 +45,8 @@ public class Post
     /// <summary>
     /// The status of the post. Represents if the post is active or not. Set to true by default when posted.
     /// </summary>
-    [DefaultValue(true)]
     [Comment("The status of the post. If it is active or not. Set to true by default")]
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; } = true;
 
     /// <summary>
     /// The date and time when the post was added to the system. It is set when the entity is created.
