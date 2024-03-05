@@ -10,9 +10,7 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
     {
         builder
             .HasOne(c => c.Creator)
-            .WithMany(u => u.Comments);
-
-        builder
-            .HasQueryFilter(c => c.IsActive);
+            .WithMany(u => u.Comments)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

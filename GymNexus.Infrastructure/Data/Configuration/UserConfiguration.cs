@@ -10,7 +10,6 @@ public class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
         builder
             .HasMany(u => u.Comments)
             .WithOne(c => c.Creator);
-            //.OnDelete(DeleteBehavior.Restrict);
 
         builder.HasData(ConfigurationHelper.RootApplicationUser);
     }

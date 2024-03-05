@@ -18,7 +18,7 @@ public static class ConfigurationHelper
                 Title = "Welcome to GymNexus",
                 Content =
                     "Welcome to GymNexus! This is a social network for fitness enthusiasts. Share your progress, ask for advice, and connect with other people who share your passion for fitness.",
-                CreatedBy = RootApplicationUser.UserName,
+                CreatedBy = RootApplicationUser.Id,
                 CreatedOn = DateTime.Now.AddDays(-5),
             },
             new Post
@@ -27,7 +27,7 @@ public static class ConfigurationHelper
                 Title = "How to get started",
                 Content =
                     "To get started, create an account and start sharing your fitness journey with the world. You can also connect with other users and see their progress.",
-                CreatedBy = RootApplicationUser.UserName,
+                CreatedBy = RootApplicationUser.Id,
                 CreatedOn = DateTime.Now.AddMonths(-2)
             },
             new Post
@@ -36,7 +36,7 @@ public static class ConfigurationHelper
                 Title = "How can I bench more?",
                 Content =
                     "I am looking to start increasing my bench press and bench more, and put more pressure on my chest muscles. I am looking for advices, thanks in advance!",
-                CreatedBy = RootApplicationUser.UserName,
+                CreatedBy = RootApplicationUser.Id,
                 CreatedOn = DateTime.Now.AddYears(-1)
             }
         };
@@ -129,6 +129,7 @@ public static class ConfigurationHelper
                 CategoryId = 1,
                 CreatedOn = DateTime.Now.AddDays(-5),
                 ImageUrl = "https://www.kevinlevrone.com/wp-content/uploads/2021/06/levrone-whey-protein-2000g.jpg",
+                StoreId = 1,
                 Price = 50.00m,
             },
             new Product()
@@ -139,6 +140,7 @@ public static class ConfigurationHelper
                 CategoryId = 2,
                 CreatedOn = DateTime.Now.AddMonths(-2),
                 ImageUrl = "https://gymbeam.bg/media/catalog/product/cache/bf5a31e851f50f3ed6850cbbf183db11/j/u/just_whey_chocolate_milkshake_1_kg_gymbeam_1.png",
+                StoreId = 1,
                 Price = 26.00m,
             }
         };
@@ -155,7 +157,7 @@ public static class ConfigurationHelper
                 Description = "This is the Root's store that is created to be useful for you and easier to start with. It is owned by the root user.",
                 CreatedOn = DateTime.Now,
                 MarketplaceId = 1,
-                OwnerId = RootApplicationUser.UserName
+                OwnerId = RootApplicationUser.Id
             }
         };
     }

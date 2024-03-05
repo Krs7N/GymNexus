@@ -18,7 +18,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder
-            .HasQueryFilter(p => p.IsActive)
             .HasData(ConfigurationHelper.GetSeedProducts());
     }
 }

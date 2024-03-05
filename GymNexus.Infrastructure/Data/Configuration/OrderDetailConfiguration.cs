@@ -13,7 +13,7 @@ public class OrderDetailConfiguration : IEntityTypeConfiguration<OrderDetail>
 
         builder
             .HasOne(od => od.Order)
-            .WithMany(o => o.OrdersDetails);
-        //.OnDelete(DeleteBehavior.Cascade);
+            .WithMany(o => o.OrdersDetails)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

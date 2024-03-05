@@ -10,14 +10,14 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
     {
         builder
             .HasOne(p => p.Creator)
-            .WithMany(u => u.Posts);
+            .WithMany(u => u.Posts)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder
             .HasMany(p => p.Comments)
             .WithOne(c => c.Post);
 
         builder
-            .HasQueryFilter(p => p.IsActive)
             .HasData(ConfigurationHelper.GetSeedPosts());
     }
 }

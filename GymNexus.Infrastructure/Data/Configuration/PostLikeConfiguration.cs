@@ -14,6 +14,5 @@ public class PostLikeConfiguration : IEntityTypeConfiguration<PostLike>
         builder
             .HasOne(pl => pl.Post)
             .WithMany(p => p.PostsLikes);
-        //.OnDelete(DeleteBehavior.Cascade);
     }
 }

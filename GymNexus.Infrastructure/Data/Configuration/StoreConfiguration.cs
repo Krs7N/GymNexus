@@ -9,11 +9,20 @@ public class StoreConfiguration : IEntityTypeConfiguration<Store>
     public void Configure(EntityTypeBuilder<Store> builder)
     {
         builder
+            .HasOne(s => s.Owner)
+            .WithMany(o => o.Stores)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder
             .HasOne(s => s.Marketplace)
             .WithMany(mp => mp.Stores);
 
         builder
-            .HasQueryFilter(s => s.IsActive)
+            .HasMany(s => s.Orders)
+            .WithOne(o => o.Store)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder
             .HasData(ConfigurationHelper.GetSeedStores());
     }
 }
