@@ -12,5 +12,6 @@ public class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
             .WithOne(c => c.Creator);
 
         builder.HasData(ConfigurationHelper.RootApplicationUser);
+        builder.HasData(ConfigurationHelper.TestApplicationUser);
     }
 }

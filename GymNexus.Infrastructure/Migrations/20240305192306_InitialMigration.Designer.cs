@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GymNexus.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240305135834_InitialMigration")]
+    [Migration("20240305192306_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -98,17 +98,31 @@ namespace GymNexus.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fc7efe55-f532-4b76-91bf-2ebfe9c724f8",
+                            Id = "2bab9ac6-275c-485d-ae73-3828bec02891",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5beb2c37-abbf-46a6-9508-4f5de362bf8e",
+                            ConcurrencyStamp = "83e5ff89-4f2c-4a4e-a8a5-704cd4b40331",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "ROOT@ABV.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAoSCJ/94nh7fHUTiwPcufBpg+0zFIGJDynrLR3hPq8QnudXJhQmAB2O7D6U/yrs8Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEA8ev/lQaOD+CkIK//RT5KpVYolB/EbJfMr7ReZElwVMXkrENdiZ30bhKNdNgZ9S1Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "27e19282-8a49-4a77-bff3-1207f1b1f014",
+                            SecurityStamp = "4dde9f0d-a3c4-4855-8cd9-4ae75189294b",
                             TwoFactorEnabled = false,
                             UserName = "root@abv.bg"
+                        },
+                        new
+                        {
+                            Id = "0ce4ae33-05e1-474d-b8f1-e51d25e24de7",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "7676434e-bdb5-49af-864d-069700e94c06",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "TEST@ABV.BG",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOrfMyqRgeArE7XDl/ZP0YCLRJudkIMhCaVxN95c2aTlI6j39lNGTIiArrgaRTxIDg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "ccf13e05-71a1-4e92-8bae-cc73cf91dfa1",
+                            TwoFactorEnabled = false,
+                            UserName = "test@abv.bg"
                         });
                 });
 
@@ -437,8 +451,8 @@ namespace GymNexus.Infrastructure.Migrations
                         {
                             Id = 1,
                             Content = "Welcome to GymNexus! This is a social network for fitness enthusiasts. Share your progress, ask for advice, and connect with other people who share your passion for fitness.",
-                            CreatedBy = "fc7efe55-f532-4b76-91bf-2ebfe9c724f8",
-                            CreatedOn = new DateTime(2024, 2, 29, 15, 58, 34, 642, DateTimeKind.Local).AddTicks(1276),
+                            CreatedBy = "2bab9ac6-275c-485d-ae73-3828bec02891",
+                            CreatedOn = new DateTime(2024, 2, 29, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(298),
                             IsActive = true,
                             Title = "Welcome to GymNexus"
                         },
@@ -446,8 +460,8 @@ namespace GymNexus.Infrastructure.Migrations
                         {
                             Id = 2,
                             Content = "To get started, create an account and start sharing your fitness journey with the world. You can also connect with other users and see their progress.",
-                            CreatedBy = "fc7efe55-f532-4b76-91bf-2ebfe9c724f8",
-                            CreatedOn = new DateTime(2024, 1, 5, 15, 58, 34, 642, DateTimeKind.Local).AddTicks(1304),
+                            CreatedBy = "2bab9ac6-275c-485d-ae73-3828bec02891",
+                            CreatedOn = new DateTime(2024, 1, 5, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(330),
                             IsActive = true,
                             Title = "How to get started"
                         },
@@ -455,8 +469,8 @@ namespace GymNexus.Infrastructure.Migrations
                         {
                             Id = 3,
                             Content = "I am looking to start increasing my bench press and bench more, and put more pressure on my chest muscles. I am looking for advices, thanks in advance!",
-                            CreatedBy = "fc7efe55-f532-4b76-91bf-2ebfe9c724f8",
-                            CreatedOn = new DateTime(2023, 3, 5, 15, 58, 34, 642, DateTimeKind.Local).AddTicks(1356),
+                            CreatedBy = "2bab9ac6-275c-485d-ae73-3828bec02891",
+                            CreatedOn = new DateTime(2023, 3, 5, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(332),
                             IsActive = true,
                             Title = "How can I bench more?"
                         });
@@ -543,7 +557,7 @@ namespace GymNexus.Infrastructure.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreatedOn = new DateTime(2024, 2, 29, 15, 58, 34, 642, DateTimeKind.Local).AddTicks(2420),
+                            CreatedOn = new DateTime(2024, 2, 29, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(1469),
                             Description = "Special whey protein made by Kevin Levrone's own brand. Comes in 2000 grams package, with a spoon that is 30g and recommended daily usage of 30g",
                             ImageUrl = "https://www.kevinlevrone.com/wp-content/uploads/2021/06/levrone-whey-protein-2000g.jpg",
                             IsActive = true,
@@ -555,7 +569,7 @@ namespace GymNexus.Infrastructure.Migrations
                         {
                             Id = 2,
                             CategoryId = 2,
-                            CreatedOn = new DateTime(2024, 1, 5, 15, 58, 34, 642, DateTimeKind.Local).AddTicks(2424),
+                            CreatedOn = new DateTime(2024, 1, 5, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(1473),
                             Description = "This is the default brand of proteins that we can give you for now. Comes in 1000 grams package, with a spoon that is 30g and recommended daily usage of 30g",
                             ImageUrl = "https://gymbeam.bg/media/catalog/product/cache/bf5a31e851f50f3ed6850cbbf183db11/j/u/just_whey_chocolate_milkshake_1_kg_gymbeam_1.png",
                             IsActive = true,
@@ -645,12 +659,12 @@ namespace GymNexus.Infrastructure.Migrations
                         {
                             Id = 1,
                             AverageRating = 0m,
-                            CreatedOn = new DateTime(2024, 3, 5, 15, 58, 34, 642, DateTimeKind.Local).AddTicks(2027),
+                            CreatedOn = new DateTime(2024, 3, 5, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(1016),
                             Description = "This is the Root's store that is created to be useful for you and easier to start with. It is owned by the root user.",
                             IsActive = true,
                             MarketplaceId = 1,
                             Name = "Root's local Gym Shop",
-                            OwnerId = "fc7efe55-f532-4b76-91bf-2ebfe9c724f8",
+                            OwnerId = "2bab9ac6-275c-485d-ae73-3828bec02891",
                             RatingsCount = 0
                         });
                 });

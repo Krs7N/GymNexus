@@ -8,6 +8,8 @@ public static class ConfigurationHelper
 {
     public static ApplicationUser RootApplicationUser = GetRootApplicationUser();
 
+    public static ApplicationUser TestApplicationUser = GetTestApplicationUser();
+
     public static Post[] GetSeedPosts()
     {
         return new Post[]
@@ -175,5 +177,20 @@ public static class ConfigurationHelper
         rootUser.PasswordHash = hasher.HashPassword(rootUser, "gymnexus");
 
         return rootUser;
+    }
+
+    private static ApplicationUser GetTestApplicationUser()
+    {
+        var hasher = new PasswordHasher<ApplicationUser>();
+
+        var testUser = new ApplicationUser
+        {
+            UserName = "test@abv.bg",
+            NormalizedUserName = "TEST@ABV.BG"
+        };
+
+        testUser.PasswordHash = hasher.HashPassword(testUser, "gymnexus123");
+
+        return testUser;
     }
 }

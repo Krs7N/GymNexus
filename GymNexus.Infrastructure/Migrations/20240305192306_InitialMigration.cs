@@ -292,7 +292,11 @@ namespace GymNexus.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "ProfilePictureUrl", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "fc7efe55-f532-4b76-91bf-2ebfe9c724f8", 0, "5beb2c37-abbf-46a6-9508-4f5de362bf8e", null, false, false, null, null, "ROOT@ABV.BG", "AQAAAAEAACcQAAAAEAoSCJ/94nh7fHUTiwPcufBpg+0zFIGJDynrLR3hPq8QnudXJhQmAB2O7D6U/yrs8Q==", null, false, null, "27e19282-8a49-4a77-bff3-1207f1b1f014", false, "root@abv.bg" });
+                values: new object[,]
+                {
+                    { "0ce4ae33-05e1-474d-b8f1-e51d25e24de7", 0, "7676434e-bdb5-49af-864d-069700e94c06", null, false, false, null, null, "TEST@ABV.BG", "AQAAAAEAACcQAAAAEOrfMyqRgeArE7XDl/ZP0YCLRJudkIMhCaVxN95c2aTlI6j39lNGTIiArrgaRTxIDg==", null, false, null, "ccf13e05-71a1-4e92-8bae-cc73cf91dfa1", false, "test@abv.bg" },
+                    { "2bab9ac6-275c-485d-ae73-3828bec02891", 0, "83e5ff89-4f2c-4a4e-a8a5-704cd4b40331", null, false, false, null, null, "ROOT@ABV.BG", "AQAAAAEAACcQAAAAEA8ev/lQaOD+CkIK//RT5KpVYolB/EbJfMr7ReZElwVMXkrENdiZ30bhKNdNgZ9S1Q==", null, false, null, "4dde9f0d-a3c4-4855-8cd9-4ae75189294b", false, "root@abv.bg" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Categories",
@@ -321,25 +325,25 @@ namespace GymNexus.Infrastructure.Migrations
                 columns: new[] { "Id", "Content", "CreatedBy", "CreatedOn", "ImageUrl", "IsActive", "Title" },
                 values: new object[,]
                 {
-                    { 1, "Welcome to GymNexus! This is a social network for fitness enthusiasts. Share your progress, ask for advice, and connect with other people who share your passion for fitness.", "fc7efe55-f532-4b76-91bf-2ebfe9c724f8", new DateTime(2024, 2, 29, 15, 58, 34, 642, DateTimeKind.Local).AddTicks(1276), null, true, "Welcome to GymNexus" },
-                    { 2, "To get started, create an account and start sharing your fitness journey with the world. You can also connect with other users and see their progress.", "fc7efe55-f532-4b76-91bf-2ebfe9c724f8", new DateTime(2024, 1, 5, 15, 58, 34, 642, DateTimeKind.Local).AddTicks(1304), null, true, "How to get started" },
-                    { 3, "I am looking to start increasing my bench press and bench more, and put more pressure on my chest muscles. I am looking for advices, thanks in advance!", "fc7efe55-f532-4b76-91bf-2ebfe9c724f8", new DateTime(2023, 3, 5, 15, 58, 34, 642, DateTimeKind.Local).AddTicks(1356), null, true, "How can I bench more?" }
+                    { 1, "Welcome to GymNexus! This is a social network for fitness enthusiasts. Share your progress, ask for advice, and connect with other people who share your passion for fitness.", "2bab9ac6-275c-485d-ae73-3828bec02891", new DateTime(2024, 2, 29, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(298), null, true, "Welcome to GymNexus" },
+                    { 2, "To get started, create an account and start sharing your fitness journey with the world. You can also connect with other users and see their progress.", "2bab9ac6-275c-485d-ae73-3828bec02891", new DateTime(2024, 1, 5, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(330), null, true, "How to get started" },
+                    { 3, "I am looking to start increasing my bench press and bench more, and put more pressure on my chest muscles. I am looking for advices, thanks in advance!", "2bab9ac6-275c-485d-ae73-3828bec02891", new DateTime(2023, 3, 5, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(332), null, true, "How can I bench more?" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Stores",
                 columns: new[] { "Id", "AverageRating", "CreatedOn", "Description", "IsActive", "MarketplaceId", "Name", "OwnerId", "RatingsCount" },
-                values: new object[] { 1, 0m, new DateTime(2024, 3, 5, 15, 58, 34, 642, DateTimeKind.Local).AddTicks(2027), "This is the Root's store that is created to be useful for you and easier to start with. It is owned by the root user.", true, 1, "Root's local Gym Shop", "fc7efe55-f532-4b76-91bf-2ebfe9c724f8", 0 });
+                values: new object[] { 1, 0m, new DateTime(2024, 3, 5, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(1016), "This is the Root's store that is created to be useful for you and easier to start with. It is owned by the root user.", true, 1, "Root's local Gym Shop", "2bab9ac6-275c-485d-ae73-3828bec02891", 0 });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "CategoryId", "CreatedOn", "Description", "ImageUrl", "IsActive", "Name", "Price", "StoreId" },
-                values: new object[] { 1, 1, new DateTime(2024, 2, 29, 15, 58, 34, 642, DateTimeKind.Local).AddTicks(2420), "Special whey protein made by Kevin Levrone's own brand. Comes in 2000 grams package, with a spoon that is 30g and recommended daily usage of 30g", "https://www.kevinlevrone.com/wp-content/uploads/2021/06/levrone-whey-protein-2000g.jpg", true, "Kevin Levrone's Whey Protein", 50.00m, 1 });
+                values: new object[] { 1, 1, new DateTime(2024, 2, 29, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(1469), "Special whey protein made by Kevin Levrone's own brand. Comes in 2000 grams package, with a spoon that is 30g and recommended daily usage of 30g", "https://www.kevinlevrone.com/wp-content/uploads/2021/06/levrone-whey-protein-2000g.jpg", true, "Kevin Levrone's Whey Protein", 50.00m, 1 });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "CategoryId", "CreatedOn", "Description", "ImageUrl", "IsActive", "Name", "Price", "StoreId" },
-                values: new object[] { 2, 2, new DateTime(2024, 1, 5, 15, 58, 34, 642, DateTimeKind.Local).AddTicks(2424), "This is the default brand of proteins that we can give you for now. Comes in 1000 grams package, with a spoon that is 30g and recommended daily usage of 30g", "https://gymbeam.bg/media/catalog/product/cache/bf5a31e851f50f3ed6850cbbf183db11/j/u/just_whey_chocolate_milkshake_1_kg_gymbeam_1.png", true, "Protein", 26.00m, 1 });
+                values: new object[] { 2, 2, new DateTime(2024, 1, 5, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(1473), "This is the default brand of proteins that we can give you for now. Comes in 1000 grams package, with a spoon that is 30g and recommended daily usage of 30g", "https://gymbeam.bg/media/catalog/product/cache/bf5a31e851f50f3ed6850cbbf183db11/j/u/just_whey_chocolate_milkshake_1_kg_gymbeam_1.png", true, "Protein", 26.00m, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_CreatedBy",
@@ -437,7 +441,12 @@ namespace GymNexus.Infrastructure.Migrations
             migrationBuilder.DeleteData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
-                keyValue: "fc7efe55-f532-4b76-91bf-2ebfe9c724f8");
+                keyValue: "0ce4ae33-05e1-474d-b8f1-e51d25e24de7");
+
+            migrationBuilder.DeleteData(
+                table: "AspNetUsers",
+                keyColumn: "Id",
+                keyValue: "2bab9ac6-275c-485d-ae73-3828bec02891");
 
             migrationBuilder.AlterTable(
                 name: "AspNetUsers",
