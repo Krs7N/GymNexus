@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Constants\" />
+    <Folder Include="Data\Configuration\" />
   </ItemGroup>
 
 </Project>
