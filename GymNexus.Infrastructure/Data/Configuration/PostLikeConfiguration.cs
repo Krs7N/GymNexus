@@ -4,16 +4,16 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace GymNexus.Infrastructure.Data.Configuration;
 
-public class OrderDetailConfiguration : IEntityTypeConfiguration<OrderDetail>
+public class PostLikeConfiguration : IEntityTypeConfiguration<PostLike>
 {
-    public void Configure(EntityTypeBuilder<OrderDetail> builder)
+    public void Configure(EntityTypeBuilder<PostLike> builder)
     {
         builder
-            .HasKey(od => new { od.OrderId, od.ProductId });
+            .HasKey(pl => new { pl.PostId, pl.UserId });
 
         builder
-            .HasOne(od => od.Order)
-            .WithMany(o => o.OrdersDetails);
+            .HasOne(pl => pl.Post)
+            .WithMany(p => p.PostsLikes);
         //.OnDelete(DeleteBehavior.Cascade);
     }
 }
