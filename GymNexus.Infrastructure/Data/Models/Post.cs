@@ -72,7 +72,10 @@ public class Post
     /// <summary>
     /// The comments that are added to this post (Navigation property).
     /// </summary>
-    public virtual IEnumerable<Comment> PostsComments { get; set; } = new List<Comment>();
+    public virtual IEnumerable<Comment> Comments { get; set; } = new List<Comment>();
 
+    /// <summary>
+    /// The likes that have been given to this post (Navigation property).
+    /// </summary>
     public virtual IEnumerable<PostLike> PostsLikes { get; set; } = new List<PostLike>();
 }

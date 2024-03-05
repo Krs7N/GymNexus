@@ -73,6 +73,49 @@ public static class ConfigurationHelper
         };
     }
 
+    public static Marketplace[] GetSeedMarketplaces()
+    {
+        return new Marketplace[]
+        {
+            new Marketplace()
+            {
+                Id = 1,
+                Name = "Fitness1 Sofia",
+                Description = "Fitness1 is a marketplace that offers a wide range of fitness products and supplements.",
+                Address = "Boulevard \"Cherni vrah\" 25, Sofia",
+                Latitude = 42.6777m,
+                Longitude = 23.3221m
+            },
+            new Marketplace()
+            {
+                Id = 2,
+                Name = "Pulse Gym Shop",
+                Description = "Pulse Gym Shop offers various supplements and gym equipment. The store is part of the Pulse brand which has its own gym's all around the country",
+                Address = "Mladost 4, 1715, Sofia",
+                Latitude = 42.62518m,
+                Longitude = 23.373451m
+            },
+            new Marketplace()
+            {
+                Id = 3,
+                Name = "Sila BG",
+                Description = "Sila BG is one of the leading brands in Bulgaria. A recent new-comer but with a high demand with various range of products.",
+                Address = "Lyuben Karavelov 21, 9002, Varna",
+                Latitude = 43.20887m,
+                Longitude = 27.92242m
+            },
+            new Marketplace()
+            {
+                Id = 4,
+                Name = "Fitness1 Burgas",
+                Description = "Fitness1 is a marketplace that offers a wide range of fitness products and supplements.",
+                Address = "Adam Mitskevich 5, 8001, Burgas",
+                Latitude = 42.50064m,
+                Longitude = 27.47921m
+            }
+        };
+    }
+
     private static ApplicationUser GetRootApplicationUser()
     {
         var hasher = new PasswordHasher<ApplicationUser>();
