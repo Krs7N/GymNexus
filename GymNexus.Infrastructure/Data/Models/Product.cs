@@ -91,4 +91,9 @@ public class Product
     /// </summary>
     [ForeignKey(nameof(CategoryId))]
     public Category Category { get; set; } = null!;
+
+    /// <summary>
+    /// The collection of all likes that the product has received (Navigation property).
+    /// </summary>
+    public virtual IEnumerable<ProductLike> ProductsLikes { get; set; } = new List<ProductLike>();
 }
