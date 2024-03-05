@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace GymNexus.Infrastructure.Data.Models;
 
@@ -98,5 +98,5 @@ public class Order
     /// <summary>
     /// The collection of all order details that the order has. It is a navigation property. Gets the other products that could be in this order
     /// </summary>
-    public virtual IEnumerable<OrderDetails> OrdersDetails { get; set; } = new List<OrderDetails>();
+    public virtual IEnumerable<OrderDetail> OrdersDetails { get; set; } = new List<OrderDetail>();
 }

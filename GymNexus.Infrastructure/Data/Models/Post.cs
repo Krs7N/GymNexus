@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using static GymNexus.Infrastructure.Constants.DataConstants;
 
 namespace GymNexus.Infrastructure.Data.Models;
@@ -72,5 +72,7 @@ public class Post
     /// <summary>
     /// The comments that are added to this post (Navigation property).
     /// </summary>
-    public virtual IEnumerable<Comment> PostComments { get; set; } = new List<Comment>();
+    public virtual IEnumerable<Comment> PostsComments { get; set; } = new List<Comment>();
+
+    public virtual IEnumerable<PostLike> PostsLikes { get; set; } = new List<PostLike>();
 }

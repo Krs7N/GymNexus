@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
-using GymNexus.Infrastructure.Data.Models;
+﻿using GymNexus.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using static GymNexus.Infrastructure.Constants.DataConstants;
 
 namespace GymNexus.Infrastructure.Data;

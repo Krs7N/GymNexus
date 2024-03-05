@@ -1,6 +1,6 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 using static GymNexus.Infrastructure.Constants.DataConstants;
 
 namespace GymNexus.Infrastructure.Data.Models;
@@ -44,5 +44,5 @@ public class Category
     /// <summary>
     /// The products that are related to the current category. A category can have many products. It is a navigation property.
     /// </summary>
-    public virtual IEnumerable<Product> Products { get; set; }
+    public virtual IEnumerable<Product> Products { get; set; } = new List<Product>();
 }
