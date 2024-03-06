@@ -39,7 +39,7 @@ public static class DataConstants
     // Post
     public const int PostTitleMinLength = 5;
     public const int PostTitleMaxLength = 50;
-    public const int PostDescriptionMinLength = 10;
+    public const int PostContentMinLength = 10;
     public const int PostContentMaxLength = 500;
     public const int PostImageUrlMaxLength = 250;
 
