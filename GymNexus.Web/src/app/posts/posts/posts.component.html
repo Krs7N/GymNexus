@@ -1,33 +1,66 @@
-<div class="max-w-4xl mx-auto w-4/5" *ngFor="let post of posts">
-    <mat-card class="mb-5">
-      <mat-card-header>
-        <mat-card-title>{{ post.title }}</mat-card-title>
-        <mat-card-subtitle>Posted by {{ post.createdBy }} on {{ post.createdOn }}</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image *ngIf="post.imageUrl" [src]="post.imageUrl" alt="Post image" class="max-h-96 w-auto">
-      <mat-card-content>
-        <p>{{ post.content }}</p>
-      </mat-card-content>
-      <mat-card-actions class="justify-between items-center">
-        <button mat-button (click)="toggleLike(post)">
-          <!-- Replace with an icon if preferred -->
-          Like ({{ post.likes || 0 }})
-        </button>
-        <!-- Comments Section -->
-        <div>
-          <p class="font-bold mt-4 mb-2">Comments:</p>
-          <div *ngFor="let comment of post.comments" class="mb-2">
-            <p>
-                <span class="font-semibold">{{comment.createdBy}}:</span>
-                {{comment.content}}
-                <span class="text-sm text-gray-500">({{ comment.createdOn | relativeTime }})</span>
-            </p>
+<div class="max-w-7xl mx-auto w-4/5 flex justify-end mt-3 mb-3">
+  <button mat-raised-button color="primary" class="w-40" (click)="openAddPost()">
+    Add Post
+  </button>
+</div>
+<div class="max-w-7xl mx-auto">
+  <div class="grid grid-cols-2 gap-4 mb-5">
+    <div *ngFor="let post of currentPosts" class="col-span-1">
+      <mat-card class="mb-5">
+        <mat-card-header>
+          <mat-card-title>{{ post.title }}</mat-card-title>
+          <mat-card-subtitle
+            >Posted by {{ post.createdBy }} on
+            {{ post.createdOn }}</mat-card-subtitle
+          >
+        </mat-card-header>
+        <img
+          mat-card-image
+          *ngIf="post.imageUrl"
+          [src]="post.imageUrl"
+          alt="Post image"
+          class="max-h-96 w-auto"
+        />
+        <mat-card-content>
+          <p>{{ post.content }}</p>
+        </mat-card-content>
+        <mat-card-actions class="justify-between items-center">
+          <button mat-button (click)="toggleLike(post)">
+            <!-- Replace with an icon if preferred -->
+            Like ({{ post.likes || 0 }})
+          </button>
+          <!-- Comments Section -->
+          <div>
+            <p class="font-bold mt-4 mb-2">Comments:</p>
+            <div *ngFor="let comment of post.comments" class="mb-2">
+              <p>
+                <span class="font-semibold">{{ comment.createdBy }}:</span>
+                {{ comment.content }}
+                <span class="text-sm text-gray-500"
+                  >({{ comment.createdOn | relativeTime }})</span
+                >
+              </p>
+            </div>
+            <!-- Add a comment input field -->
+            <input
+              type="text"
+              [(ngModel)]="newComment"
+              placeholder="Add a comment..."
+              class="mt-2 p-2 border rounded"
+            />
+            <button mat-button (click)="addComment(post)">Post</button>
           </div>
-          <!-- Add a comment input field -->
-          <input type="text" [(ngModel)]="newComment" placeholder="Add a comment..." class="mt-2 p-2 border rounded">
-          <button mat-button (click)="addComment(post)">Post</button>
-        </div>
-      </mat-card-actions>
-    </mat-card>
+        </mat-card-actions>
+      </mat-card>
+    </div>
   </div>
-  
+  <div class="mt-auto w-full flex justify-end pr-5 pb-5">
+    <mat-paginator
+      [pageSize]="2"
+      [length]="posts.length"
+      [pageSizeOptions]="[2]"
+      (page)="changePage($event)"
+    >
+    </mat-paginator>
+  </div>
+</div>

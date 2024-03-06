@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { PostsModule } from './posts/posts.module';
 import { HttpClientModule } from '@angular/common/http';
+import { CloudinaryModule } from '@cloudinary/ng';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
     NavBarComponent
   ],
   imports: [
+    CloudinaryModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
