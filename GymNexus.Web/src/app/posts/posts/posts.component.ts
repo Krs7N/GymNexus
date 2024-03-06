@@ -1,5 +1,3 @@
-declare var cloudinary: any;
-
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PostsService } from '../posts.service';
 import { PostViewModel } from '../post-view-model';
@@ -40,45 +38,6 @@ export class PostsComponent implements OnInit, OnDestroy {
     //   post.likes = 0;
     // }
     // post.likes += 1;
-    // cloudinary.openUploadWidget({
-    //   cloudName: 'dekvgy42s',
-    //   uploadPreset: 'gymnexus',
-    //   sources: ['local', 'url', 'camera', 'image_search'],
-    //   showAdvancedOptions: false,
-    //   cropping: true,
-    //   multiple: false,
-    //   defaultSource: 'local',
-    //   styles: {
-    //     palette: {
-    //       window: "#FFFFFF",
-    //       windowBorder: "#90A0B3",
-    //       tabIcon: "#0078FF",
-    //       menuIcons: "#5A616A",
-    //       textDark: "#000000",
-    //       textLight: "#FFFFFF",
-    //       link: "#0078FF",
-    //       action: "#FF620C",
-    //         inactiveTabIcon: "#0E2F5A",
-    //         error: "#F44235",
-    //         inProgress: "#0078FF",
-    //         complete: "#20B832",
-    //         sourceBg: "#E4EBF1"
-    //       },
-    //       fonts: {
-    //         default: null,
-    //         "'Fira Sans', sans-serif": {
-    //           url: "https://fonts.googleapis.com/css?family=Fira+Sans",
-    //           active: true
-    //         }
-    //       }
-    //     }
-    //   }, (error: Error, result: any) => {
-    //     if (!error && result && result.event === "success") {
-    //       console.log('Upload Widget event - ', result);
-    //       // Handle the uploaded image's URL
-    //       // e.g., updating a form control or state variable with the image URL
-    //     }
-    //   });
     }
 
   addComment(post: PostViewModel): void {
@@ -95,9 +54,8 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   openAddPost() {
     const dialogRef = this._dialog.open(PostFormComponent, {
-      width: '400px',
-      data: {
-      }
+      width: '60%',
+      height: '80%'
     });
   }
 

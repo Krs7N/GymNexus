@@ -1,17 +1,38 @@
 <h2 mat-dialog-title>Add New Post</h2>
-<mat-dialog-content class="mat-typography">
-  <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="fill">
-      <mat-label>Title</mat-label>
-      <input matInput formControlName="title">
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Content</mat-label>
-      <textarea matInput formControlName="content"></textarea>
-    </mat-form-field>
-  </form>
+<mat-dialog-content>
+    <form [formGroup]="postForm">
+        <mat-form-field appearance="fill" class="w-full mb-4">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title">
+            <mat-error *ngIf="postForm.get('title')?.errors?.['required']">
+                Title field is required
+            </mat-error>
+            <mat-error *ngIf="postForm.get('title')?.errors?.['minlength']">
+                Title must be at least {{ postForm.get('title')?.errors?.['minlength']['requiredLength'] }} characters long
+            </mat-error>
+            <mat-error *ngIf="postForm.get('title')?.errors?.['maxlength']">
+                Title can't be more than {{ postForm.get('title')?.errors?.['maxlength']['requiredLength'] }} characters long. You typed {{ postForm.get('title')?.errors?.['maxlength']['actualLength'] }} characters
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-full mb-4">
+            <mat-label>Content</mat-label>
+            <textarea cdkTextareaAutosize rows="3" matInput formControlName="content"></textarea>
+            <mat-error *ngIf="postForm.get('content')?.errors?.['required']">
+                Content field is required
+            </mat-error>
+            <mat-error *ngIf="postForm.get('content')?.errors?.['minlength']">
+                Content must be at least {{ postForm.get('content')?.errors?.['minlength']['requiredLength'] }} characters long
+            </mat-error>
+            <mat-error *ngIf="postForm.get('title')?.errors?.['maxlength']">
+                Content can't be more than {{ postForm.get('title')?.errors?.['maxlength']['requiredLength'] }} characters long. You typed {{ postForm.get('title')?.errors?.['maxlength']['actualLength'] }} characters
+            </mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="openCloudinaryUploader()">Upload Image</button>
+
+        <img *ngIf="postForm.value.imageUrl" [src]="postForm.value.imageUrl" alt="Uploaded Image" class="w-32 h-32 mt-2">
+    </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-button color="primary" [mat-dialog-close]="true" form="postForm">Save</button>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button color="primary" [disabled]="!postForm.valid" (click)="onSubmit()">Save</button>
 </mat-dialog-actions>
