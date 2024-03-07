@@ -290,12 +290,22 @@ namespace GymNexus.Infrastructure.Migrations
                 comment: "Product like entity representation in the system. Represents the amount of likes the product has received");
 
             migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "3436ba36-b7db-449b-a338-9d5891cb4c0f", "3436ba36-b7db-449b-a338-9d5891cb4c0f", "Owner", "OWNER" },
+                    { "b558b524-6d2f-4a8e-9eb5-4b02cdd0a61c", "b558b524-6d2f-4a8e-9eb5-4b02cdd0a61c", "Seller", "SELLER" },
+                    { "fe5c5c3c-e055-4bb7-bcbc-fdd8f9b449e7", "fe5c5c3c-e055-4bb7-bcbc-fdd8f9b449e7", "Writer", "WRITER" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "ProfilePictureUrl", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "0ce4ae33-05e1-474d-b8f1-e51d25e24de7", 0, "7676434e-bdb5-49af-864d-069700e94c06", null, false, false, null, null, "TEST@ABV.BG", "AQAAAAEAACcQAAAAEOrfMyqRgeArE7XDl/ZP0YCLRJudkIMhCaVxN95c2aTlI6j39lNGTIiArrgaRTxIDg==", null, false, null, "ccf13e05-71a1-4e92-8bae-cc73cf91dfa1", false, "test@abv.bg" },
-                    { "2bab9ac6-275c-485d-ae73-3828bec02891", 0, "83e5ff89-4f2c-4a4e-a8a5-704cd4b40331", null, false, false, null, null, "ROOT@ABV.BG", "AQAAAAEAACcQAAAAEA8ev/lQaOD+CkIK//RT5KpVYolB/EbJfMr7ReZElwVMXkrENdiZ30bhKNdNgZ9S1Q==", null, false, null, "4dde9f0d-a3c4-4855-8cd9-4ae75189294b", false, "root@abv.bg" }
+                    { "60889746-673c-4e86-8040-c4465e10c8b7", 0, "6148cbdc-31c9-4868-aff9-85935540478f", "root@abv.bg", false, false, null, "ROOT@ABV.BG", "ROOT@ABV.BG", "AQAAAAEAACcQAAAAEBnG3rhSmwEo8a7C31JLBZnddZu12KC7BsFlampz/glPqDkmmgKs5xa7e1XxYN8GXQ==", null, false, null, "45dbf073-7416-458a-8a49-c7c4415793d4", false, "root@abv.bg" },
+                    { "76bb4713-0ad4-4e3e-a356-d3f24a435ec9", 0, "160e64f8-e545-43a0-bc3b-b0caa71b9f24", "test@abv.bg", false, false, null, "TEST@ABV.BG", "TEST@ABV.BG", "AQAAAAEAACcQAAAAEPNG7Rl1vqS5uVRyTEcQ3uiTiy3/akA7aQ75UYjCjijGc68lyAhU6VhIY7oLXwMvtw==", null, false, null, "2f918d4e-39b5-4a84-9618-7f0454b870aa", false, "test@abv.bg" }
                 });
 
             migrationBuilder.InsertData(
@@ -321,29 +331,40 @@ namespace GymNexus.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { "3436ba36-b7db-449b-a338-9d5891cb4c0f", "60889746-673c-4e86-8040-c4465e10c8b7" },
+                    { "b558b524-6d2f-4a8e-9eb5-4b02cdd0a61c", "60889746-673c-4e86-8040-c4465e10c8b7" },
+                    { "fe5c5c3c-e055-4bb7-bcbc-fdd8f9b449e7", "60889746-673c-4e86-8040-c4465e10c8b7" },
+                    { "3436ba36-b7db-449b-a338-9d5891cb4c0f", "76bb4713-0ad4-4e3e-a356-d3f24a435ec9" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "Id", "Content", "CreatedBy", "CreatedOn", "ImageUrl", "IsActive", "Title" },
                 values: new object[,]
                 {
-                    { 1, "Welcome to GymNexus! This is a social network for fitness enthusiasts. Share your progress, ask for advice, and connect with other people who share your passion for fitness.", "2bab9ac6-275c-485d-ae73-3828bec02891", new DateTime(2024, 2, 29, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(298), null, true, "Welcome to GymNexus" },
-                    { 2, "To get started, create an account and start sharing your fitness journey with the world. You can also connect with other users and see their progress.", "2bab9ac6-275c-485d-ae73-3828bec02891", new DateTime(2024, 1, 5, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(330), null, true, "How to get started" },
-                    { 3, "I am looking to start increasing my bench press and bench more, and put more pressure on my chest muscles. I am looking for advices, thanks in advance!", "2bab9ac6-275c-485d-ae73-3828bec02891", new DateTime(2023, 3, 5, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(332), null, true, "How can I bench more?" }
+                    { 1, "Welcome to GymNexus! This is a social network for fitness enthusiasts. Share your progress, ask for advice, and connect with other people who share your passion for fitness.", "60889746-673c-4e86-8040-c4465e10c8b7", new DateTime(2024, 3, 2, 15, 34, 22, 992, DateTimeKind.Local).AddTicks(7882), null, true, "Welcome to GymNexus" },
+                    { 2, "To get started, create an account and start sharing your fitness journey with the world. You can also connect with other users and see their progress.", "60889746-673c-4e86-8040-c4465e10c8b7", new DateTime(2024, 1, 7, 15, 34, 22, 992, DateTimeKind.Local).AddTicks(7937), null, true, "How to get started" },
+                    { 3, "I am looking to start increasing my bench press and bench more, and put more pressure on my chest muscles. I am looking for advices, thanks in advance!", "60889746-673c-4e86-8040-c4465e10c8b7", new DateTime(2023, 3, 7, 15, 34, 22, 992, DateTimeKind.Local).AddTicks(7941), null, true, "How can I bench more?" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Stores",
                 columns: new[] { "Id", "AverageRating", "CreatedOn", "Description", "IsActive", "MarketplaceId", "Name", "OwnerId", "RatingsCount" },
-                values: new object[] { 1, 0m, new DateTime(2024, 3, 5, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(1016), "This is the Root's store that is created to be useful for you and easier to start with. It is owned by the root user.", true, 1, "Root's local Gym Shop", "2bab9ac6-275c-485d-ae73-3828bec02891", 0 });
+                values: new object[] { 1, 0m, new DateTime(2024, 3, 7, 15, 34, 22, 992, DateTimeKind.Local).AddTicks(8615), "This is the Root's store that is created to be useful for you and easier to start with. It is owned by the root user.", true, 1, "Root's local Gym Shop", "60889746-673c-4e86-8040-c4465e10c8b7", 0 });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "CategoryId", "CreatedOn", "Description", "ImageUrl", "IsActive", "Name", "Price", "StoreId" },
-                values: new object[] { 1, 1, new DateTime(2024, 2, 29, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(1469), "Special whey protein made by Kevin Levrone's own brand. Comes in 2000 grams package, with a spoon that is 30g and recommended daily usage of 30g", "https://www.kevinlevrone.com/wp-content/uploads/2021/06/levrone-whey-protein-2000g.jpg", true, "Kevin Levrone's Whey Protein", 50.00m, 1 });
+                values: new object[] { 1, 1, new DateTime(2024, 3, 2, 15, 34, 22, 992, DateTimeKind.Local).AddTicks(9074), "Special whey protein made by Kevin Levrone's own brand. Comes in 2000 grams package, with a spoon that is 30g and recommended daily usage of 30g", "https://www.kevinlevrone.com/wp-content/uploads/2021/06/levrone-whey-protein-2000g.jpg", true, "Kevin Levrone's Whey Protein", 50.00m, 1 });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "CategoryId", "CreatedOn", "Description", "ImageUrl", "IsActive", "Name", "Price", "StoreId" },
-                values: new object[] { 2, 2, new DateTime(2024, 1, 5, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(1473), "This is the default brand of proteins that we can give you for now. Comes in 1000 grams package, with a spoon that is 30g and recommended daily usage of 30g", "https://gymbeam.bg/media/catalog/product/cache/bf5a31e851f50f3ed6850cbbf183db11/j/u/just_whey_chocolate_milkshake_1_kg_gymbeam_1.png", true, "Protein", 26.00m, 1 });
+                values: new object[] { 2, 2, new DateTime(2024, 1, 7, 15, 34, 22, 992, DateTimeKind.Local).AddTicks(9080), "This is the default brand of proteins that we can give you for now. Comes in 1000 grams package, with a spoon that is 30g and recommended daily usage of 30g", "https://gymbeam.bg/media/catalog/product/cache/bf5a31e851f50f3ed6850cbbf183db11/j/u/just_whey_chocolate_milkshake_1_kg_gymbeam_1.png", true, "Protein", 26.00m, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_CreatedBy",
@@ -439,14 +460,49 @@ namespace GymNexus.Infrastructure.Migrations
                 name: "Marketplaces");
 
             migrationBuilder.DeleteData(
-                table: "AspNetUsers",
+                table: "AspNetUserRoles",
+                keyColumns: new[] { "RoleId", "UserId" },
+                keyValues: new object[] { "3436ba36-b7db-449b-a338-9d5891cb4c0f", "60889746-673c-4e86-8040-c4465e10c8b7" });
+
+            migrationBuilder.DeleteData(
+                table: "AspNetUserRoles",
+                keyColumns: new[] { "RoleId", "UserId" },
+                keyValues: new object[] { "b558b524-6d2f-4a8e-9eb5-4b02cdd0a61c", "60889746-673c-4e86-8040-c4465e10c8b7" });
+
+            migrationBuilder.DeleteData(
+                table: "AspNetUserRoles",
+                keyColumns: new[] { "RoleId", "UserId" },
+                keyValues: new object[] { "fe5c5c3c-e055-4bb7-bcbc-fdd8f9b449e7", "60889746-673c-4e86-8040-c4465e10c8b7" });
+
+            migrationBuilder.DeleteData(
+                table: "AspNetUserRoles",
+                keyColumns: new[] { "RoleId", "UserId" },
+                keyValues: new object[] { "3436ba36-b7db-449b-a338-9d5891cb4c0f", "76bb4713-0ad4-4e3e-a356-d3f24a435ec9" });
+
+            migrationBuilder.DeleteData(
+                table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "0ce4ae33-05e1-474d-b8f1-e51d25e24de7");
+                keyValue: "3436ba36-b7db-449b-a338-9d5891cb4c0f");
+
+            migrationBuilder.DeleteData(
+                table: "AspNetRoles",
+                keyColumn: "Id",
+                keyValue: "b558b524-6d2f-4a8e-9eb5-4b02cdd0a61c");
+
+            migrationBuilder.DeleteData(
+                table: "AspNetRoles",
+                keyColumn: "Id",
+                keyValue: "fe5c5c3c-e055-4bb7-bcbc-fdd8f9b449e7");
 
             migrationBuilder.DeleteData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
-                keyValue: "2bab9ac6-275c-485d-ae73-3828bec02891");
+                keyValue: "76bb4713-0ad4-4e3e-a356-d3f24a435ec9");
+
+            migrationBuilder.DeleteData(
+                table: "AspNetUsers",
+                keyColumn: "Id",
+                keyValue: "60889746-673c-4e86-8040-c4465e10c8b7");
 
             migrationBuilder.AlterTable(
                 name: "AspNetUsers",

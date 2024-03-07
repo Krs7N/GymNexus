@@ -96,29 +96,33 @@ namespace GymNexus.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2bab9ac6-275c-485d-ae73-3828bec02891",
+                            Id = "60889746-673c-4e86-8040-c4465e10c8b7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "83e5ff89-4f2c-4a4e-a8a5-704cd4b40331",
+                            ConcurrencyStamp = "6148cbdc-31c9-4868-aff9-85935540478f",
+                            Email = "root@abv.bg",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "ROOT@ABV.BG",
                             NormalizedUserName = "ROOT@ABV.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEA8ev/lQaOD+CkIK//RT5KpVYolB/EbJfMr7ReZElwVMXkrENdiZ30bhKNdNgZ9S1Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBnG3rhSmwEo8a7C31JLBZnddZu12KC7BsFlampz/glPqDkmmgKs5xa7e1XxYN8GXQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4dde9f0d-a3c4-4855-8cd9-4ae75189294b",
+                            SecurityStamp = "45dbf073-7416-458a-8a49-c7c4415793d4",
                             TwoFactorEnabled = false,
                             UserName = "root@abv.bg"
                         },
                         new
                         {
-                            Id = "0ce4ae33-05e1-474d-b8f1-e51d25e24de7",
+                            Id = "76bb4713-0ad4-4e3e-a356-d3f24a435ec9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7676434e-bdb5-49af-864d-069700e94c06",
+                            ConcurrencyStamp = "160e64f8-e545-43a0-bc3b-b0caa71b9f24",
+                            Email = "test@abv.bg",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "TEST@ABV.BG",
                             NormalizedUserName = "TEST@ABV.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOrfMyqRgeArE7XDl/ZP0YCLRJudkIMhCaVxN95c2aTlI6j39lNGTIiArrgaRTxIDg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPNG7Rl1vqS5uVRyTEcQ3uiTiy3/akA7aQ75UYjCjijGc68lyAhU6VhIY7oLXwMvtw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ccf13e05-71a1-4e92-8bae-cc73cf91dfa1",
+                            SecurityStamp = "2f918d4e-39b5-4a84-9618-7f0454b870aa",
                             TwoFactorEnabled = false,
                             UserName = "test@abv.bg"
                         });
@@ -449,8 +453,8 @@ namespace GymNexus.Infrastructure.Migrations
                         {
                             Id = 1,
                             Content = "Welcome to GymNexus! This is a social network for fitness enthusiasts. Share your progress, ask for advice, and connect with other people who share your passion for fitness.",
-                            CreatedBy = "2bab9ac6-275c-485d-ae73-3828bec02891",
-                            CreatedOn = new DateTime(2024, 2, 29, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(298),
+                            CreatedBy = "60889746-673c-4e86-8040-c4465e10c8b7",
+                            CreatedOn = new DateTime(2024, 3, 2, 15, 34, 22, 992, DateTimeKind.Local).AddTicks(7882),
                             IsActive = true,
                             Title = "Welcome to GymNexus"
                         },
@@ -458,8 +462,8 @@ namespace GymNexus.Infrastructure.Migrations
                         {
                             Id = 2,
                             Content = "To get started, create an account and start sharing your fitness journey with the world. You can also connect with other users and see their progress.",
-                            CreatedBy = "2bab9ac6-275c-485d-ae73-3828bec02891",
-                            CreatedOn = new DateTime(2024, 1, 5, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(330),
+                            CreatedBy = "60889746-673c-4e86-8040-c4465e10c8b7",
+                            CreatedOn = new DateTime(2024, 1, 7, 15, 34, 22, 992, DateTimeKind.Local).AddTicks(7937),
                             IsActive = true,
                             Title = "How to get started"
                         },
@@ -467,8 +471,8 @@ namespace GymNexus.Infrastructure.Migrations
                         {
                             Id = 3,
                             Content = "I am looking to start increasing my bench press and bench more, and put more pressure on my chest muscles. I am looking for advices, thanks in advance!",
-                            CreatedBy = "2bab9ac6-275c-485d-ae73-3828bec02891",
-                            CreatedOn = new DateTime(2023, 3, 5, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(332),
+                            CreatedBy = "60889746-673c-4e86-8040-c4465e10c8b7",
+                            CreatedOn = new DateTime(2023, 3, 7, 15, 34, 22, 992, DateTimeKind.Local).AddTicks(7941),
                             IsActive = true,
                             Title = "How can I bench more?"
                         });
@@ -555,7 +559,7 @@ namespace GymNexus.Infrastructure.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreatedOn = new DateTime(2024, 2, 29, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(1469),
+                            CreatedOn = new DateTime(2024, 3, 2, 15, 34, 22, 992, DateTimeKind.Local).AddTicks(9074),
                             Description = "Special whey protein made by Kevin Levrone's own brand. Comes in 2000 grams package, with a spoon that is 30g and recommended daily usage of 30g",
                             ImageUrl = "https://www.kevinlevrone.com/wp-content/uploads/2021/06/levrone-whey-protein-2000g.jpg",
                             IsActive = true,
@@ -567,7 +571,7 @@ namespace GymNexus.Infrastructure.Migrations
                         {
                             Id = 2,
                             CategoryId = 2,
-                            CreatedOn = new DateTime(2024, 1, 5, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(1473),
+                            CreatedOn = new DateTime(2024, 1, 7, 15, 34, 22, 992, DateTimeKind.Local).AddTicks(9080),
                             Description = "This is the default brand of proteins that we can give you for now. Comes in 1000 grams package, with a spoon that is 30g and recommended daily usage of 30g",
                             ImageUrl = "https://gymbeam.bg/media/catalog/product/cache/bf5a31e851f50f3ed6850cbbf183db11/j/u/just_whey_chocolate_milkshake_1_kg_gymbeam_1.png",
                             IsActive = true,
@@ -657,12 +661,12 @@ namespace GymNexus.Infrastructure.Migrations
                         {
                             Id = 1,
                             AverageRating = 0m,
-                            CreatedOn = new DateTime(2024, 3, 5, 21, 23, 6, 615, DateTimeKind.Local).AddTicks(1016),
+                            CreatedOn = new DateTime(2024, 3, 7, 15, 34, 22, 992, DateTimeKind.Local).AddTicks(8615),
                             Description = "This is the Root's store that is created to be useful for you and easier to start with. It is owned by the root user.",
                             IsActive = true,
                             MarketplaceId = 1,
                             Name = "Root's local Gym Shop",
-                            OwnerId = "2bab9ac6-275c-485d-ae73-3828bec02891",
+                            OwnerId = "60889746-673c-4e86-8040-c4465e10c8b7",
                             RatingsCount = 0
                         });
                 });
@@ -692,6 +696,29 @@ namespace GymNexus.Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "3436ba36-b7db-449b-a338-9d5891cb4c0f",
+                            ConcurrencyStamp = "3436ba36-b7db-449b-a338-9d5891cb4c0f",
+                            Name = "Owner",
+                            NormalizedName = "OWNER"
+                        },
+                        new
+                        {
+                            Id = "b558b524-6d2f-4a8e-9eb5-4b02cdd0a61c",
+                            ConcurrencyStamp = "b558b524-6d2f-4a8e-9eb5-4b02cdd0a61c",
+                            Name = "Seller",
+                            NormalizedName = "SELLER"
+                        },
+                        new
+                        {
+                            Id = "fe5c5c3c-e055-4bb7-bcbc-fdd8f9b449e7",
+                            ConcurrencyStamp = "fe5c5c3c-e055-4bb7-bcbc-fdd8f9b449e7",
+                            Name = "Writer",
+                            NormalizedName = "WRITER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -779,6 +806,28 @@ namespace GymNexus.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "60889746-673c-4e86-8040-c4465e10c8b7",
+                            RoleId = "3436ba36-b7db-449b-a338-9d5891cb4c0f"
+                        },
+                        new
+                        {
+                            UserId = "60889746-673c-4e86-8040-c4465e10c8b7",
+                            RoleId = "b558b524-6d2f-4a8e-9eb5-4b02cdd0a61c"
+                        },
+                        new
+                        {
+                            UserId = "60889746-673c-4e86-8040-c4465e10c8b7",
+                            RoleId = "fe5c5c3c-e055-4bb7-bcbc-fdd8f9b449e7"
+                        },
+                        new
+                        {
+                            UserId = "76bb4713-0ad4-4e3e-a356-d3f24a435ec9",
+                            RoleId = "3436ba36-b7db-449b-a338-9d5891cb4c0f"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
