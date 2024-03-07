@@ -5,4 +5,5 @@ namespace GymNexus.Core.Contracts;
 public interface IPostService
 {
     Task<IEnumerable<PostDto>> GetAllAsync();
+    Task<PostDto?> GetPostByIdAsync(int id);
 }

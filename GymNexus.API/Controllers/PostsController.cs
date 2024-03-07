@@ -28,5 +28,31 @@ namespace GymNexus.API.Controllers
             var posts = await _postService.GetAllAsync();
             return Ok(posts);
         }
+
+        /// <summary>
+        /// Gets single post by it's id that is currently active in the system
+        /// </summary>
+        /// <returns>Active post by it's id</returns>
+        [HttpGet("{id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PostDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAllPosts([FromRoute] int id)
+        {
+            if (id < 0)
+            {
+                return BadRequest();
+            }
+
+            var post = await _postService.GetPostByIdAsync(id);
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(post);
+        }
     }
 }
