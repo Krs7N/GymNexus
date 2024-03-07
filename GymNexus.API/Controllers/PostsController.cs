@@ -33,7 +33,7 @@ namespace GymNexus.API.Controllers
         /// Gets single post by it's id that is currently active in the system
         /// </summary>
         /// <returns>Active post by it's id</returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PostDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
