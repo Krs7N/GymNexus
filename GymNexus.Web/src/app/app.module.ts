@@ -8,11 +8,12 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { PostsModule } from './posts/posts.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CloudinaryModule } from '@cloudinary/ng';
+import { MarketplaceMapComponent } from './map/marketplace-map/marketplace-map.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavBarComponent
+    NavBarComponent,
   ],
   imports: [
     CloudinaryModule,
