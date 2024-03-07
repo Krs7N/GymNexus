@@ -9,8 +9,8 @@
         </a>
     </div>
     <div class="block flex lg:items-center lg:w-auto">
-        <button mat-button class="text-teal-200 text-base hover:text-white mr-4">Login</button>
-        <button mat-button class="text-teal-200 text-base hover:text-white">Register</button>
+        <a [routerLink]="['/login']" class="text-teal-200 text-base hover:text-white mr-4">Login</a>
+        <a [routerLink]="['/register']" class="text-teal-200 text-base hover:text-white">Register</a>
         <!-- <span class="text-teal-200 hover:text-white mr-4" *ngIf="user">Hello, {{ user.email }}</span>
         <img src="{{ user.profilePicture }}" class="rounded-full" width="40" height="40" *ngIf="user">
         <!-- <button mat-button class="text-teal-200 hover:text-white" *ngIf="user">Logout</button> -->

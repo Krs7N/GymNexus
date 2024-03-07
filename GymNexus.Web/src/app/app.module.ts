@@ -8,7 +8,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { PostsModule } from './posts/posts.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CloudinaryModule } from '@cloudinary/ng';
-import { MarketplaceMapComponent } from './map/marketplace-map/marketplace-map.component';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +21,7 @@ import { MarketplaceMapComponent } from './map/marketplace-map/marketplace-map.c
     AppRoutingModule,
     BrowserAnimationsModule,
     PostsModule,
+    AuthModule,
     HttpClientModule
   ],
   providers: [],
