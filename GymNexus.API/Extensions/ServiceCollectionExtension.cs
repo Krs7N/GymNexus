@@ -15,6 +15,7 @@ public static class ServiceCollectionExtension
     {
         services.AddScoped<ICloudinaryService, CloudinaryService>();
         services.AddScoped<IPostService, PostService>();
+        services.AddScoped<ITokenService, TokenService>();
 
         return services;
     }

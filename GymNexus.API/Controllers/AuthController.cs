@@ -1,4 +1,6 @@
-﻿using GymNexus.Core.Models;
+﻿using GymNexus.API.Utils;
+using GymNexus.Core.Contracts;
+using GymNexus.Core.Models;
 using GymNexus.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +12,12 @@ namespace GymNexus.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ITokenService _tokenService;
 
-        public AuthController(UserManager<ApplicationUser> userManager)
+        public AuthController(UserManager<ApplicationUser> userManager, ITokenService tokenService)
         {
             _userManager = userManager;
+            _tokenService = tokenService;
         }
 
         /// <summary>
@@ -38,11 +42,17 @@ namespace GymNexus.API.Controllers
 
             if (result.Succeeded)
             {
-                result = await _userManager.AddToRoleAsync(user, "Writer");
+                result = await _userManager.AddToRoleAsync(user, Roles.Writer);
 
                 if (result.Succeeded)
                 {
-                    return Ok();
+                    var response = new RegisterResponseDto()
+                    {
+                        Email = user.Email!,
+                        ImageUrl = user.ProfilePictureUrl
+                    };
+
+                    return Ok(response);
                 }
                 
                 if (result.Errors.Any())
@@ -72,16 +82,38 @@ namespace GymNexus.API.Controllers
         /// </summary>
         /// <param name="loginDto">User login data</param>
         /// <returns>Logged in user</returns>
-        //[HttpPost("login")]
-        //[Produces("application/json")]
-        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDto))]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
-        //{
-        //    var user = await _authService.LoginAsync(loginDto);
-        //    return Ok(user);
-        //}
+        [HttpPost("login")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        {
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+
+            if (user != null)
+            {
+                if (await _userManager.CheckPasswordAsync(user, loginDto.Password))
+                {
+                    var roles = await _userManager.GetRolesAsync(user);
+                    var jwtToken = _tokenService.CreateJwtToken(user, roles.ToList());
+
+                    var response = new LoginResponseDto()
+                    {
+                        Email = user.Email,
+                        ImageUrl = user.ProfilePictureUrl,
+                        Roles = roles.ToList(),
+                        Token = jwtToken
+                    };
+
+                    return Ok(response);
+                }
+            }
+
+            ModelState.AddModelError("", "Invalid email or password");
+
+            return ValidationProblem(ModelState);
+        }
     }
 }
