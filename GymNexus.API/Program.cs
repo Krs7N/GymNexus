@@ -1,9 +1,9 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddApplicationServices();
-builder.Services.AddApplicationIdentity();
 builder.Services.AddApplicationDbContext(builder.Configuration);
+builder.Services.AddApplicationIdentity(builder.Configuration);
+builder.Services.AddApplicationServices();
 
 builder.Services.AddControllers();
 
@@ -28,10 +28,10 @@ app.UseCors(options =>
     options.AllowAnyHeader();
 });
 
-app.UseStaticFiles();
-
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseStaticFiles();
 
 app.MapControllers();
 
