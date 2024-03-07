@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>Add New Post</h2>
-<mat-dialog-content>
+<mat-dialog-content style="height: calc(100% - 130px);">
     <form [formGroup]="postForm">
         <mat-form-field appearance="fill" class="w-full mb-4">
             <mat-label>Title</mat-label>
@@ -29,7 +29,14 @@
         </mat-form-field>
         <button mat-raised-button color="primary" (click)="openCloudinaryUploader()">Upload Image</button>
 
-        <img *ngIf="postForm.value.imageUrl" [src]="postForm.value.imageUrl" alt="Uploaded Image" class="w-32 h-32 mt-2">
+        <div *ngIf="postForm.value.imageUrl" class="mt-4 flex flex-col items-center">
+            <div class="relative">
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center text-white font-bold">
+                    Image Preview
+                </div>
+                <img [src]="postForm.value.imageUrl" alt="Uploaded Image" class="w-64 h-64 object-cover rounded-lg shadow-lg">
+            </div>
+        </div>
     </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
