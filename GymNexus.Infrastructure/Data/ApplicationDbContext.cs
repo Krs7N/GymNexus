@@ -32,7 +32,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder.ApplyConfiguration(new IdentityRolesConfiguration());
         builder.ApplyConfiguration(new UserConfiguration());
+        builder.ApplyConfiguration(new RolesConfiguration());
         builder.ApplyConfiguration(new CategoryConfiguration());
         builder.ApplyConfiguration(new MarketplaceConfiguration());
         builder.ApplyConfiguration(new PostConfiguration());
