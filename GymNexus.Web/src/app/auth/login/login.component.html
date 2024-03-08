@@ -7,14 +7,14 @@
           <mat-label>Email</mat-label>
           <input
             matInput
-            formControlName="username"
+            formControlName="email"
             type="email"
             placeholder="Enter your email"
           />
-          <mat-error *ngIf="loginForm.get('username')?.errors?.['required']">
+          <mat-error *ngIf="loginForm.get('email')?.errors?.['required']">
             Email is required
           </mat-error>
-          <mat-error *ngIf="loginForm.get('username')?.errors?.['email']">
+          <mat-error *ngIf="loginForm.get('email')?.errors?.['email']">
             Please enter a valid email
           </mat-error>
         </mat-form-field>

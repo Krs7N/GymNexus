@@ -2,6 +2,9 @@ declare var cloudinary: any;
 
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -11,7 +14,11 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 export class RegisterComponent {
   registerForm: FormGroup = new FormGroup({});
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private _authService: AuthService,
+    private _snackbarService: SnackbarService,
+    private _router: Router) { }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -23,7 +30,6 @@ export class RegisterComponent {
   }
 
   passwordMatcher(control: AbstractControl): { [key: string]: boolean } | null {
-    debugger
     const password = control.get('password');
     const confirmPassword = control.get('confirmPassword');
     if (password && confirmPassword && password.value !== confirmPassword.value) {
@@ -74,8 +80,15 @@ export class RegisterComponent {
 
   onRegister(): void {
     if (this.registerForm.valid) {
-      console.log(this.registerForm.value);
-      // Registration logic here
+      const registerModel = { email: this.registerForm.value.email, password: this.registerForm.value.password, imageUrl: this.registerForm.value.imageUrl };
+      this._authService.register(registerModel).subscribe({
+        next: () => {
+          this._snackbarService.openSuccess('Registration successful', 'Okay');
+        },
+        error: (e) => {
+          this._snackbarService.openError(e.error.errors.message[0], 'Okay');
+        }
+      });
     }
   }
 }
