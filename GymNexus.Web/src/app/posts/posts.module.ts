@@ -5,6 +5,7 @@ import { PostsComponent } from './posts/posts.component';
 import { MaterialModule } from '../shared/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { PostFormComponent } from './post-form/post-form.component';
+import { ErrorPageComponent } from '../shared/error-page/error-page.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { PostFormComponent } from './post-form/post-form.component';
     RouterModule.forChild(postsRoutes),
     MaterialModule,
     SharedModule,
+    ErrorPageComponent
   ]
 })
 export class PostsModule { }

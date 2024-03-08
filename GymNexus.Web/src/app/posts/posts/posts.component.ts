@@ -17,6 +17,7 @@ export class PostsComponent implements OnInit, OnDestroy {
   posts: PostViewModel[] = [];
   currentPosts: PostViewModel[] = [];
   newComment!: string;
+  error: any;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -26,9 +27,14 @@ export class PostsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this._postsService.getAllPosts().pipe(takeUntil(this._unsubscribeAll)).subscribe(posts => {
+    this._postsService.getAllPosts().pipe(takeUntil(this._unsubscribeAll)).subscribe({
+      next: (posts) => {
       this.posts = posts;
       this.setPage(0, 2);
+      },
+      error: (e) => {
+        this.error = e;
+      }
     });
   }
 

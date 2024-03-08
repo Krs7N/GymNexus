@@ -15,7 +15,6 @@ const routes: Routes = [
   // { path: 'profile', loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule) },
   // { path: 'settings', loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule) },
   // { path: '404', loadChildren: () => import('./not-found/not-found.module').then(m => m.NotFoundModule) },
-  // { path: '', redirectTo: '/home', pathMatch: 'full' },
   // { path: '**', redirectTo: '/404' }
 ];
 
