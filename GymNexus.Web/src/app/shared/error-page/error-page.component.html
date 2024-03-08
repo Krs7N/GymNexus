@@ -1,0 +1,8 @@
+<div class="flex items-center justify-center min-h-screen bg-red-100 text-center" style="min-height: calc(100vh - 87px)">
+    <div>
+      <h1 class="text-6xl font-bold mb-4">Oops!</h1>
+      <p class="text-xl mb-8">Something went wrong. An error with your request has occurred</p>
+      <p *ngIf="error.error?.message" class="text-lg mb-8">Error details: {{ error?.error?.message }}</p>
+      <a [routerLink]="['/']" class="bg-blue-500 text-white px-6 py-3 rounded">Go Home</a>
+    </div>
+</div>
