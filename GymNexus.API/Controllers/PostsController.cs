@@ -38,7 +38,7 @@ namespace GymNexus.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PostDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetAllPosts([FromRoute] int id)
+        public async Task<IActionResult> GetPostById([FromRoute] int id)
         {
             if (id < 0)
             {
