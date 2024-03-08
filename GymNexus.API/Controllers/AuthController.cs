@@ -46,13 +46,7 @@ namespace GymNexus.API.Controllers
 
                 if (result.Succeeded)
                 {
-                    var response = new RegisterResponseDto()
-                    {
-                        Email = user.Email!,
-                        ImageUrl = user.ProfilePictureUrl
-                    };
-
-                    return Ok(response);
+                    return Ok();
                 }
                 
                 if (result.Errors.Any())
@@ -111,7 +105,7 @@ namespace GymNexus.API.Controllers
                 }
             }
 
-            ModelState.AddModelError("", "Invalid email or password");
+            ModelState.AddModelError("message", "Invalid email or password");
 
             return ValidationProblem(ModelState);
         }
