@@ -3,6 +3,9 @@ declare var cloudinary: any;
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { PostsService } from '../posts.service';
+import { PostViewModel } from '../post-view-model';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
 
 @Component({
   selector: 'app-post-form',
@@ -14,6 +17,8 @@ export class PostFormComponent {
 
   constructor(
     private _fb: FormBuilder,
+    private _postsService: PostsService,
+    private _snackbarService: SnackbarService,
     public dialogRef: MatDialogRef<PostFormComponent>) {}
 
   ngOnInit(): void {
@@ -66,7 +71,14 @@ export class PostFormComponent {
 
   onSubmit(): void {
     if (this.postForm.valid) {
-      console.log(this.postForm.value);
+      this._postsService.create(this.postForm.value).subscribe({
+        next: () => {
+          this._snackbarService.openSuccess("Your new post was successfully created", "Okay");
+        },
+        error: (e) => {
+          this._snackbarService.openError(e.error?.errors?.message[0], "Okay");
+        }
+      });
       this.dialogRef.close();
     }
   }
