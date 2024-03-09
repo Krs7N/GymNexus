@@ -33,6 +33,7 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this._authService.login(this.loginForm.value).subscribe({
         next: (response: LoginResponseModel) => {
+          debugger
           this._snackbarService.openSuccess('Login successful', 'Okay');
 
           this._cookieService.set('Authorization', `Bearer ${response.token}`, undefined, '/', undefined, true, 'Strict');
