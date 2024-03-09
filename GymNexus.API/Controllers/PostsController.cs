@@ -1,11 +1,15 @@
 ﻿using GymNexus.Core.Contracts;
 using GymNexus.Core.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using GymNexus.API.Utils;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GymNexus.API.Controllers
 {
     [Route("api/posts")]
     [ApiController]
+    [Authorize(Roles = Roles.Writer)]
     public class PostsController : ControllerBase
     {
         private readonly IPostService _postService;
@@ -27,6 +31,27 @@ namespace GymNexus.API.Controllers
         {
             var posts = await _postService.GetAllAsync();
             return Ok(posts);
+        }
+
+        /// <summary>
+        /// Adds a new post to the system
+        /// </summary>
+        [HttpPost]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddPost([FromBody] PostFormDto postModel)
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var post = await _postService.AddPostAsync(postModel, userId);
+            return Ok(post);
         }
 
         /// <summary>

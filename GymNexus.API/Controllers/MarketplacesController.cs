@@ -24,7 +24,7 @@ namespace GymNexus.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<MarketplaceDto>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetAllPosts()
+        public async Task<IActionResult> GetAllMarketplaces()
         {
             var marketplaces = await _marketplaceService.GetAllAsync();
             return Ok(marketplaces);
