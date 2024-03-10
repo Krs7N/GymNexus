@@ -1,11 +1,11 @@
-﻿using System.Text;
-using GymNexus.Core.Contracts;
+﻿using GymNexus.Core.Contracts;
 using GymNexus.Core.Services;
 using GymNexus.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
