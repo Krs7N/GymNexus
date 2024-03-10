@@ -32,8 +32,7 @@ public static class ServiceCollectionExtension
 
     public static IServiceCollection AddApplicationIdentity(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddIdentityCore<ApplicationUser>()
-            .AddRoles<IdentityRole>()
+        services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>("GymNexus")
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();

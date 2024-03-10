@@ -13,11 +13,13 @@ namespace GymNexus.API.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ITokenService _tokenService;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AuthController(UserManager<ApplicationUser> userManager, ITokenService tokenService)
+        public AuthController(UserManager<ApplicationUser> userManager, ITokenService tokenService, SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _signInManager = signInManager;
         }
 
         /// <summary>
@@ -90,6 +92,8 @@ namespace GymNexus.API.Controllers
             {
                 if (await _userManager.CheckPasswordAsync(user, loginDto.Password))
                 {
+                    await _signInManager.SignInAsync(user, true);
+
                     var roles = await _userManager.GetRolesAsync(user);
                     var jwtToken = _tokenService.CreateJwtToken(user, roles.ToList());
 
@@ -100,6 +104,7 @@ namespace GymNexus.API.Controllers
                         Roles = roles.ToList(),
                         Token = jwtToken
                     };
+
 
                     return Ok(response);
                 }
