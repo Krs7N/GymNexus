@@ -47,7 +47,7 @@ export class MarketplaceMapComponent implements AfterViewInit, OnDestroy {
           marker.bindPopup(`This is global marketplace partner of GymNexus:<br><br>
           Name: <b>${marketplace.name}</b><br>
           Address: <b>${marketplace.address}</b><br><br>
-          With additional information: <br>${marketplace.description}`);
+          Additional information: <br>${marketplace.description}`);
         })
       },
       error: (e) => {
