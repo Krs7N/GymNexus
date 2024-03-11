@@ -15,16 +15,17 @@
               {{ post.createdOn }}</mat-card-subtitle
             >
           </mat-card-header>
-          <img
-            mat-card-image
-            *ngIf="post.imageUrl"
-            [src]="post.imageUrl"
-            alt="Post image"
-            class="max-h-96 w-auto"
-          />
           <mat-card-content>
             <p>{{ post.content }}</p>
           </mat-card-content>
+          <div class="flex justify-center" *ngIf="post.imageUrl">
+            <img
+              mat-card-image
+              [src]="post.imageUrl"
+              alt="Post image"
+              class="max-h-96 w-80"
+            />
+          </div>
           <mat-card-actions class="justify-between items-center">
             <button mat-button (click)="toggleLike(post)">
               <!-- Replace with an icon if preferred -->

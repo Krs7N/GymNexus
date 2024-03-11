@@ -1,10 +1,9 @@
 declare var cloudinary: any;
 
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { PostsService } from '../posts.service';
-import { PostViewModel } from '../post-view-model';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
 
 @Component({
@@ -13,6 +12,8 @@ import { SnackbarService } from 'src/app/shared/snackbar.service';
   styleUrls: ['./post-form.component.scss']
 })
 export class PostFormComponent {
+  @Output() postAdded: EventEmitter<void> = new EventEmitter<void>();
+
   postForm: FormGroup = new FormGroup({});
 
   constructor(
@@ -74,6 +75,7 @@ export class PostFormComponent {
       this._postsService.create(this.postForm.value).subscribe({
         next: () => {
           this._snackbarService.openSuccess("Your new post was successfully created", "Okay");
+          this.postAdded.emit();
         },
         error: (e) => {
           this._snackbarService.openError(e.error?.errors?.message[0], "Okay");
