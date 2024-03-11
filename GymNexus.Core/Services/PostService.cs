@@ -2,9 +2,8 @@
 using GymNexus.Core.Models;
 using GymNexus.Infrastructure.Data;
 using GymNexus.Infrastructure.Data.Models;
-using static GymNexus.Infrastructure.Constants.DataConstants;
-
 using Microsoft.EntityFrameworkCore;
+using static GymNexus.Infrastructure.Constants.DataConstants;
 
 namespace GymNexus.Core.Services;
 
@@ -17,19 +16,21 @@ public class PostService : IPostService
         _context = context;
     }
 
-    public async Task<IEnumerable<PostDto>> GetAllAsync()
+    public async Task<IEnumerable<PostDto>> GetAllAsync(string userId)
     {
         return await _context.Posts
             .AsNoTracking()
             .Where(p => p.IsActive)
             .Select(p => new PostDto()
             {
+                Id = p.Id,
                 Title = p.Title,
                 Content = p.Content,
                 ImageUrl = p.ImageUrl,
                 CreatedOn = p.CreatedOn.ToString(DateTimeFormat),
                 CreatedBy = p.Creator.UserName,
                 Likes = p.PostsLikes.Count(pl => pl.PostId == p.Id),
+                IsLikedByCurrentUser = p.PostsLikes.Any(pl => pl.UserId == userId),
                 Comments = p.Comments
                     .Select(c => new CommentDto()
                     {
@@ -65,6 +66,43 @@ public class PostService : IPostService
                     .ToArray()
             })
             .FirstOrDefaultAsync();
+    }
+
+    public async Task TogglePostLikeByIdAsync(int id, string userId)
+    {
+        var post = await _context.Posts
+            .Where(p => p.IsActive)
+            .Include(p => p.PostsLikes)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (post == null)
+        {
+            throw new InvalidOperationException();
+        }
+
+        var like = post.PostsLikes.FirstOrDefault(pl => pl.UserId == userId);
+
+        if (like == null)
+        {
+            await _context.PostsLikes.AddAsync(new PostLike()
+            {
+                PostId = post.Id,
+                UserId = userId
+            });
+        }
+        else
+        {
+            _context.PostsLikes.Remove(like);
+        }
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<bool> IsCurrentUserLikedPostAsync(int id, string userId)
+    {
+        return await _context.PostsLikes
+            .AsNoTracking()
+            .AnyAsync(pl => pl.PostId == id && pl.UserId == userId);
     }
 
     public async Task<PostDto> AddPostAsync(PostFormDto postModel, ApplicationUser user)
