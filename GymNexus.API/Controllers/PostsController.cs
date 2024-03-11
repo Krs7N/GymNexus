@@ -2,7 +2,7 @@
 using GymNexus.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using GymNexus.API.Utils;
+using GymNexus.Core.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
@@ -10,6 +10,7 @@ namespace GymNexus.API.Controllers
 {
     [Route("api/posts")]
     [ApiController]
+    [Authorize(Roles = Roles.Writer, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PostsController : ControllerBase
     {
         private readonly IPostService _postService;
@@ -27,7 +28,6 @@ namespace GymNexus.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PostDto>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Roles.Writer, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetAllPosts()
         {
             var posts = await _postService.GetAllAsync();

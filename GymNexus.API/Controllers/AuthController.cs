@@ -1,6 +1,6 @@
-﻿using GymNexus.API.Utils;
-using GymNexus.Core.Contracts;
+﻿using GymNexus.Core.Contracts;
 using GymNexus.Core.Models;
+using GymNexus.Core.Utils;
 using GymNexus.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

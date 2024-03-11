@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using GymNexus.Core.Utils;
 
 namespace GymNexus.Core.Services;
 
@@ -28,13 +29,13 @@ public class TokenService : ITokenService
 
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config[JwtConfigs.Key]));
 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-        _config["Jwt:Issuer"],
-        _config["Jwt:Audience"],
+        _config[JwtConfigs.Issuer],
+        _config[JwtConfigs.Audience],
               claims,
               expires: DateTime.Now.AddDays(1),
               signingCredentials: creds

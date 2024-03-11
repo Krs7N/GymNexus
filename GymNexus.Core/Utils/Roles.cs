@@ -1,4 +1,4 @@
-﻿namespace GymNexus.API.Utils;
+﻿namespace GymNexus.Core.Utils;
 
 public static class Roles
 {
