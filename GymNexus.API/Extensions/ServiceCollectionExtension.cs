@@ -66,4 +66,38 @@ public static class ServiceCollectionExtension
 
         return services;
     }
+
+    public static IServiceCollection AddSwaggerConfig(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApi.Models.OpenApiInfo { Title = "GymNexus.API", Version = "v1" });
+
+            options.AddSecurityDefinition("Bearer", new OpenApi.Models.OpenApiSecurityScheme
+            {
+                Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                Name = "Authorization",
+                In = OpenApi.Models.ParameterLocation.Header,
+                Type = OpenApi.Models.SecuritySchemeType.Http,
+                Scheme = "Bearer"
+            });
+
+            options.AddSecurityRequirement(new OpenApi.Models.OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApi.Models.OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApi.Models.OpenApiReference
+                        {
+                            Type = OpenApi.Models.ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
+                }
+            });
+        });
+
+        return services;
+    }
 }

@@ -3,8 +3,10 @@ using GymNexus.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using GymNexus.Core.Utils;
+using GymNexus.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace GymNexus.API.Controllers
 {
@@ -14,10 +16,12 @@ namespace GymNexus.API.Controllers
     public class PostsController : ControllerBase
     {
         private readonly IPostService _postService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public PostsController(IPostService postService)
+        public PostsController(IPostService postService, UserManager<ApplicationUser> userManager)
         {
             _postService = postService;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -27,6 +31,7 @@ namespace GymNexus.API.Controllers
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PostDto>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAllPosts()
         {
@@ -51,7 +56,14 @@ namespace GymNexus.API.Controllers
                 return Unauthorized();
             }
 
-            var post = await _postService.AddPostAsync(postModel, userId);
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+
+            var post = await _postService.AddPostAsync(postModel, user);
             return Ok(post);
         }
 

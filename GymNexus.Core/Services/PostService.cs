@@ -67,14 +67,14 @@ public class PostService : IPostService
             .FirstOrDefaultAsync();
     }
 
-    public async Task<PostDto> AddPostAsync(PostFormDto postModel, string userId)
+    public async Task<PostDto> AddPostAsync(PostFormDto postModel, ApplicationUser user)
     {
         var post = new Post()
         {
             Title = postModel.Title,
             Content = postModel.Content,
             ImageUrl = postModel.ImageUrl,
-            CreatedBy = userId,
+            CreatedBy = user.Id,
             CreatedOn = DateTime.Now
         };
 
@@ -87,7 +87,7 @@ public class PostService : IPostService
             Content = post.Content,
             ImageUrl = post.ImageUrl,
             CreatedOn = post.CreatedOn.ToString(DateTimeFormat),
-            CreatedBy = post.Creator.UserName,
+            CreatedBy = user.UserName,
             Likes = post.PostsLikes.Count(pl => pl.PostId == post.Id),
             Comments = post.Comments
                 .Select(c => new CommentDto()
