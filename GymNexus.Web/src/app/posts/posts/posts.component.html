@@ -1,6 +1,11 @@
 <div *ngIf="!error">
   <div class="max-w-7xl mx-auto w-4/5 flex justify-end mt-3 mb-3">
-    <button mat-raised-button color="primary" class="w-40" (click)="openAddPost()">
+    <button
+      mat-raised-button
+      color="primary"
+      class="w-40"
+      (click)="openAddPost()"
+    >
       Add Post
     </button>
   </div>
@@ -8,12 +13,21 @@
     <div class="grid grid-cols-2 gap-4 mb-5">
       <div *ngFor="let post of currentPosts" class="col-span-1">
         <mat-card class="mb-5">
-          <mat-card-header>
+          <mat-card-header class="custom-card-header mb-2">
+            <div mat-card-avatar class="hidden"></div>
             <mat-card-title>{{ post.title }}</mat-card-title>
             <mat-card-subtitle
               >Posted by {{ post.createdBy }} on
               {{ post.createdOn }}</mat-card-subtitle
             >
+            <div *ngIf="post.createdBy === user?.email" class="action-buttons">
+              <button mat-icon-button color="primary" (click)="editPost(post)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deletePost(post)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </mat-card-header>
           <mat-card-content>
             <p>{{ post.content }}</p>
@@ -28,8 +42,8 @@
           </div>
           <mat-card-actions class="justify-between items-center">
             <button mat-button (click)="toggleLike(post)">
-              <!-- Replace with an icon if preferred -->
-              Like ({{ post.likes || 0 }})
+                <i [class]="post.isLikedByCurrentUser ? 'fas fa-heart text-red-500' : 'far fa-heart'"></i>
+                ({{ post.likes || 0 }})
             </button>
             <!-- Comments Section -->
             <div>

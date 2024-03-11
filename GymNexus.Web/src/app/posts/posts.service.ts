@@ -18,6 +18,10 @@ export class PostsService extends CrudService<PostModel> {
     return this.httpClient.get<PostViewModel[]>(`${environment.apiBaseUrl}/${this.APIUrl}`);
   }
 
+  togglePostLike(id: number) : Observable<boolean> {
+    return this.httpClient.put<boolean>(`${environment.apiBaseUrl}/${this.APIUrl}/${id}/like`, null);
+  }
+
   override getResourceUrl(): string {
     return 'posts';
   }

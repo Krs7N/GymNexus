@@ -1,0 +1,20 @@
+.custom-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.custom-card-header .mat-card-title,
+.custom-card-header .mat-card-subtitle {
+    flex: 1;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.custom-card-header .mat-card-avatar.hidden {
+    display: none;
+}

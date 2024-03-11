@@ -6,6 +6,9 @@ import { format } from 'date-fns';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { PostFormComponent } from '../post-form/post-form.component';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { UserModel } from 'src/app/auth/models/user-model';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
 
 @Component({
   selector: 'app-posts',
@@ -17,6 +20,7 @@ export class PostsComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   posts: PostViewModel[] = [];
+  user: UserModel | undefined;
   currentPosts: PostViewModel[] = [];
   newComment!: string;
   error: any;
@@ -25,19 +29,33 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   constructor(
     private _postsService: PostsService,
+    private _authService: AuthService,
+    private _snackbarService: SnackbarService,
     private _dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.loadPosts();
+
+    this.user = this._authService.getUser();
   }
 
   toggleLike(post: PostViewModel): void {
-    // Increment likes for the post; replace with real API call if needed
-    // if (!post.likes) {
-    //   post.likes = 0;
-    // }
-    // post.likes += 1;
+    this._postsService.togglePostLike(post.id).subscribe({
+      next: (hasUserLikedPost) => {
+
+        if (hasUserLikedPost) {
+          this._snackbarService.openSuccess('You liked this post');
+        } else {
+          this._snackbarService.openSuccess('You no longer like this post');
+        }
+
+        this.loadPosts(true);
+      },
+      error: (e) => {
+        this.error = e;
+      },
+    });
   }
 
   addComment(post: PostViewModel): void {
@@ -69,7 +87,15 @@ export class PostsComponent implements OnInit, OnDestroy {
       });
   }
 
-  private loadPosts(): void {
+  editPost(post: PostViewModel) {
+
+  }
+
+  deletePost(post: PostViewModel) {
+
+  }
+
+  private loadPosts(innerLoad: boolean = false): void {
     this._postsService
       .getAllPosts()
       .pipe(takeUntil(this._unsubscribeAll))
@@ -77,11 +103,12 @@ export class PostsComponent implements OnInit, OnDestroy {
         next: (posts) => {
           this.posts = posts;
 
-          if (this.paginator) {
+          if (!innerLoad) {
             this.paginator.pageIndex = 0;
+            this.setPage(0, 2);
+          } else {
+            this.setPage(this.paginator.pageIndex, this.paginator.pageSize);
           }
-
-          this.setPage(0, 2);
         },
         error: (e) => {
           this.error = e;

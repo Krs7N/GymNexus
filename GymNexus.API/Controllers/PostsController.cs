@@ -1,18 +1,17 @@
 ﻿using GymNexus.Core.Contracts;
 using GymNexus.Core.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using GymNexus.Core.Utils;
 using GymNexus.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace GymNexus.API.Controllers
 {
     [Route("api/posts")]
     [ApiController]
-    [Authorize(Roles = Roles.Writer, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PostsController : ControllerBase
     {
         private readonly IPostService _postService;
@@ -35,7 +34,14 @@ namespace GymNexus.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAllPosts()
         {
-            var posts = await _postService.GetAllAsync();
+            var userId = GetUserId();
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var posts = await _postService.GetAllAsync(userId);
             return Ok(posts);
         }
 
@@ -49,7 +55,7 @@ namespace GymNexus.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AddPost([FromBody] PostFormDto postModel)
         {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userId = GetUserId();
 
             if (userId == null)
             {
@@ -59,7 +65,7 @@ namespace GymNexus.API.Controllers
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return NotFound("User not found");
+                return NotFound();
             }
 
 
@@ -92,5 +98,36 @@ namespace GymNexus.API.Controllers
 
             return Ok(post);
         }
+
+        /// <summary>
+        /// Updates a post in the system
+        /// </summary>
+        /// <returns>The like count of the current post and if the current User has liked the post</returns>
+        [HttpPut("{id:int}/like")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ToggleLikePostById([FromRoute] int id)
+        {
+            if (id < 0)
+            {
+                return BadRequest();
+            }
+
+            var userId = GetUserId();
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            await _postService.TogglePostLikeByIdAsync(id, userId);
+            var isCurrentUserLiked = await _postService.IsCurrentUserLikedPostAsync(id, userId);
+
+            return Ok(isCurrentUserLiked);
+        }
+
+        private string? GetUserId() => User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
     }
 }
