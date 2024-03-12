@@ -47,4 +47,8 @@ export class LoginComponent {
       });
     }
   }
+
+  loginWithFacebook() {
+    window.location.href = 'api/login/facebook';
+  }
 }
