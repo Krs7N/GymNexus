@@ -3,6 +3,8 @@ import { UserModel } from '../auth/models/user-model';
 import { AuthService } from '../auth/services/auth.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-nav-bar',
@@ -15,7 +17,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-  constructor(private _authService: AuthService, private _router: Router) { }
+  constructor(private _authService: AuthService, private _router: Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this._authService.user().pipe(takeUntil(this._unsubscribeAll)).subscribe(user => {
@@ -26,8 +28,21 @@ export class NavBarComponent implements OnInit, OnDestroy {
   }
 
   logout(): void {
-    this._authService.logout();
-    this._router.navigate(['/']);
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Logout',
+        message: 'Are you sure you want to logout?'
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this._authService.logout();
+        this._router.navigate(['/']);
+      }
+    });
   }
 
   ngOnDestroy(): void {

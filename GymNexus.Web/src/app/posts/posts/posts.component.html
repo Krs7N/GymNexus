@@ -40,12 +40,11 @@
               class="max-h-96 w-80"
             />
           </div>
-          <mat-card-actions class="justify-between items-center">
+          <mat-card-actions class="items-center gap-x-2">
             <button mat-button (click)="toggleLike(post)">
                 <i [class]="post.isLikedByCurrentUser ? 'fas fa-heart text-red-500' : 'far fa-heart'"></i>
                 ({{ post.likes || 0 }})
             </button>
-            <!-- Comments Section -->
             <div>
               <p class="font-bold mt-4 mb-2">Comments:</p>
               <div *ngFor="let comment of post.comments" class="mb-2">
@@ -57,10 +56,10 @@
                   >
                 </p>
               </div>
-              <!-- Add a comment input field -->
               <input
                 type="text"
-                [(ngModel)]="newComment"
+                [ngModel]="commentMap.get(post.id)"
+                (ngModelChange)="commentMap.set(post.id, $event)"
                 placeholder="Add a comment..."
                 class="mt-2 p-2 border rounded"
               />

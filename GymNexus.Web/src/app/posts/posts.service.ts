@@ -4,6 +4,7 @@ import { PostModel } from './post-model';
 import { Observable } from 'rxjs';
 import { PostViewModel } from './post-view-model';
 import { environment } from 'src/environments/environment.development';
+import { CommentViewModel } from './comment-view-model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,10 @@ export class PostsService extends CrudService<PostModel> {
 
   togglePostLike(id: number) : Observable<boolean> {
     return this.httpClient.put<boolean>(`${environment.apiBaseUrl}/${this.APIUrl}/${id}/like`, null);
+  }
+
+  createPostComment(id: number, comment: CommentViewModel): Observable<void> {
+    return this.httpClient.put<void>(`${environment.apiBaseUrl}/${this.APIUrl}/${id}/comment`, comment);
   }
 
   override getResourceUrl(): string {

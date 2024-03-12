@@ -9,6 +9,7 @@ import { PostFormComponent } from '../post-form/post-form.component';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { UserModel } from 'src/app/auth/models/user-model';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
+import { CommentViewModel } from '../comment-view-model';
 
 @Component({
   selector: 'app-posts',
@@ -19,10 +20,10 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
+  commentMap: Map<number, string> = new Map<number, string>();
   posts: PostViewModel[] = [];
   user: UserModel | undefined;
   currentPosts: PostViewModel[] = [];
-  newComment!: string;
   error: any;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -59,19 +60,28 @@ export class PostsComponent implements OnInit, OnDestroy {
   }
 
   addComment(post: PostViewModel): void {
-    if (!post.comments) {
-      post.comments = [];
+    const comment = this.commentMap.get(post.id);
+
+    if (comment === undefined || comment === '') {
+      return;
     }
 
-    const date = new Date();
-    const formattedDate = format(date, 'dd/MM/yyyy HH:mm');
+    const user = this._authService.getUser();
+    let date = new Date().toISOString();
 
-    post.comments.push({
-      createdBy: 'root@abv.bg',
-      createdOn: formattedDate,
-      content: this.newComment,
-    });
-    this.newComment = '';
+    this._postsService.createPostComment(post.id, { content: comment, createdBy: user?.email, createdOn: date } as CommentViewModel)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe({
+        next: () => {
+          this._snackbarService.openSuccess(`Successfully added comment to ${post.title}`);
+          this.loadPosts(true);
+        },
+        error: (e) => {
+          this.error = e;
+        },
+      });
+
+    this.commentMap.set(post.id, '');
   }
 
   openAddPost() {
