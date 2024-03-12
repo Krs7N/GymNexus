@@ -100,9 +100,9 @@ namespace GymNexus.API.Controllers
         }
 
         /// <summary>
-        /// Updates a post in the system
+        /// Toggles like for specific user on a post
         /// </summary>
-        /// <returns>The like count of the current post and if the current User has liked the post</returns>
+        /// <returns>If the current User has liked the post</returns>
         [HttpPut("{id:int}/like")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -126,6 +126,33 @@ namespace GymNexus.API.Controllers
             var isCurrentUserLiked = await _postService.IsCurrentUserLikedPostAsync(id, userId);
 
             return Ok(isCurrentUserLiked);
+        }
+
+        /// <summary>
+        /// Adds a comment to specific post
+        /// </summary>
+        [HttpPut("{id:int}/comment")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddPostComment([FromRoute] int id, [FromBody] CommentDto comment)
+        {
+            if (id < 0)
+            {
+                return BadRequest();
+            }
+
+            var userId = GetUserId();
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            await _postService.AddPostCommentAsync(id, comment.Content, userId);
+
+            return Ok();
         }
 
         private string? GetUserId() => User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;

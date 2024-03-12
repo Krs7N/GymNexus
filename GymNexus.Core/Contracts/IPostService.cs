@@ -10,4 +10,5 @@ public interface IPostService
     Task<PostDto> AddPostAsync(PostFormDto postModel, ApplicationUser user);
     Task TogglePostLikeByIdAsync(int postId, string userId);
     Task<bool> IsCurrentUserLikedPostAsync(int id, string userId);
+    Task AddPostCommentAsync(int id, string comment, string userId);
 }

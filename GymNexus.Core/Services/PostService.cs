@@ -137,4 +137,28 @@ public class PostService : IPostService
                 .ToArray()
         };
     }
+
+    public async Task AddPostCommentAsync(int id, string commentDto, string userId)
+    {
+        var post = await _context.Posts
+            .Where(p => p.IsActive)
+            .Include(p => p.Comments)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (post == null)
+        {
+            throw new InvalidOperationException();
+        }
+
+        var comment = new Comment()
+        {
+            PostId = post.Id,
+            Content = commentDto,
+            CreatedBy = userId,
+            CreatedOn = DateTime.Now
+        };
+
+        await _context.Comments.AddAsync(comment);
+        await _context.SaveChangesAsync();
+    }
 }
