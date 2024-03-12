@@ -1,4 +1,5 @@
-﻿using GymNexus.Core.Contracts;
+﻿using System.Security.Claims;
+using GymNexus.Core.Contracts;
 using GymNexus.Core.Services;
 using GymNexus.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using GymNexus.Core.Utils;
+using Microsoft.AspNetCore.Authentication.OAuth;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -62,6 +64,24 @@ public static class ServiceCollectionExtension
                     ValidAudience = configuration[JwtConfigs.Audience],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration[JwtConfigs.Key]))
                 };
+            })
+            .AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = configuration[FacebookAuthConfig.AppId];
+                facebookOptions.AppSecret = configuration[FacebookAuthConfig.AppSecret];
+                facebookOptions.Fields.Add("picture");
+                facebookOptions.Events = new OAuthEvents()
+                {
+                    OnCreatingTicket = context =>
+                    {
+                        var identity = (ClaimsIdentity)context.Principal?.Identity!;
+                        var picture = context.User.GetProperty("picture").GetProperty("data").GetProperty("url")
+                            .ToString();
+                        identity.AddClaim(new Claim("picture", picture));
+                        return Task.CompletedTask;
+                    }
+                };
+                facebookOptions.CallbackPath = new PathString("/login/facebook-callback");
             });
 
         return services;

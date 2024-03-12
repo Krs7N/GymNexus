@@ -4,6 +4,7 @@ using GymNexus.Core.Utils;
 using GymNexus.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace GymNexus.API.Controllers
 {
@@ -113,6 +114,77 @@ namespace GymNexus.API.Controllers
             ModelState.AddModelError("message", "Invalid email or password");
 
             return ValidationProblem(ModelState);
+        }
+
+        /// <summary>
+        /// Logs in a user in the system using facebook
+        /// </summary>
+        /// <returns>Logged in user</returns>
+        [HttpGet("login/facebook")]
+        public IActionResult LoginFacebook()
+        {
+            string? redirectUrl = Url.Action(nameof(LoginFacebookCallback), "Auth");
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties("Facebook", redirectUrl);
+            return new ChallengeResult("Facebook", properties);
+        }
+
+        /// <summary>
+        /// The callback response from facebook API after a user is authenticated
+        /// </summary>
+        [HttpGet("login/facebook-callback")]
+        public async Task<IActionResult> LoginFacebookCallback()
+        {
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+
+            if (info == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+
+            if (result.Succeeded)
+            {
+                await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
+            }
+
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            var imageUrl = info.Principal.FindFirstValue("picture");
+            var user = new ApplicationUser { ProfilePictureUrl = imageUrl, UserName = email, Email = email };
+            var createResult = await _userManager.CreateAsync(user);
+
+            if (createResult.Succeeded)
+            {
+                createResult = await _userManager.AddLoginAsync(user, info);
+
+                if (createResult.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                }
+            }
+
+            var roleResult = await _userManager.AddToRoleAsync(user, Roles.Writer);
+            var roles = new List<string>();
+
+            if (!roleResult.Succeeded)
+            {
+                roles.Add(Roles.Writer);
+            }
+
+            var jwtToken = _tokenService.CreateJwtToken(user, roles.ToList());
+
+            var cookieOptions = new CookieOptions()
+            {
+                HttpOnly = true,
+                Expires = DateTime.Now.AddDays(2),
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            };
+
+            Response.Cookies.Append("Authorization", $"Bearer {jwtToken}", cookieOptions);
+
+            return Redirect("http://localhost:4200/map");
         }
     }
 }
