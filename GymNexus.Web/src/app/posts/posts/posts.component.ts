@@ -60,7 +60,6 @@ export class PostsComponent implements OnInit, OnDestroy {
   }
 
   addComment(post: PostViewModel): void {
-    debugger
     const comment = this.commentMap.get(post.id);
 
     if (comment === undefined || comment === '') {

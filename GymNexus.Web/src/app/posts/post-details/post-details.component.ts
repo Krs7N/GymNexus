@@ -88,12 +88,10 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
   }
 
   editComment(id: number) {
-    debugger
     this.editCommentId = id;
   }
 
   submitEditComment(comment: CommentViewModel, postId: number): void {
-    debugger
     this.editCommentId = null;
 
     let date = new Date().toISOString();
@@ -116,8 +114,18 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
     this.editCommentId = null;
   }
 
-  deleteComment(id: number) {
-
+  deleteComment(commentId: number, postId: number) {
+    this._postsService.deletePostComment(postId, commentId)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe({
+        next: () => {
+          this._snackbarService.openSuccess(`Successfully deleted comment`);
+          this.loadPost();
+        },
+        error: (e) => {
+          console.error(e);
+        },
+      });
   }
 
   private loadPost(): void {

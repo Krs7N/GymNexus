@@ -28,8 +28,12 @@ export class PostsService extends CrudService<PostModel> {
   }
 
   createOrEditPostComment(id: number, comment: CommentViewModel): Observable<void> {
-    debugger
     return this.httpClient.put<void>(`${environment.apiBaseUrl}/${this.APIUrl}/${id}/comment`, comment);
+  }
+
+  deletePostComment(id: number, commentId: number): Observable<void> {
+    debugger
+    return this.httpClient.delete<void>(`${environment.apiBaseUrl}/${this.APIUrl}/${id}/comment/${commentId}`);
   }
 
   override getResourceUrl(): string {

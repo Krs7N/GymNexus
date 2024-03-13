@@ -11,4 +11,5 @@ public interface IPostService
     Task TogglePostLikeByIdAsync(int postId, string userId);
     Task<bool> IsCurrentUserLikedPostAsync(int id, string userId);
     Task AddOrEditPostCommentAsync(int id, CommentDto comment, string userId);
+    Task DeletePostCommentAsync(int postId, int commentId);
 }
