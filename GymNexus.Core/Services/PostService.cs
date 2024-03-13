@@ -34,34 +34,40 @@ public class PostService : IPostService
                 Comments = p.Comments
                     .Select(c => new CommentDto()
                     {
+                        Id = c.Id,
                         Content = c.Content,
                         CreatedOn = c.CreatedOn,
-                        CreatedBy = c.Creator.UserName
+                        CreatedBy = c.Creator.UserName,
+                        IsEdited = c.IsEdited
                     })
                     .ToArray()
             })
             .ToListAsync();
     }
 
-    public async Task<PostDto?> GetPostByIdAsync(int id)
+    public async Task<PostDto?> GetPostByIdAsync(int id, string userId)
     {
         return await _context.Posts
             .AsNoTracking()
             .Where(p => p.IsActive && p.Id == id)
             .Select(p => new PostDto()
             {
+                Id = p.Id,
                 Title = p.Title,
                 Content = p.Content,
                 ImageUrl = p.ImageUrl,
                 CreatedOn = p.CreatedOn.ToString(DateTimeFormat),
                 CreatedBy = p.Creator.UserName,
                 Likes = p.PostsLikes.Count(pl => pl.PostId == p.Id),
+                IsLikedByCurrentUser = p.PostsLikes.Any(pl => pl.UserId == userId),
                 Comments = p.Comments
                     .Select(c => new CommentDto()
                     {
+                        Id = c.Id,
                         Content = c.Content,
                         CreatedOn = c.CreatedOn,
-                        CreatedBy = c.Creator.UserName
+                        CreatedBy = c.Creator.UserName,
+                        IsEdited = c.IsEdited
                     })
                     .ToArray()
             })
@@ -130,30 +136,44 @@ public class PostService : IPostService
             Comments = post.Comments
                 .Select(c => new CommentDto()
                 {
+                    Id = c.Id,
                     Content = c.Content,
                     CreatedOn = c.CreatedOn,
-                    CreatedBy = c.Creator.UserName
+                    CreatedBy = c.Creator.UserName,
+                    IsEdited = c.IsEdited
                 })
                 .ToArray()
         };
     }
 
-    public async Task AddPostCommentAsync(int id, string commentDto, string userId)
+    public async Task AddOrEditPostCommentAsync(int id, CommentDto commentDto, string userId)
     {
-        var post = await _context.Posts
-            .Where(p => p.IsActive)
-            .Include(p => p.Comments)
-            .FirstOrDefaultAsync(p => p.Id == id);
-
-        if (post == null)
+        if (!await _context.Posts.AnyAsync(x => x.Id == id))
         {
             throw new InvalidOperationException();
         }
 
+        if (commentDto.Id.HasValue)
+        {
+            var commentEntity = await _context.Comments
+                .FirstOrDefaultAsync(c => c.Id == commentDto.Id);
+
+            if (commentEntity == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            commentEntity.Content = commentDto.Content;
+            commentEntity.IsEdited = true;
+            await _context.SaveChangesAsync();
+
+            return;
+        }
+
         var comment = new Comment()
         {
-            PostId = post.Id,
-            Content = commentDto,
+            PostId = id,
+            Content = commentDto.Content,
             CreatedBy = userId,
             CreatedOn = DateTime.Now
         };

@@ -6,9 +6,9 @@ namespace GymNexus.Core.Contracts;
 public interface IPostService
 {
     Task<IEnumerable<PostDto>> GetAllAsync(string userId);
-    Task<PostDto?> GetPostByIdAsync(int id);
+    Task<PostDto?> GetPostByIdAsync(int id, string userId);
     Task<PostDto> AddPostAsync(PostFormDto postModel, ApplicationUser user);
     Task TogglePostLikeByIdAsync(int postId, string userId);
     Task<bool> IsCurrentUserLikedPostAsync(int id, string userId);
-    Task AddPostCommentAsync(int id, string comment, string userId);
+    Task AddOrEditPostCommentAsync(int id, CommentDto comment, string userId);
 }

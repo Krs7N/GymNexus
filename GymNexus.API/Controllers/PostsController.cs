@@ -89,7 +89,14 @@ namespace GymNexus.API.Controllers
                 return BadRequest();
             }
 
-            var post = await _postService.GetPostByIdAsync(id);
+            var userId = GetUserId();
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var post = await _postService.GetPostByIdAsync(id, userId);
 
             if (post == null)
             {
@@ -136,7 +143,7 @@ namespace GymNexus.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AddPostComment([FromRoute] int id, [FromBody] CommentDto comment)
+        public async Task<IActionResult> AddOrEditPostComment([FromRoute] int id, [FromBody] CommentDto comment)
         {
             if (id < 0)
             {
@@ -150,7 +157,7 @@ namespace GymNexus.API.Controllers
                 return Unauthorized();
             }
 
-            await _postService.AddPostCommentAsync(id, comment.Content, userId);
+            await _postService.AddOrEditPostCommentAsync(id, comment, userId);
 
             return Ok();
         }
