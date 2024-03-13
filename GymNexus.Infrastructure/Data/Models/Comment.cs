@@ -34,6 +34,12 @@ public class Comment
     public bool IsActive { get; set; } = true;
 
     /// <summary>
+    /// The edit status of the comment. Represents if it was edited at any point. Set to false by default when posted.
+    /// </summary>
+    [Comment("The edit status of the comment. Represents if it was edited at any point.")]
+    public bool IsEdited { get; set; } = false;
+
+    /// <summary>
     /// The unique identifier of the post that the comment is related to. It is required. It is a foreign key to the Post entity.
     /// </summary>
     [Required]
