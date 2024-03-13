@@ -20,11 +20,16 @@
               >Posted by {{ post.createdBy }} on
               {{ post.createdOn }}</mat-card-subtitle
             >
-            <div *ngIf="post.createdBy === user?.email" class="action-buttons">
-              <button mat-icon-button color="primary" (click)="editPost(post)">
+            <div class="action-buttons">
+              <div [matTooltip]="'View post details for post - ' + post.title">
+                <button mat-icon-button color="primary" [routerLink]="['/posts', post.id]">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </div>
+              <button *ngIf="post.createdBy === user?.email" mat-icon-button color="primary" (click)="editPost(post.id)">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button color="warn" (click)="deletePost(post)">
+              <button *ngIf="post.createdBy === user?.email" mat-icon-button color="warn" (click)="deletePost(post.id)">
                 <mat-icon>delete</mat-icon>
               </button>
             </div>

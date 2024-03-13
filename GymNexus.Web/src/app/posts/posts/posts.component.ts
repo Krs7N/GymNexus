@@ -60,6 +60,7 @@ export class PostsComponent implements OnInit, OnDestroy {
   }
 
   addComment(post: PostViewModel): void {
+    debugger
     const comment = this.commentMap.get(post.id);
 
     if (comment === undefined || comment === '') {
@@ -69,7 +70,7 @@ export class PostsComponent implements OnInit, OnDestroy {
     const user = this._authService.getUser();
     let date = new Date().toISOString();
 
-    this._postsService.createPostComment(post.id, { content: comment, createdBy: user?.email, createdOn: date } as CommentViewModel)
+    this._postsService.createOrEditPostComment(post.id, { content: comment, createdBy: user?.email, createdOn: date } as CommentViewModel)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
         next: () => {
@@ -97,11 +98,11 @@ export class PostsComponent implements OnInit, OnDestroy {
       });
   }
 
-  editPost(post: PostViewModel) {
+  editPost(id: number) {
 
   }
 
-  deletePost(post: PostViewModel) {
+  deletePost(id: number) {
 
   }
 

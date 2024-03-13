@@ -19,11 +19,16 @@ export class PostsService extends CrudService<PostModel> {
     return this.httpClient.get<PostViewModel[]>(`${environment.apiBaseUrl}/${this.APIUrl}`);
   }
 
+  getPost(id: number): Observable<PostViewModel> {
+    return this.httpClient.get<PostViewModel>(`${environment.apiBaseUrl}/${this.APIUrl}/${id}`);
+  }
+
   togglePostLike(id: number) : Observable<boolean> {
     return this.httpClient.put<boolean>(`${environment.apiBaseUrl}/${this.APIUrl}/${id}/like`, null);
   }
 
-  createPostComment(id: number, comment: CommentViewModel): Observable<void> {
+  createOrEditPostComment(id: number, comment: CommentViewModel): Observable<void> {
+    debugger
     return this.httpClient.put<void>(`${environment.apiBaseUrl}/${this.APIUrl}/${id}/comment`, comment);
   }
 
