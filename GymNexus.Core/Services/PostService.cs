@@ -32,6 +32,7 @@ public class PostService : IPostService
                 Likes = p.PostsLikes.Count(pl => pl.PostId == p.Id),
                 IsLikedByCurrentUser = p.PostsLikes.Any(pl => pl.UserId == userId),
                 Comments = p.Comments
+                    .Where(c => c.IsActive)
                     .Select(c => new CommentDto()
                     {
                         Id = c.Id,
@@ -61,6 +62,7 @@ public class PostService : IPostService
                 Likes = p.PostsLikes.Count(pl => pl.PostId == p.Id),
                 IsLikedByCurrentUser = p.PostsLikes.Any(pl => pl.UserId == userId),
                 Comments = p.Comments
+                    .Where(c => c.IsActive)
                     .Select(c => new CommentDto()
                     {
                         Id = c.Id,
@@ -148,7 +150,7 @@ public class PostService : IPostService
 
     public async Task AddOrEditPostCommentAsync(int id, CommentDto commentDto, string userId)
     {
-        if (!await _context.Posts.AnyAsync(x => x.Id == id))
+        if (!await _context.Posts.AnyAsync(x => x.Id == id && x.IsActive))
         {
             throw new InvalidOperationException();
         }
@@ -179,6 +181,30 @@ public class PostService : IPostService
         };
 
         await _context.Comments.AddAsync(comment);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeletePostCommentAsync(int postId, int commentId, string userId)
+    {
+        if (!await _context.Posts.AnyAsync(p => p.Id == postId && p.IsActive))
+        {
+            throw new InvalidOperationException();
+        }
+
+        var comment = await _context.Comments
+            .FirstOrDefaultAsync(c => c.Id == commentId && c.PostId == postId);
+
+        if (comment == null)
+        {
+            throw new InvalidOperationException();
+        }
+
+        if (comment.CreatedBy != userId)
+        {
+            throw new InvalidOperationException();
+        }
+
+        comment.IsActive = false;
         await _context.SaveChangesAsync();
     }
 }

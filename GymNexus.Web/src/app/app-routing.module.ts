@@ -3,11 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { MarketplaceMapComponent } from './map/marketplace-map/marketplace-map.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { authGuard } from './auth/guards/auth.guard';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'map' },
   { path: 'posts', loadChildren: () => import('./posts/posts.module').then(m => m.PostsModule) },
-  { path: 'map', component: MarketplaceMapComponent },
+  { path: 'map', component: MarketplaceMapComponent, canActivate: [authGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   // { path: 'forgot-password', loadChildren: () => import('./forgot-password/forgot-password.module').then(m => m.ForgotPasswordModule) },

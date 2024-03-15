@@ -162,6 +162,33 @@ namespace GymNexus.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Deletes a comment from specific post. Sets IsActive to false
+        /// </summary>
+        [HttpDelete("{id:int}/comment/{commentId:int}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeletePostComment([FromRoute] int id, int commentId)
+        {
+            if (id < 0 || commentId < 0)
+            {
+                return BadRequest();
+            }
+
+            var userId = GetUserId();
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            await _postService.DeletePostCommentAsync(id, commentId, userId);
+
+            return Ok();
+        }
+
         private string? GetUserId() => User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
     }
 }

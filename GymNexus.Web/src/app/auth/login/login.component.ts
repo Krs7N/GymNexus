@@ -5,6 +5,7 @@ import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginResponseModel } from '../models/login-response-model';
 import { CookieService } from 'ngx-cookie-service';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +36,10 @@ export class LoginComponent {
         next: (response: LoginResponseModel) => {
           this._snackbarService.openSuccess('Login successful', 'Okay');
 
-          this._cookieService.set('Authorization', `Bearer ${response.token}`, undefined, '/', undefined, true, 'Strict');
+          const decodedToken = jwtDecode(response.token);
+          const expirationDate = new Date(decodedToken.exp! * 1000);
+
+          this._cookieService.set('Authorization', `Bearer ${response.token}`, expirationDate, '/', undefined, true, 'Strict');
 
           this._authService.setUser({ email: response.email, roles: response.roles, imageUrl: response.imageUrl });
 
@@ -45,6 +49,8 @@ export class LoginComponent {
           this._snackbarService.openError(e.error.errors.message[0], 'Okay');
         }
       });
+    } else {
+      this._snackbarService.openError('The login form is invalid. Please try again.');
     }
   }
 

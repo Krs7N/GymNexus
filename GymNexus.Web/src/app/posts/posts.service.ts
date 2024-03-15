@@ -32,7 +32,6 @@ export class PostsService extends CrudService<PostModel> {
   }
 
   deletePostComment(id: number, commentId: number): Observable<void> {
-    debugger
     return this.httpClient.delete<void>(`${environment.apiBaseUrl}/${this.APIUrl}/${id}/comment/${commentId}`);
   }
 

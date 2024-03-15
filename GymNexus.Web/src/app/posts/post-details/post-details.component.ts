@@ -7,6 +7,8 @@ import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { Subject, takeUntil } from 'rxjs';
 import { UserModel } from 'src/app/auth/models/user-model';
 import { CommentViewModel } from '../comment-view-model';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-post-details',
@@ -27,7 +29,8 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
     private _route: ActivatedRoute,
     private _authService: AuthService,
     private _postsService: PostsService,
-    private _snackbarService: SnackbarService
+    private _snackbarService: SnackbarService,
+    public dialog: MatDialog
     ) {}
 
   ngOnInit(): void {
@@ -115,17 +118,30 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
   }
 
   deleteComment(commentId: number, postId: number) {
-    this._postsService.deletePostComment(postId, commentId)
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe({
-        next: () => {
-          this._snackbarService.openSuccess(`Successfully deleted comment`);
-          this.loadPost();
-        },
-        error: (e) => {
-          console.error(e);
-        },
-      });
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Deletion',
+        message: 'Are you sure you want to delete this comment?'
+      }
+    });
+
+    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+      if (result) {
+        this._postsService.deletePostComment(postId, commentId)
+          .pipe(takeUntil(this._unsubscribeAll))
+          .subscribe({
+            next: () => {
+              this._snackbarService.openSuccess(`Successfully deleted comment`);
+              this.loadPost();
+            },
+            error: (e) => {
+              console.error(e);
+            },
+          });
+      }
+    });
   }
 
   private loadPost(): void {

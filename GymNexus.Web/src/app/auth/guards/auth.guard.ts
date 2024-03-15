@@ -18,20 +18,19 @@ export const authGuard: CanActivateFn = (route, state) => {
     let decodedToken = jwtDecode(token);
 
     if (decodedToken.exp && decodedToken.exp < Date.now() / 1000) {
+      snackbarService.openWarning('Your session has expired. Please log in again.');
       authService.logout();
-      router.navigate(['/']);
+      router.navigate(['/login']);
       return false;
     }
 
     if (user.roles.includes('Writer')) {
       return true;
     }
-
-    snackbarService.openError('You do not have permission to access this page');
-    return false;
   }
 
+  snackbarService.openWarning('Your session has expired. Please log in again.');
   authService.logout();
-  router.navigate(['/']);
+  router.navigate(['/login']);
   return false;
 };
