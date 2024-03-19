@@ -141,6 +141,34 @@ namespace GymNexus.API.Controllers
         }
 
         /// <summary>
+        /// Deletes a post from the system. Sets IsActive to false
+        /// </summary>
+        [HttpDelete("{id:int}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeletePostById([FromRoute] int id)
+        {
+            if (id < 0)
+            {
+                return BadRequest();
+            }
+
+            var userId = GetUserId();
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            await _postService.DeletePostByIdAsync(id);
+
+            return Ok();
+        }
+
+        /// <summary>
         /// Toggles like for specific user on a post
         /// </summary>
         /// <returns>If the current User has liked the post</returns>

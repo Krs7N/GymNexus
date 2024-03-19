@@ -85,7 +85,7 @@ export class PostFormComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.postForm.valid) {
-      
+
       if (this.data.post) {
         this._postsService.update(this.data.post.id, this.postForm.value).subscribe({
           next: () => {
@@ -97,7 +97,7 @@ export class PostFormComponent implements OnInit, OnDestroy {
           }
         });
       } else {
-        this._postsService.create(this.postForm.value).pipe(takeUntil(this._unsubscribeAll)).subscribe({
+        this._postsService.create(this.postForm.value).subscribe({
           next: () => {
             this._snackbarService.openSuccess("Your new post was successfully created", "Okay");
             this.postAdded.emit();

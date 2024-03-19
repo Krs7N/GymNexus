@@ -236,4 +236,19 @@ public class PostService : IPostService
             ImageUrl = post.ImageUrl
         };
     }
+
+    public async Task DeletePostByIdAsync(int id)
+    {
+        var post = await _context.Posts
+            .FirstOrDefaultAsync(p => p.Id == id && p.IsActive);
+
+        if (post == null)
+        {
+            throw new InvalidOperationException();
+        }
+
+        post.IsActive = false;
+
+        await _context.SaveChangesAsync();
+    }
 }

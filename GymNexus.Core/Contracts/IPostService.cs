@@ -13,4 +13,5 @@ public interface IPostService
     Task AddOrEditPostCommentAsync(int id, CommentDto comment, string userId);
     Task DeletePostCommentAsync(int postId, int commentId, string userId);
     Task<PostFormDto> UpdatePostByIdAsync(int id, PostFormDto post, ApplicationUser user);
+    Task DeletePostByIdAsync(int id);
 }

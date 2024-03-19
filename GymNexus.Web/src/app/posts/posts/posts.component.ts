@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import { UserModel } from 'src/app/auth/models/user-model';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { CommentViewModel } from '../comment-view-model';
+import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-posts',
@@ -113,11 +114,32 @@ export class PostsComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.postAdded
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(() => {
-        this.loadPosts();
+        this.loadPosts(true);
       });
   }
 
-  deletePost(id: number) {
+  deletePost(post: PostViewModel) {
+    const dialogRef = this._dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Delete Post',
+        message: 'Are you sure you want to delete this post?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this._postsService.delete(post.id).pipe(takeUntil(this._unsubscribeAll)).subscribe({
+          next: () => {
+            this._snackbarService.openSuccess('Post deleted successfully');
+            this.loadPosts(true);
+          },
+          error: (e) => {
+            this.error = e;
+          },
+        });
+      }
+    });
 
   }
 
