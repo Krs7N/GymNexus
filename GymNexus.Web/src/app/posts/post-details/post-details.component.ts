@@ -69,7 +69,7 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
   addComment(): void {
     const comment = this.commentMap.get(this.post.id);
 
-    if (comment === undefined || comment === '') {
+    if (comment === undefined || comment.trim() === '') {
       return;
     }
 

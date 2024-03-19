@@ -26,7 +26,7 @@
                   <mat-icon>visibility</mat-icon>
                 </button>
               </div>
-              <button *ngIf="post.createdBy === user?.email" mat-icon-button color="primary" (click)="editPost(post.id)">
+              <button *ngIf="post.createdBy === user?.email" mat-icon-button color="primary" (click)="editPost(post)">
                 <mat-icon>edit</mat-icon>
               </button>
               <button *ngIf="post.createdBy === user?.email" mat-icon-button color="warn" (click)="deletePost(post.id)">
@@ -45,13 +45,13 @@
               class="max-h-96 w-80"
             />
           </div>
-          <mat-card-actions class="items-center gap-x-2">
+          <mat-card-actions class="justify-between">
             <button mat-button (click)="toggleLike(post)">
                 <i [class]="post.isLikedByCurrentUser ? 'fas fa-heart text-red-500' : 'far fa-heart'"></i>
                 ({{ post.likes || 0 }})
             </button>
-            <div>
-              <p class="font-bold mt-4 mb-2">Comments:</p>
+            <div class="w-[20rem]">
+              <p class="font-bold mt-4">Comments:</p>
               <div *ngFor="let comment of post.comments" class="mb-2">
                 <p>
                   <span class="font-semibold">{{ comment.createdBy }}:</span>
@@ -61,14 +61,16 @@
                   >
                 </p>
               </div>
-              <input
-                type="text"
-                [ngModel]="commentMap.get(post.id)"
-                (ngModelChange)="commentMap.set(post.id, $event)"
-                placeholder="Add a comment..."
-                class="mt-2 p-2 border rounded"
-              />
-              <button mat-button (click)="addComment(post)">Post</button>
+              <div class="flex items-center gap-x-2">
+                <input
+                  type="text"
+                  [ngModel]="commentMap.get(post.id)"
+                  (ngModelChange)="commentMap.set(post.id, $event)"
+                  placeholder="Add a comment..."
+                  class="w-[15rem] p-2 border rounded"
+                />
+                <button mat-button (click)="addComment(post)">Post</button>
+              </div>
             </div>
           </mat-card-actions>
         </mat-card>

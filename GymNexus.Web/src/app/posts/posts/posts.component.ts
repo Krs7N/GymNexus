@@ -62,7 +62,7 @@ export class PostsComponent implements OnInit, OnDestroy {
   addComment(post: PostViewModel): void {
     const comment = this.commentMap.get(post.id);
 
-    if (comment === undefined || comment === '') {
+    if (comment === undefined || comment.trim() === '') {
       return;
     }
 
@@ -88,6 +88,9 @@ export class PostsComponent implements OnInit, OnDestroy {
     const dialogRef = this._dialog.open(PostFormComponent, {
       width: '60%',
       height: '80%',
+      data: {
+        title: 'Add New Post'
+      },
     });
 
     dialogRef.componentInstance.postAdded
@@ -97,8 +100,21 @@ export class PostsComponent implements OnInit, OnDestroy {
       });
   }
 
-  editPost(id: number) {
+  editPost(post: PostViewModel) {
+    const dialogRef = this._dialog.open(PostFormComponent, {
+      width: '60%',
+      height: '80%',
+      data: {
+        post: post,
+        title: 'Edit Post'
+      },
+    });
 
+    dialogRef.componentInstance.postAdded
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(() => {
+        this.loadPosts();
+      });
   }
 
   deletePost(id: number) {

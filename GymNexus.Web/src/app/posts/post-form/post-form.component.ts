@@ -1,18 +1,22 @@
 declare var cloudinary: any;
 
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PostsService } from '../posts.service';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
+import { PostViewModel } from '../post-view-model';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-post-form',
   templateUrl: './post-form.component.html',
   styleUrls: ['./post-form.component.scss']
 })
-export class PostFormComponent {
+export class PostFormComponent implements OnInit, OnDestroy {
   @Output() postAdded: EventEmitter<void> = new EventEmitter<void>();
+
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   postForm: FormGroup = new FormGroup({});
 
@@ -20,7 +24,8 @@ export class PostFormComponent {
     private _fb: FormBuilder,
     private _postsService: PostsService,
     private _snackbarService: SnackbarService,
-    public dialogRef: MatDialogRef<PostFormComponent>) {}
+    public dialogRef: MatDialogRef<PostFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   ngOnInit(): void {
     this.postForm = this._fb.group({
@@ -28,6 +33,14 @@ export class PostFormComponent {
       content: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
       imageUrl: [null]
     });
+
+    if (this.data.post) {
+      this.postForm.patchValue({
+        title: this.data.post.title,
+        content: this.data.post.content,
+        imageUrl: this.data.post.imageUrl
+      });
+    }
   }
 
   openCloudinaryUploader(): void {
@@ -72,20 +85,39 @@ export class PostFormComponent {
 
   onSubmit(): void {
     if (this.postForm.valid) {
-      this._postsService.create(this.postForm.value).subscribe({
-        next: () => {
-          this._snackbarService.openSuccess("Your new post was successfully created", "Okay");
-          this.postAdded.emit();
-        },
-        error: (e) => {
-          this._snackbarService.openError(e.error?.errors?.message[0], "Okay");
-        }
-      });
+      
+      if (this.data.post) {
+        this._postsService.update(this.data.post.id, this.postForm.value).subscribe({
+          next: () => {
+            this._snackbarService.openSuccess("Your post was successfully updated", "Okay");
+            this.postAdded.emit();
+          },
+          error: (e) => {
+            this._snackbarService.openError(e.error?.errors?.message[0], "Okay");
+          }
+        });
+      } else {
+        this._postsService.create(this.postForm.value).pipe(takeUntil(this._unsubscribeAll)).subscribe({
+          next: () => {
+            this._snackbarService.openSuccess("Your new post was successfully created", "Okay");
+            this.postAdded.emit();
+          },
+          error: (e) => {
+            this._snackbarService.openError(e.error?.errors?.message[0], "Okay");
+          }
+        });
+      }
+      
       this.dialogRef.close();
     }
   }
 
   onCancel(): void {
     this.dialogRef.close();
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
   }
 }
