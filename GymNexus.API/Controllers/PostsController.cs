@@ -107,6 +107,40 @@ namespace GymNexus.API.Controllers
         }
 
         /// <summary>
+        /// Gets single post by it's id that is currently active in the system and updates it's value
+        /// </summary>
+        /// <returns>Updated post</returns>
+        [HttpPut("{id:int}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PostDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdatePostById([FromRoute] int id, [FromBody] PostFormDto post)
+        {
+            if (id < 0)
+            {
+                return BadRequest();
+            }
+
+            var userId = GetUserId();
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var updatedPost = await _postService.UpdatePostByIdAsync(id, post, user);
+
+            return Ok(updatedPost);
+        }
+
+        /// <summary>
         /// Toggles like for specific user on a post
         /// </summary>
         /// <returns>If the current User has liked the post</returns>

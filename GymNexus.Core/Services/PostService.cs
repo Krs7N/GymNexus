@@ -207,4 +207,33 @@ public class PostService : IPostService
         comment.IsActive = false;
         await _context.SaveChangesAsync();
     }
+
+    public async Task<PostFormDto> UpdatePostByIdAsync(int id, PostFormDto postDto, ApplicationUser user)
+    {
+        var post = await _context.Posts
+            .FirstOrDefaultAsync(p => p.Id == id && p.IsActive);
+
+        if (post == null)
+        {
+            throw new InvalidOperationException();
+        }
+
+        if (post.CreatedBy != user.Id)
+        {
+            throw new InvalidOperationException();
+        }
+
+        post.Title = postDto.Title;
+        post.Content = postDto.Content;
+        post.ImageUrl = postDto.ImageUrl;
+
+        await _context.SaveChangesAsync();
+
+        return new PostFormDto()
+        {
+            Title = post.Title,
+            Content = post.Content,
+            ImageUrl = post.ImageUrl
+        };
+    }
 }
