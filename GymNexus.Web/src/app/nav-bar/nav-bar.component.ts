@@ -40,7 +40,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this._authService.logout();
-        this._router.navigate(['/']);
+        this._router.navigate(['/login']);
       }
     });
   }
