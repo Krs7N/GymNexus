@@ -11,11 +11,13 @@ import { CloudinaryModule } from '@cloudinary/ng';
 import { AuthModule } from './auth/auth.module';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { MaterialModule } from './shared/material.module';
+import { ProductsComponent } from './products/products/products.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
+    ProductsComponent,
   ],
   imports: [
     CloudinaryModule,
