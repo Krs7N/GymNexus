@@ -116,6 +116,13 @@ namespace GymNexus.API.Controllers
             return ValidationProblem(ModelState);
         }
 
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Ok();
+        }
+
         /// <summary>
         /// Logs in a user in the system using facebook
         /// </summary>

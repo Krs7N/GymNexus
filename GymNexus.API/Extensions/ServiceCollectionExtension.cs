@@ -20,6 +20,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<IPostService, PostService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IMarketplaceService, MarketplaceService>();
+        services.AddScoped<IProfileService, ProfileService>();
 
         return services;
     }
