@@ -16,9 +16,15 @@
             <a [routerLink]="['/register']" class="text-teal-200 text-base hover:text-white">Register</a>
         </ng-container>
         <ng-template #showLogout>
-            <span class="text-teal-200 text-base hover:text-white mr-2">Welcome to the body temple, {{ user?.email }}</span>
-            <img [src]="user?.imageUrl" class="rounded-full mr-5" width="30" height="30" style="border-radius: 50%;" *ngIf="user?.imageUrl">
-            <button mat-button class="text-teal-200 text-base hover:text-white" (click)="logout()">Logout</button>
+            <div mat-button [matMenuTriggerFor]="profileMenu" class="flex items-center cursor-pointer">
+                <span class="text-teal-200 text-base hover:text-white mr-2">Welcome to the body temple, {{ user?.email }}</span>
+                <img [src]="user?.imageUrl" class="rounded-full mr-5" width="30" height="30" style="border-radius: 50%;" *ngIf="user?.imageUrl">
+            </div>
+              
+            <mat-menu #profileMenu="matMenu">
+                <button mat-menu-item (click)="navigateToProfile()">Profile</button>
+                <button mat-menu-item (click)="logout()">Logout</button>
+            </mat-menu>
         </ng-template>
     </div>
 </nav>

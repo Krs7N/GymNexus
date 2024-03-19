@@ -5,6 +5,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
+import { ProfileDialogComponent } from '../shared/profile-dialog/profile-dialog.component';
+import { SnackbarService } from '../shared/snackbar.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -17,7 +19,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-  constructor(private _authService: AuthService, private _router: Router, public dialog: MatDialog) { }
+  constructor(private _authService: AuthService, private _snackbarService: SnackbarService,
+    private _router: Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this._authService.user().pipe(takeUntil(this._unsubscribeAll)).subscribe(user => {
@@ -39,9 +42,23 @@ export class NavBarComponent implements OnInit, OnDestroy {
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this._authService.logout();
+        this._authService.logout().subscribe({
+          next: () => {
+            this._snackbarService.openSuccess('You have been logged out');
+          },
+          error: (e) => {
+            this._snackbarService.openError(e.error.errors.message[0], 'Okay');
+          }
+        });
         this._router.navigate(['/login']);
       }
+    });
+  }
+
+  navigateToProfile(): void {
+    this.dialog.open(ProfileDialogComponent, {
+      width: '400px',
+      data: this.user
     });
   }
 

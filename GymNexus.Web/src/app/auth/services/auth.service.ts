@@ -28,10 +28,11 @@ export class AuthService extends CrudService<RegisterModel | LoginModel>{
     return this.httpClient.post<LoginResponseModel>(`${environment.apiBaseUrl}/${this.getResourceUrl()}/login`, loginModel);
   }
 
-  logout(): void {
+  logout(): Observable<void> {
     this.user$.next(undefined);
     localStorage.clear();
     this._cookieService.delete('Authorization', '/');
+    return this.httpClient.post<void>(`${environment.apiBaseUrl}/${this.getResourceUrl()}/logout`, null);
   }
 
   getUser(): UserModel | undefined {
