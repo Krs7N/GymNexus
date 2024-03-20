@@ -11,27 +11,27 @@ import { CloudinaryModule } from '@cloudinary/ng';
 import { AuthModule } from './auth/auth.module';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { MaterialModule } from './shared/material.module';
-import { ProductsComponent } from './products/products/products.component';
+import { ErrorPageComponent } from "./shared/error-page/error-page.component";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavBarComponent,
-    ProductsComponent,
-  ],
-  imports: [
-    CloudinaryModule,
-    BrowserModule,
-    AppRoutingModule,
-    MaterialModule,
-    BrowserAnimationsModule,
-    PostsModule,
-    AuthModule,
-    HttpClientModule
-  ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        NavBarComponent
+    ],
+    providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    ],
+    bootstrap: [AppComponent],
+    imports: [
+        CloudinaryModule,
+        BrowserModule,
+        AppRoutingModule,
+        MaterialModule,
+        BrowserAnimationsModule,
+        PostsModule,
+        AuthModule,
+        HttpClientModule,
+        ErrorPageComponent
+    ]
 })
 export class AppModule { }

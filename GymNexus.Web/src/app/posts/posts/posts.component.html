@@ -1,90 +1,108 @@
-<div *ngIf="!error">
-  <div class="max-w-7xl mx-auto w-4/5 flex justify-end mt-3 mb-3">
-    <button
-      mat-raised-button
-      color="primary"
-      class="w-40"
-      (click)="openAddPost()"
-    >
-      Add Post
-    </button>
-  </div>
-  <div class="max-w-7xl mx-auto">
-    <div class="grid grid-cols-2 gap-4 mb-5">
-      <div *ngFor="let post of currentPosts" class="col-span-1">
-        <mat-card class="mb-5">
-          <mat-card-header class="custom-card-header mb-2">
-            <div mat-card-avatar class="hidden"></div>
-            <mat-card-title>{{ post.title }}</mat-card-title>
-            <mat-card-subtitle
-              >Posted by {{ post.createdBy }} on
-              {{ post.createdOn }}</mat-card-subtitle
+<div *ngIf="!error" class="max-w-7xl mx-auto w-4/5 flex justify-end mt-3 mb-3">
+  <button
+    mat-raised-button
+    color="primary"
+    class="w-40"
+    (click)="openAddPost()"
+  >
+    Add Post
+  </button>
+</div>
+<div class="max-w-7xl mx-auto">
+  <div class="grid grid-cols-2 gap-4 mb-5">
+    <div *ngFor="let post of currentPosts" class="col-span-1">
+      <mat-card class="mb-5">
+        <mat-card-header class="custom-card-header mb-2">
+          <div mat-card-avatar class="hidden"></div>
+          <mat-card-title>{{ post.title }}</mat-card-title>
+          <mat-card-subtitle
+            >Posted by {{ post.createdBy }} on
+            {{ post.createdOn }}</mat-card-subtitle
+          >
+          <div class="action-buttons">
+            <div [matTooltip]="'View post details for post - ' + post.title">
+              <button
+                mat-icon-button
+                color="primary"
+                [routerLink]="['/posts', post.id]"
+              >
+                <mat-icon>visibility</mat-icon>
+              </button>
+            </div>
+            <button
+              *ngIf="post.createdBy === user?.email"
+              mat-icon-button
+              color="primary"
+              (click)="editPost(post)"
             >
-            <div class="action-buttons">
-              <div [matTooltip]="'View post details for post - ' + post.title">
-                <button mat-icon-button color="primary" [routerLink]="['/posts', post.id]">
-                  <mat-icon>visibility</mat-icon>
-                </button>
-              </div>
-              <button *ngIf="post.createdBy === user?.email" mat-icon-button color="primary" (click)="editPost(post)">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button *ngIf="post.createdBy === user?.email" mat-icon-button color="warn" (click)="deletePost(post)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </mat-card-header>
-          <mat-card-content>
-            <p>{{ post.content }}</p>
-          </mat-card-content>
-          <div class="flex justify-center" *ngIf="post.imageUrl">
-            <img
-              mat-card-image
-              [src]="post.imageUrl"
-              alt="Post image"
-              class="max-h-96 w-80"
-            />
-          </div>
-          <mat-card-actions class="justify-between">
-            <button mat-button (click)="toggleLike(post)">
-                <i [class]="post.isLikedByCurrentUser ? 'fas fa-heart text-red-500' : 'far fa-heart'"></i>
-                ({{ post.likes || 0 }})
+              <mat-icon>edit</mat-icon>
             </button>
-            <div class="w-[20rem]">
-              <p class="font-bold mt-4">Comments:</p>
-              <div *ngFor="let comment of post.comments" class="mb-2">
-                <p>
-                  <span class="font-semibold">{{ comment.createdBy }}:</span>
-                  {{ comment.content }}
-                  <span class="text-sm text-gray-500"
-                    >({{ comment.createdOn | relativeTime }})</span
-                  >
-                </p>
-              </div>
-              <div class="flex items-center gap-x-2">
-                <input
-                  type="text"
-                  [ngModel]="commentMap.get(post.id)"
-                  (ngModelChange)="commentMap.set(post.id, $event)"
-                  placeholder="Add a comment..."
-                  class="w-[15rem] p-2 border rounded"
-                />
-                <button mat-button (click)="addComment(post)">Post</button>
-              </div>
+            <button
+              *ngIf="post.createdBy === user?.email"
+              mat-icon-button
+              color="warn"
+              (click)="deletePost(post)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ post.content }}</p>
+        </mat-card-content>
+        <div class="flex justify-center" *ngIf="post.imageUrl">
+          <img
+            mat-card-image
+            [src]="post.imageUrl"
+            alt="Post image"
+            class="max-h-96 w-80"
+          />
+        </div>
+        <mat-card-actions class="justify-between">
+          <button mat-button (click)="toggleLike(post)">
+            <i
+              [class]="
+                post.isLikedByCurrentUser
+                  ? 'fas fa-heart text-red-500'
+                  : 'far fa-heart'
+              "
+            ></i>
+            ({{ post.likes || 0 }})
+          </button>
+          <div class="w-[20rem]">
+            <p class="font-bold mt-4">Comments:</p>
+            <div *ngFor="let comment of post.comments" class="mb-2">
+              <p>
+                <span class="font-semibold">{{ comment.createdBy }}:</span>
+                {{ comment.content }}
+                <span class="text-sm text-gray-500"
+                  >({{ comment.createdOn | relativeTime }})</span
+                >
+              </p>
             </div>
-          </mat-card-actions>
-        </mat-card>
-      </div>
+            <div class="flex items-center gap-x-2">
+              <input
+                type="text"
+                [ngModel]="commentMap.get(post.id)"
+                (ngModelChange)="commentMap.set(post.id, $event)"
+                placeholder="Add a comment..."
+                class="w-[15rem] p-2 border rounded"
+              />
+              <button mat-button (click)="addComment(post)">Post</button>
+            </div>
+          </div>
+        </mat-card-actions>
+      </mat-card>
     </div>
-    <div class="mt-auto w-full flex justify-end pr-5 pb-5">
-      <mat-paginator
-        [pageSize]="2"
-        [length]="posts.length"
-        [pageSizeOptions]="[2]"
-        (page)="changePage($event)"
-      >
-      </mat-paginator>
-    </div>
+  </div>
+  <div class="mt-auto w-full flex justify-end pr-5 pb-5">
+    <mat-paginator
+      [pageSize]="2"
+      [length]="posts.length"
+      [pageSizeOptions]="[2]"
+      (page)="changePage($event)"
+    >
+    </mat-paginator>
   </div>
 </div>
 <app-error-page *ngIf="error" [error]="error"></app-error-page>

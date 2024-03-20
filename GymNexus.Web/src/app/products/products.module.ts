@@ -4,11 +4,14 @@ import { MaterialModule } from '../shared/material.module';
 import { ErrorPageComponent } from '../shared/error-page/error-page.component';
 import { RouterModule } from '@angular/router';
 import { productsRoutes } from './products.routes';
+import { ProductsComponent } from './products/products.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ProductsComponent
+  ],
   imports: [
     RouterModule.forChild(productsRoutes),
     SharedModule,

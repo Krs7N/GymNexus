@@ -143,6 +143,10 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   }
 
+  changePage(event: PageEvent): void {
+    this.setPage(event.pageIndex, event.pageSize);
+  }
+
   private loadPosts(innerLoad: boolean = false): void {
     this._postsService
       .getAllPosts()
@@ -162,11 +166,7 @@ export class PostsComponent implements OnInit, OnDestroy {
           this.error = e;
         },
       });
-  }
-
-  changePage(event: PageEvent): void {
-    this.setPage(event.pageIndex, event.pageSize);
-  }
+    }
 
   private setPage(pageIndex: number, pageSize: number): void {
     const start = pageIndex * pageSize;
