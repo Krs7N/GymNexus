@@ -1,6 +1,5 @@
 ﻿using GymNexus.Core.Contracts;
 using GymNexus.Core.Models;
-using GymNexus.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymNexus.API.Controllers

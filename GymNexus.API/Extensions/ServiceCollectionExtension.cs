@@ -21,6 +21,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IMarketplaceService, MarketplaceService>();
         services.AddScoped<IProfileService, ProfileService>();
+        services.AddScoped<IProductService, ProductService>();
 
         return services;
     }

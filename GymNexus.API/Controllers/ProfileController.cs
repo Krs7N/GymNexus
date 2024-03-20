@@ -1,6 +1,8 @@
 ﻿using GymNexus.Core.Contracts;
 using GymNexus.Core.Models;
 using GymNexus.Infrastructure.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +10,7 @@ namespace GymNexus.API.Controllers
 {
     [Route("api/profile")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ProfileController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
