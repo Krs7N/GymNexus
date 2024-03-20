@@ -14,15 +14,15 @@
         <img mat-card-image [src]="product.imageUrl" alt="{{ product.name }}" />
         <mat-card-content class="flex-grow">
           <p>{{ product.description }}</p>
-          <p class="text-sm text-gray-600">Store: <b>{{ product.store }}</b></p>
+          <p class="text-sm text-gray-600">Store: <b>{{ product.store.name }}</b></p>
           <p class="text-sm text-gray-600" [innerHTML]="getMarketplaceText(product)"></p>
           <p class="text-sm text-gray-600">Added: {{ product.createdOn }}</p>
         </mat-card-content>
-        <!-- <mat-card-actions>
-          <button mat-button *ngIf="!isUserTheSeller(product)">
+        <mat-card-actions>
+          <button mat-button *ngIf="!user?.roles?.includes('Seller')">
             Add to Cart
           </button>
-          <button mat-button (click)="toggleLike(product)">
+          <!-- <button mat-button (click)="toggleLike(product)">
             <i
               [class]="
                 product.isLikedByCurrentUser
@@ -31,12 +31,12 @@
               "
             ></i>
             ({{ product.likes || 0 }})
-          </button>
-          <ng-container *ngIf="isUserTheSeller(product)">
+          </button> -->
+          <ng-container *ngIf="isAdminOrSellerOfProduct(product)">
             <button mat-button>Edit</button>
             <button mat-button color="warn">Delete</button>
           </ng-container>
-        </mat-card-actions> -->
+        </mat-card-actions>
       </mat-card>
     </ng-container>
   </div>

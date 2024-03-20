@@ -6,6 +6,9 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import { ProductViewModel } from '../product-view-model';
 import { ProductsService } from '../products.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
+import { StoreViewModel } from 'src/app/shared/models/store-view-model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -18,20 +21,29 @@ export class ProductsComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   user: UserModel | undefined;
+  userStores: StoreViewModel[] = [];
   products: ProductViewModel[] = [];
   currentProducts: ProductViewModel[] = [];
   error: any;
 
   constructor(
     private _sanitizer: DomSanitizer,
+    private _snackbarService: SnackbarService,
     private _productsService: ProductsService,
+    private _route: ActivatedRoute,
     private _authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.userStores = this._route.snapshot.data['userStores'];
+    
     this.loadProducts();
 
     this.user = this._authService.getUser();
+
+    if (this.user) {
+      this.user.stores = this.userStores;
+    }
   }
 
   // toggleLike(product: ProductViewModel): void {
@@ -51,6 +63,14 @@ export class ProductsComponent implements OnInit, OnDestroy {
   //   },
   // });
   // }
+
+  isAdminOrSellerOfProduct(product: ProductViewModel): boolean | undefined {
+    const isAdmin = this.user?.roles.includes('Owner') && this.user?.roles.includes('Seller') && this.user?.roles.includes('Writer');
+  
+    const isSellerOfProduct = this.user?.roles.includes('Seller') && this.user.stores?.some(store => store.id === product.store.id);
+  
+    return isAdmin || isSellerOfProduct;
+  }
 
   getMarketplaceText(product: ProductViewModel): SafeHtml {
     const text = product.marketplace

@@ -1,3 +1,5 @@
+import { StoreViewModel } from "../shared/models/store-view-model";
+
 export class ProductViewModel {
     id: number;
     name: string;
@@ -5,7 +7,7 @@ export class ProductViewModel {
     price: number;
     imageUrl: string;
     createdOn: string;
-    store: string;
+    store: StoreViewModel;
     category: string;
     marketplace?: string;
     likes: number = 0;
@@ -18,7 +20,7 @@ export class ProductViewModel {
         price: number,
         imageUrl: string,
         createdOn: string,
-        store: string,
+        store: StoreViewModel,
         category: string,
         marketplace: string,
         likes: number,
