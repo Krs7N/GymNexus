@@ -6,6 +6,7 @@ using System.Security.Claims;
 using GymNexus.Core.Models;
 using GymNexus.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
+using GymNexus.Core.Services;
 
 namespace GymNexus.API.Controllers
 {
@@ -45,16 +46,34 @@ namespace GymNexus.API.Controllers
             return Ok(products);
         }
 
-        //[HttpPost]
-        //[Produces("application/json")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //public async Task<IActionResult> AddProduct([FromBody] ProductFormDto productModel)
-        //{
-        //    var product = await _productService.AddAsync(productModel);
-        //    return Ok(product);
-        //}
+        /// <summary>
+        /// Toggles like for specific user on a product
+        /// </summary>
+        /// <returns>If the current User has liked the product</returns>
+        [HttpPut("{id:int}/like")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ToggleLikeProductById([FromRoute] int id)
+        {
+            if (id < 0)
+            {
+                return BadRequest();
+            }
+
+            var userId = GetUserId();
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            await _productService.ToggleProductLikeByIdAsync(id, userId);
+            var isCurrentUserLiked = await _productService.IsCurrentUserLikedProductAsync(id, userId);
+
+            return Ok(isCurrentUserLiked);
+        }
 
         private string? GetUserId() => User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
     }

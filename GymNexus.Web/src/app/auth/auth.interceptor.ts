@@ -7,11 +7,17 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { AuthService } from './services/auth.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private _cookieService: CookieService) {}
+  constructor(
+    private _cookieService: CookieService,
+    private _authService: AuthService,
+    private _router: Router
+  ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this._cookieService.get('Authorization');
@@ -22,6 +28,9 @@ export class AuthInterceptor implements HttpInterceptor {
           Authorization: `${token}`
         }
       });
+    } else {
+      this._authService.logout();
+      this._router.navigate(['/login']);
     }
 
     return next.handle(request);

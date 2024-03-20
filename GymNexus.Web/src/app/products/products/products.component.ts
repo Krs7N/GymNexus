@@ -46,23 +46,23 @@ export class ProductsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // toggleLike(product: ProductViewModel): void {
-  // this._postsService.togglePostLike(product.id).subscribe({
-  //   next: (hasUserLikedPost) => {
+  toggleLike(product: ProductViewModel): void {
+  this._productsService.toggleProductLike(product.id).subscribe({
+    next: (hasUserLikedProduct) => {
+      debugger
+      if (hasUserLikedProduct) {
+        this._snackbarService.openSuccess('You liked this product');
+      } else {
+        this._snackbarService.openSuccess('You no longer like this product');
+      }
 
-  //     if (hasUserLikedPost) {
-  //       this._snackbarService.openSuccess('You liked this post');
-  //     } else {
-  //       this._snackbarService.openSuccess('You no longer like this post');
-  //     }
-
-  //     this.loadProducts(true);
-  //   },
-  //   error: (e) => {
-  //     this.error = e;
-  //   },
-  // });
-  // }
+      this.loadProducts(true);
+    },
+    error: (e) => {
+      this.error = e;
+    },
+  });
+  }
 
   isAdminOrSellerOfProduct(product: ProductViewModel): boolean | undefined {
     const isAdmin = this.user?.roles.includes('Owner') && this.user?.roles.includes('Seller') && this.user?.roles.includes('Writer');

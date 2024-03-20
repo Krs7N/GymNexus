@@ -1,6 +1,7 @@
 ﻿using GymNexus.Core.Contracts;
 using GymNexus.Core.Models;
 using GymNexus.Infrastructure.Data;
+using GymNexus.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using static GymNexus.Infrastructure.Constants.DataConstants;
 
@@ -39,5 +40,42 @@ public class ProductService : IProductService
                 }
             })
             .ToListAsync();
+    }
+
+    public async Task ToggleProductLikeByIdAsync(int id, string userId)
+    {
+        var product = await _context.Products
+            .Where(p => p.IsActive)
+            .Include(p => p.ProductsLikes)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (product == null)
+        {
+            throw new InvalidOperationException();
+        }
+
+        var like = product.ProductsLikes.FirstOrDefault(pl => pl.UserId == userId);
+
+        if (like == null)
+        {
+            await _context.ProductsLikes.AddAsync(new ProductLike()
+            {
+                ProductId = product.Id,
+                UserId = userId
+            });
+        }
+        else
+        {
+            _context.ProductsLikes.Remove(like);
+        }
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<bool> IsCurrentUserLikedProductAsync(int id, string userId)
+    {
+        return await _context.ProductsLikes
+            .AsNoTracking()
+            .AnyAsync(pl => pl.ProductId == id && pl.UserId == userId);
     }
 }
