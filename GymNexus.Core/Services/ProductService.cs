@@ -32,7 +32,11 @@ public class ProductService : IProductService
                 Likes = p.ProductsLikes.Count(pl => pl.ProductId == p.Id),
                 IsLikedByCurrentUser = p.ProductsLikes.Any(pl => pl.UserId == userId),
                 Category = p.Category.Name,
-                Store = p.Store.Name
+                Store = new StoreDto()
+                {
+                    Id = p.StoreId,
+                    Name = p.Store.Name,
+                }
             })
             .ToListAsync();
     }

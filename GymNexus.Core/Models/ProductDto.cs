@@ -14,7 +14,7 @@ public class ProductDto
 
     public string CreatedOn { get; set; } = string.Empty;
 
-    public string Store { get; set; } = string.Empty;
+    public StoreDto Store { get; set; }
 
     public string Category { get; set; } = string.Empty;
 
