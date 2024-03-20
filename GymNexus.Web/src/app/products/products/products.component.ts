@@ -36,46 +36,50 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.userStores = this._route.snapshot.data['userStores'];
-    
+
     this.loadProducts();
 
     this.user = this._authService.getUser();
-
+    
     if (this.user) {
       this.user.stores = this.userStores;
     }
   }
 
   toggleLike(product: ProductViewModel): void {
-  this._productsService.toggleProductLike(product.id).subscribe({
-    next: (hasUserLikedProduct) => {
-      debugger
-      if (hasUserLikedProduct) {
-        this._snackbarService.openSuccess('You liked this product');
-      } else {
-        this._snackbarService.openSuccess('You no longer like this product');
-      }
+    this._productsService.toggleProductLike(product.id).subscribe({
+      next: (hasUserLikedProduct) => {
+        if (hasUserLikedProduct) {
+          this._snackbarService.openSuccess('You liked this product');
+        } else {
+          this._snackbarService.openSuccess('You no longer like this product');
+        }
 
-      this.loadProducts(true);
-    },
-    error: (e) => {
-      this.error = e;
-    },
-  });
+        this.loadProducts(true);
+      },
+      error: (e) => {
+        this.error = e;
+      },
+    });
   }
 
   isAdminOrSellerOfProduct(product: ProductViewModel): boolean | undefined {
-    const isAdmin = this.user?.roles.includes('Owner') && this.user?.roles.includes('Seller') && this.user?.roles.includes('Writer');
-  
-    const isSellerOfProduct = this.user?.roles.includes('Seller') && this.user.stores?.some(store => store.id === product.store.id);
-  
+    const isAdmin =
+      this.user?.roles.includes('Owner') &&
+      this.user?.roles.includes('Seller') &&
+      this.user?.roles.includes('Writer');
+
+    const isSellerOfProduct =
+      this.user?.roles.includes('Seller') &&
+      this.user.stores?.some((store) => store.id === product.store.id);
+
     return isAdmin || isSellerOfProduct;
   }
 
   getMarketplaceText(product: ProductViewModel): SafeHtml {
     const text = product.marketplace
-    ? `Store is part of global marketplace partner: <b>${product.marketplace}</b>`
-    : "The store currently is not part of any of our global marketplace partners"
+      ? `Store is part of global marketplace partner: <b>${product.marketplace}</b>`
+      : 'The store currently is not part of any of our global marketplace partners';
 
     return this._sanitizer.bypassSecurityTrustHtml(text);
   }

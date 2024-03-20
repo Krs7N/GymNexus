@@ -5,12 +5,14 @@ import { ErrorPageComponent } from '../shared/error-page/error-page.component';
 import { RouterModule } from '@angular/router';
 import { productsRoutes } from './products.routes';
 import { ProductsComponent } from './products/products.component';
+import { ProductDetailsComponent } from './product-details/product-details.component';
 
 
 
 @NgModule({
   declarations: [
-    ProductsComponent
+    ProductsComponent,
+    ProductDetailsComponent
   ],
   imports: [
     RouterModule.forChild(productsRoutes),

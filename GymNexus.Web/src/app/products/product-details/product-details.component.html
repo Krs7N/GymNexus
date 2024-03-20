@@ -1,0 +1,87 @@
+<div class="max-w-4xl mx-auto p-4">
+  <form [formGroup]="productForm" class="space-y-4">
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Price</mat-label>
+      <input matInput [min]="0" type="number" formControlName="price" />
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openCloudinaryUploader()"
+    >
+      Upload Image
+    </button>
+
+    <div
+      *ngIf="productForm.value.imageUrl"
+      class="mt-4 flex flex-col items-center"
+    >
+      <div class="relative">
+        <div
+          class="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center text-white font-bold"
+        >
+          Image Preview
+        </div>
+        <img
+          [src]="productForm.value.imageUrl"
+          alt="Uploaded Image"
+          class="w-64 h-64 object-cover rounded-lg shadow-lg"
+        />
+      </div>
+    </div>
+
+    <mat-form-field appearance="fill" class="w-full" *ngIf="stores.length > 1">
+      <mat-label>Store</mat-label>
+      <mat-select formControlName="store">
+        <mat-option *ngFor="let store of stores" [value]="store.id">{{
+          store.name
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Category</mat-label>
+      <mat-select formControlName="category">
+        <mat-option *ngFor="let category of categories" [value]="category.id">{{
+          category.name
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="fill"
+      class="w-full"
+      *ngIf="marketplaces.length > 0"
+    >
+      <mat-label>Global Marketplace</mat-label>
+      <mat-select formControlName="marketplace">
+        <mat-option
+          *ngFor="let marketplace of marketplaces"
+          [value]="marketplace.id"
+          >{{ marketplace.name }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <div class="flex justify-end gap-x-3">
+        <button [routerLink]="['/products']" mat-raised-button>
+        <mat-icon>arrow_back</mat-icon>
+        Go Back
+        </button>
+        <button mat-raised-button color="primary" (click)="saveProduct()">
+        Save
+        </button>
+    </div>
+  </form>
+</div>
