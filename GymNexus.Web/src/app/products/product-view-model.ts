@@ -1,4 +1,5 @@
 import { CategoryViewModel } from "../shared/models/category-view-model";
+import { MarketplaceViewModel } from "../shared/models/marketplace-view-model";
 import { StoreViewModel } from "../shared/models/store-view-model";
 
 export class ProductViewModel {
@@ -10,7 +11,7 @@ export class ProductViewModel {
     createdOn: string;
     store: StoreViewModel;
     category: CategoryViewModel;
-    marketplace?: string;
+    marketplace?: MarketplaceViewModel;
     likes: number = 0;
     isLikedByCurrentUser: boolean;
 
@@ -23,7 +24,7 @@ export class ProductViewModel {
         createdOn: string,
         store: StoreViewModel,
         category: CategoryViewModel,
-        marketplace: string,
+        marketplace: MarketplaceViewModel,
         likes: number,
         isLikedByCurrentUser: boolean) {
         this.id = id;

@@ -7,7 +7,6 @@ import { CategoryViewModel } from 'src/app/shared/models/category-view-model';
 import { MarketplaceViewModel } from 'src/app/shared/models/marketplace-view-model';
 import { StoreViewModel } from 'src/app/shared/models/store-view-model';
 import { ProductsService } from '../products.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-product-details',
@@ -48,8 +47,8 @@ export class ProductDetailsComponent implements OnInit {
           price: product.price,
           imageUrl: product.imageUrl,
           store: product.store,
-          category: product.category,
-          marketplace: product.marketplace
+          category: product.category.id,
+          marketplace: product.marketplace?.id
         });
       });
     }

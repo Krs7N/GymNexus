@@ -78,7 +78,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   getMarketplaceText(product: ProductViewModel): SafeHtml {
     const text = product.marketplace
-      ? `Store is part of global marketplace partner: <b>${product.marketplace}</b>`
+      ? `Store is part of global marketplace partner: <b>${product.marketplace.name}</b>`
       : 'The store currently is not part of any of our global marketplace partners';
 
     return this._sanitizer.bypassSecurityTrustHtml(text);

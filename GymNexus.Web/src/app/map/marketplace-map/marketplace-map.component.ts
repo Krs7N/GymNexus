@@ -51,7 +51,11 @@ export class MarketplaceMapComponent implements AfterViewInit, OnDestroy {
         })
       },
       error: (e) => {
-        this._snackbarService.openError(e.error?.errors?.message[0], 'Okay');
+        if (e.error && e.error.errors) {
+          this._snackbarService.openError(e.error?.errors?.message[0], 'Okay');
+        } else {
+          this._snackbarService.openError('An error occurred while loading data. Please try again later');
+        }
       }
     });
   }
