@@ -16,12 +16,16 @@ namespace GymNexus.API.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
+        private readonly INomenclatureService _nomenclatureService;
+        private readonly IMarketplaceService _marketplaceService;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ProductsController(IProductService productService, UserManager<ApplicationUser> userManager)
+        public ProductsController(IProductService productService, INomenclatureService nomenclatureService, IMarketplaceService marketplaceService, UserManager<ApplicationUser> userManager)
         {
             _productService = productService;
             _userManager = userManager;
+            _nomenclatureService = nomenclatureService;
+            _marketplaceService = marketplaceService;
         }
 
         /// <summary>
@@ -47,6 +51,41 @@ namespace GymNexus.API.Controllers
         }
 
         /// <summary>
+        /// Gets an active product by it's id
+        /// </summary>
+        /// <returns>Currently active product by it's id</returns>
+        [HttpGet("{id:int}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetProductById([FromRoute] int id)
+        {
+            if (id < 0)
+            {
+                return BadRequest();
+            }
+
+            var userId = GetUserId();
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var product = await _productService.GetProductByIdAsync(id, userId);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(product);
+        }
+
+        /// <summary>
         /// Toggles like for specific user on a product
         /// </summary>
         /// <returns>If the current User has liked the product</returns>
@@ -54,6 +93,7 @@ namespace GymNexus.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ToggleLikeProductById([FromRoute] int id)
         {
@@ -73,6 +113,21 @@ namespace GymNexus.API.Controllers
             var isCurrentUserLiked = await _productService.IsCurrentUserLikedProductAsync(id, userId);
 
             return Ok(isCurrentUserLiked);
+        }
+
+        /// <summary>
+        /// Gets all products categories that are currently active in the system
+        /// </summary>
+        /// <returns>All currently active products categories</returns>
+        [HttpGet("categories")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CategoryDto>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            var categories = await _nomenclatureService.GetProductCategoriesAsync();
+            return Ok(categories);
         }
 
         private string? GetUserId() => User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;

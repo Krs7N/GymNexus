@@ -32,7 +32,11 @@ public class ProductService : IProductService
                 Marketplace = p.Store.Marketplace.Name,
                 Likes = p.ProductsLikes.Count(pl => pl.ProductId == p.Id),
                 IsLikedByCurrentUser = p.ProductsLikes.Any(pl => pl.UserId == userId),
-                Category = p.Category.Name,
+                Category = new CategoryDto()
+                {
+                    Id = p.CategoryId,
+                    Name = p.Category.Name
+                },
                 Store = new StoreDto()
                 {
                     Id = p.StoreId,
@@ -77,5 +81,35 @@ public class ProductService : IProductService
         return await _context.ProductsLikes
             .AsNoTracking()
             .AnyAsync(pl => pl.ProductId == id && pl.UserId == userId);
+    }
+
+    public async Task<ProductDto?> GetProductByIdAsync(int id, string userId)
+    {
+        return await _context.Products
+            .AsNoTracking()
+            .Where(p => p.IsActive)
+            .Select(p => new ProductDto()
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                ImageUrl = p.ImageUrl,
+                Price = p.Price,
+                CreatedOn = p.CreatedOn.ToString(DateTimeFormat),
+                Marketplace = p.Store.Marketplace.Name,
+                Likes = p.ProductsLikes.Count(pl => pl.ProductId == p.Id),
+                IsLikedByCurrentUser = p.ProductsLikes.Any(pl => pl.UserId == userId),
+                Category = new CategoryDto()
+                {
+                    Id = p.CategoryId,
+                    Name = p.Category.Name
+                },
+                Store = new StoreDto()
+                {
+                    Id = p.StoreId,
+                    Name = p.Store.Name
+                }
+            })
+            .FirstOrDefaultAsync();
     }
 }

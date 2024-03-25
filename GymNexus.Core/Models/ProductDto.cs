@@ -16,7 +16,7 @@ public class ProductDto
 
     public StoreDto Store { get; set; }
 
-    public string Category { get; set; } = string.Empty;
+    public CategoryDto Category { get; set; }
 
     public string? Marketplace { get; set; }
 

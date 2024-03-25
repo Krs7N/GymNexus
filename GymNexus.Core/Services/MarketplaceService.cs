@@ -22,6 +22,7 @@ public class MarketplaceService : IMarketplaceService
             .Where(m => m.IsActive)
             .Select(m => new MarketplaceDto()
             {
+                Id = m.Id,
                 Name = m.Name,
                 Description = m.Description,
                 Address = m.Address,

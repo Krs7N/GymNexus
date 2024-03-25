@@ -7,4 +7,5 @@ public interface IProductService
     Task<IEnumerable<ProductDto>> GetAllAsync(string userId);
     Task ToggleProductLikeByIdAsync(int id, string userId);
     Task<bool> IsCurrentUserLikedProductAsync(int id, string userId);
+    Task<ProductDto?> GetProductByIdAsync(int id, string userId);
 }
