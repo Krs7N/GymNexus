@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import { ProductViewModel } from '../product-view-model';
 import { ProductsService } from '../products.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { SnackbarService } from 'src/app/shared/snackbar.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { StoreViewModel } from 'src/app/shared/models/store-view-model';
 import { ActivatedRoute } from '@angular/router';
 

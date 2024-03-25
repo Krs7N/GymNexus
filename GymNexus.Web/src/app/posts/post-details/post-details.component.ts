@@ -3,7 +3,7 @@ import { PostViewModel } from '../post-view-model';
 import { ActivatedRoute } from '@angular/router';
 import { PostsService } from '../posts.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { SnackbarService } from 'src/app/shared/snackbar.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { Subject, takeUntil } from 'rxjs';
 import { UserModel } from 'src/app/auth/models/user-model';
 import { CommentViewModel } from '../comment-view-model';

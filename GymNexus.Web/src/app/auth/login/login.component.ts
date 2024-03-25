@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
-import { SnackbarService } from 'src/app/shared/snackbar.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginResponseModel } from '../models/login-response-model';
 import { CookieService } from 'ngx-cookie-service';

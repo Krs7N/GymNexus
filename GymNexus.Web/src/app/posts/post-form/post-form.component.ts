@@ -4,7 +4,7 @@ import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@ang
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PostsService } from '../posts.service';
-import { SnackbarService } from 'src/app/shared/snackbar.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { PostViewModel } from '../post-view-model';
 import { Subject, takeUntil } from 'rxjs';
 

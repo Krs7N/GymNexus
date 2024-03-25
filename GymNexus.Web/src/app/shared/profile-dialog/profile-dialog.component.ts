@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserModel } from 'src/app/auth/models/user-model';
 import { ProfileService } from 'src/app/auth/services/profile.service';
-import { SnackbarService } from '../snackbar.service';
+import { SnackbarService } from '../services/snackbar.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({

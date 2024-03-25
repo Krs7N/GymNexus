@@ -7,6 +7,7 @@ import { CategoryViewModel } from 'src/app/shared/models/category-view-model';
 import { MarketplaceViewModel } from 'src/app/shared/models/marketplace-view-model';
 import { StoreViewModel } from 'src/app/shared/models/store-view-model';
 import { ProductsService } from '../products.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-product-details',
@@ -35,8 +36,23 @@ export class ProductDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this._route.snapshot.params['id'];
+    this.categories = this._route.snapshot.data['categories'];
+    this.marketplaces = this._route.snapshot.data['marketplaces'];
 
-    
+    if (this.id) {
+      this._productsService.getProduct(this.id).subscribe(product => {
+        debugger
+        this.productForm.patchValue({
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          imageUrl: product.imageUrl,
+          store: product.store,
+          category: product.category,
+          marketplace: product.marketplace
+        });
+      });
+    }
   }
 
   openCloudinaryUploader(): void {
@@ -77,6 +93,10 @@ export class ProductDetailsComponent implements OnInit {
           this.productForm.get('imageUrl')?.setValue(result.info.secure_url);
         }
       });
+  }
+
+  onMarketplaceChanged(event: any) {
+    debugger
   }
 
   saveProduct(): void {

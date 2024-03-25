@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 import { ProfileDialogComponent } from '../shared/profile-dialog/profile-dialog.component';
-import { SnackbarService } from '../shared/snackbar.service';
+import { SnackbarService } from '../shared/services/snackbar.service';
 
 @Component({
   selector: 'app-nav-bar',

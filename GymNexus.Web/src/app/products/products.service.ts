@@ -18,8 +18,11 @@ export class ProductsService extends CrudService<ProductModel> {
   }
 
   toggleProductLike(id: number) : Observable<boolean> {
-    debugger
     return this.httpClient.put<boolean>(`${this.APIUrl}/${id}/like`, null);
+  }
+
+  getProduct(id: number): Observable<ProductViewModel> {
+    return this.httpClient.get<ProductViewModel>(`${this.APIUrl}/${id}`);
   }
 
   override getResourceUrl(): string {

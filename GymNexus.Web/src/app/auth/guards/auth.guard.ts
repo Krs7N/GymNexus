@@ -3,7 +3,7 @@ import { CanActivateFn, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from '../services/auth.service';
 import { jwtDecode } from 'jwt-decode';
-import { SnackbarService } from 'src/app/shared/snackbar.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const cookieService = inject(CookieService);

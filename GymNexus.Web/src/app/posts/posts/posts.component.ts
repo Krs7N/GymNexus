@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PostFormComponent } from '../post-form/post-form.component';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { UserModel } from 'src/app/auth/models/user-model';
-import { SnackbarService } from 'src/app/shared/snackbar.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { CommentViewModel } from '../comment-view-model';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 
