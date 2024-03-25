@@ -29,7 +29,11 @@ public class ProductService : IProductService
                 ImageUrl = p.ImageUrl,
                 Price = p.Price,
                 CreatedOn = p.CreatedOn.ToString(DateTimeFormat),
-                Marketplace = p.Store.Marketplace.Name,
+                Marketplace = new MarketplaceViewDto()
+                {
+                    Id = p.Store.MarketplaceId,
+                    Name = p.Store.Marketplace.Name
+                },
                 Likes = p.ProductsLikes.Count(pl => pl.ProductId == p.Id),
                 IsLikedByCurrentUser = p.ProductsLikes.Any(pl => pl.UserId == userId),
                 Category = new CategoryDto()
@@ -37,7 +41,7 @@ public class ProductService : IProductService
                     Id = p.CategoryId,
                     Name = p.Category.Name
                 },
-                Store = new StoreDto()
+                Store = new StoreViewDto()
                 {
                     Id = p.StoreId,
                     Name = p.Store.Name,
@@ -96,7 +100,11 @@ public class ProductService : IProductService
                 ImageUrl = p.ImageUrl,
                 Price = p.Price,
                 CreatedOn = p.CreatedOn.ToString(DateTimeFormat),
-                Marketplace = p.Store.Marketplace.Name,
+                Marketplace = new MarketplaceViewDto()
+                {
+                    Id = p.Store.MarketplaceId,
+                    Name = p.Store.Marketplace.Name
+                },
                 Likes = p.ProductsLikes.Count(pl => pl.ProductId == p.Id),
                 IsLikedByCurrentUser = p.ProductsLikes.Any(pl => pl.UserId == userId),
                 Category = new CategoryDto()
@@ -104,7 +112,7 @@ public class ProductService : IProductService
                     Id = p.CategoryId,
                     Name = p.Category.Name
                 },
-                Store = new StoreDto()
+                Store = new StoreViewDto()
                 {
                     Id = p.StoreId,
                     Name = p.Store.Name

@@ -14,11 +14,11 @@ public class ProductDto
 
     public string CreatedOn { get; set; } = string.Empty;
 
-    public StoreDto Store { get; set; }
+    public StoreViewDto Store { get; set; }
 
     public CategoryDto Category { get; set; }
 
-    public string? Marketplace { get; set; }
+    public MarketplaceViewDto? Marketplace { get; set; }
 
     public int Likes { get; set; }
 

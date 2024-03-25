@@ -7,5 +7,5 @@ public interface IProfileService
 {
     Task<ProfileUpdateResponseDto> UpdateProfileAsync(ProfileUpdateDto profileUpdateDto, ApplicationUser user);
 
-    Task<IEnumerable<StoreDto>> GetUserStoresAsync(string userId);
+    Task<IEnumerable<StoreViewDto>> GetUserStoresAsync(string userId);
 }

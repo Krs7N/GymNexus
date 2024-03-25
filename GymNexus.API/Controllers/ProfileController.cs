@@ -56,7 +56,7 @@ namespace GymNexus.API.Controllers
         /// <returns>Stores that are owned by the logged user</returns>
         [HttpGet("stores")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<StoreDto>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<StoreViewDto>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetUserStores()
         {

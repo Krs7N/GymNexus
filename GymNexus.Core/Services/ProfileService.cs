@@ -32,12 +32,12 @@ public class ProfileService : IProfileService
         };
     }
 
-    public async Task<IEnumerable<StoreDto>> GetUserStoresAsync(string userId)
+    public async Task<IEnumerable<StoreViewDto>> GetUserStoresAsync(string userId)
     {
         return await _context.Stores
             .AsNoTracking()
             .Where(s => s.IsActive && s.OwnerId == userId)
-            .Select(s => new StoreDto()
+            .Select(s => new StoreViewDto()
             {
                 Id = s.Id,
                 Name = s.Name
