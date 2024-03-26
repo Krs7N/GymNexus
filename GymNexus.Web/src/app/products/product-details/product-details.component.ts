@@ -1,12 +1,15 @@
 declare var cloudinary: any;
 
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CategoryViewModel } from 'src/app/shared/models/category-view-model';
 import { MarketplaceViewModel } from 'src/app/shared/models/marketplace-view-model';
 import { StoreViewModel } from 'src/app/shared/models/store-view-model';
 import { ProductsService } from '../products.service';
+import { StoresService } from 'src/app/stores/stores.service';
+import { MatSelectChange } from '@angular/material/select';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @Component({
   selector: 'app-product-details',
@@ -21,15 +24,21 @@ export class ProductDetailsComponent implements OnInit {
   categories: CategoryViewModel[] = [];
   marketplaces: MarketplaceViewModel[] = [];
 
-  constructor(private fb: FormBuilder, private _route: ActivatedRoute, private _productsService: ProductsService) {
+  constructor(
+    private fb: FormBuilder,
+    private _route: ActivatedRoute,
+    private _snackbarService: SnackbarService,
+    private _storesService: StoresService,
+    private _productsService: ProductsService
+  ) {
     this.productForm = this.fb.group({
-      name: [''],
-      description: [''],
-      price: [''],
-      imageUrl: [null],
-      store: [null],
-      category: [null],
-      marketplace: [null]
+      name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(40)]],
+      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
+      price: ['', [Validators.required, Validators.min(1.00), Validators.max(1000.00)]],
+      imageUrl: [null, [Validators.required]],
+      store: [null, [Validators.required]],
+      category: [null, [Validators.required]],
+      marketplace: [null, [Validators.required]]
     });
   }
 
@@ -40,13 +49,18 @@ export class ProductDetailsComponent implements OnInit {
 
     if (this.id) {
       this._productsService.getProduct(this.id).subscribe(product => {
-        debugger
+        this._storesService.getStoresByMarketplace(product.marketplace?.id).subscribe(stores => {
+          if (stores.length === 0) {
+            this._snackbarService.openWarning('No stores are associated with this marketplace. Please choose a different marketplace area.');
+          }
+          this.stores = stores;
+        });
         this.productForm.patchValue({
           name: product.name,
           description: product.description,
           price: product.price,
           imageUrl: product.imageUrl,
-          store: product.store,
+          store: product.store.id,
           category: product.category.id,
           marketplace: product.marketplace?.id
         });
@@ -94,8 +108,13 @@ export class ProductDetailsComponent implements OnInit {
       });
   }
 
-  onMarketplaceChanged(event: any) {
-    debugger
+  onMarketplaceChanged(event: MatSelectChange) {
+    this._storesService.getStoresByMarketplace(event.value).subscribe(stores => {
+      if (stores.length === 0) {
+        this._snackbarService.openWarning('No stores are associated with this marketplace. Please choose a different marketplace area.');
+      }
+      this.stores = stores;
+    });
   }
 
   saveProduct(): void {
