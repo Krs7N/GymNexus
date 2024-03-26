@@ -6,5 +6,5 @@ public interface IStoreService
 {
     Task<IEnumerable<StoreDto>> GetAllStoresAsync();
 
-    Task<StoreViewDto?> GetStoreByMarketplaceIdAsync(int marketplaceId);
+    Task<IEnumerable<StoreViewDto?>> GetStoresByMarketplaceIdAsync(int marketplaceId);
 }

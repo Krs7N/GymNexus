@@ -37,7 +37,7 @@ public class StoreService : IStoreService
             .ToListAsync();
     }
 
-    public async Task<StoreViewDto?> GetStoreByMarketplaceIdAsync(int marketplaceId)
+    public async Task<IEnumerable<StoreViewDto?>> GetStoresByMarketplaceIdAsync(int marketplaceId)
     {
         return await _context.Stores
             .AsNoTracking()
@@ -47,6 +47,6 @@ public class StoreService : IStoreService
                 Id = s.Id,
                 Name = s.Name
             })
-            .FirstOrDefaultAsync();
+            .ToListAsync();
     }
 }
