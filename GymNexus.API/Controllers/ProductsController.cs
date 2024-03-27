@@ -86,6 +86,33 @@ namespace GymNexus.API.Controllers
         }
 
         /// <summary>
+        /// Adds a new product to the system
+        /// </summary>
+        [HttpPost]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddProduct([FromBody] ProductFormDto productModel)
+        {
+            var userId = GetUserId();
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _productService.AddProductAsync(productModel, user);
+            return Ok(product);
+        }
+
+        /// <summary>
         /// Updates an active product by it's id
         /// </summary>
         /// <returns>Updated product</returns>
@@ -149,6 +176,34 @@ namespace GymNexus.API.Controllers
             var isCurrentUserLiked = await _productService.IsCurrentUserLikedProductAsync(id, userId);
 
             return Ok(isCurrentUserLiked);
+        }
+
+        /// <summary>
+        /// Deletes a product from the system. Sets IsActive to false
+        /// </summary>
+        [HttpDelete("{id:int}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeletePostById([FromRoute] int id)
+        {
+            if (id < 0)
+            {
+                return BadRequest();
+            }
+
+            var userId = GetUserId();
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var product = await _productService.DeleteProductByIdAsync(id);
+
+            return Ok(product);
         }
 
         /// <summary>

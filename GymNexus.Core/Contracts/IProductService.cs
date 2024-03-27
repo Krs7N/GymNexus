@@ -10,5 +10,7 @@ public interface IProductService
     Task ToggleProductLikeByIdAsync(int id, string userId);
     Task<bool> IsCurrentUserLikedProductAsync(int id, string userId);
     Task<ProductDto?> GetProductByIdAsync(int id, string userId);
-    Task<ProductFormDto> UpdateProductByIdAsync(int id, ProductFormDto productFormDto, ApplicationUser user); 
+    Task<ProductFormDto> UpdateProductByIdAsync(int id, ProductFormDto productFormDto, ApplicationUser user);
+    Task<ProductFormDto> DeleteProductByIdAsync(int id);
+    Task<ProductFormDto> AddProductAsync(ProductFormDto productModel, ApplicationUser user);
 }

@@ -160,4 +160,58 @@ public class ProductService : IProductService
             MarketplaceId = product.Store.MarketplaceId
         };
     }
+
+    public async Task<ProductFormDto> DeleteProductByIdAsync(int id)
+    {
+        var product = await _context.Products.Include(product => product.Store)
+            .FirstOrDefaultAsync(p => p.IsActive && p.Id == id);
+
+        if (product == null)
+        {
+            throw new InvalidOperationException();
+        }
+
+        product.IsActive = false;
+
+        await _context.SaveChangesAsync();
+
+        return new ProductFormDto()
+        {
+            Name = product.Name,
+            Description = product.Description,
+            ImageUrl = product.ImageUrl,
+            Price = product.Price,
+            StoreId = product.StoreId,
+            CategoryId = product.CategoryId,
+            MarketplaceId = product.Store.MarketplaceId
+        };
+    }
+
+    public async Task<ProductFormDto> AddProductAsync(ProductFormDto productModel, ApplicationUser user)
+    {
+        var product = new Product()
+        {
+            Name = productModel.Name,
+            Description = productModel.Description,
+            Price = productModel.Price,
+            ImageUrl = productModel.ImageUrl,
+            CategoryId = productModel.CategoryId,
+            StoreId = productModel.StoreId,
+            CreatedOn = DateTime.Now
+        };
+
+        await _context.Products.AddAsync(product);
+        await _context.SaveChangesAsync();
+
+        return new ProductFormDto()
+        {
+            Name = product.Name,
+            Description = product.Description,
+            ImageUrl = product.ImageUrl,
+            Price = product.Price,
+            StoreId = product.StoreId,
+            CategoryId = product.CategoryId,
+            MarketplaceId = productModel.MarketplaceId
+        };
+    }
 }
