@@ -11,6 +11,7 @@ import { StoresService } from 'src/app/stores/stores.service';
 import { MatSelectChange } from '@angular/material/select';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { ProductModel } from '../product-model';
+import { Actions } from 'src/app/enums/actions';
 
 @Component({
   selector: 'app-product-details',
@@ -24,6 +25,7 @@ export class ProductDetailsComponent implements OnInit {
   stores: StoreViewModel[] = [];
   categories: CategoryViewModel[] = [];
   marketplaces: MarketplaceViewModel[] = [];
+  action: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -45,9 +47,11 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    debugger
     this.id = this._route.snapshot.params['id'];
     this.categories = this._route.snapshot.data['categories'];
     this.marketplaces = this._route.snapshot.data['marketplaces'];
+    this.action = this._route.snapshot.data['action'];
 
     if (this.id) {
       this._productsService.getProduct(this.id).subscribe(product => {
@@ -123,6 +127,21 @@ export class ProductDetailsComponent implements OnInit {
 
   saveProduct(): void {
     if (this.productForm.valid) {
+      debugger
+      if (this.action === Actions.CREATE) {
+        this._productsService.create(this.productForm.value as ProductModel).subscribe({
+          next: () => {
+            this._snackbarService.openSuccess('Product created successfully.');
+            this._router.navigate(['/products']);
+          },
+          error: () => {
+            this._snackbarService.openError('An error occurred while creating the product.');
+          }
+        });
+
+        return;
+      }
+
       this._productsService.update(this.id, this.productForm.value as ProductModel).subscribe({
         next: () => {
           this._snackbarService.openSuccess('Product updated successfully.');

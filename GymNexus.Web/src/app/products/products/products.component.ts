@@ -9,6 +9,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { StoreViewModel } from 'src/app/shared/models/store-view-model';
 import { ActivatedRoute } from '@angular/router';
+import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-products',
@@ -31,7 +33,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
     private _snackbarService: SnackbarService,
     private _productsService: ProductsService,
     private _route: ActivatedRoute,
-    private _authService: AuthService
+    private _authService: AuthService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -44,6 +47,32 @@ export class ProductsComponent implements OnInit, OnDestroy {
     if (this.user) {
       this.user.stores = this.userStores;
     }
+  }
+  
+  deleteProduct(id: number): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Deletion',
+        message: 'Are you sure you want to delete this product?'
+      }
+    });
+
+    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+      if (result) {
+        this._productsService.delete(id)
+          .pipe(takeUntil(this._unsubscribeAll))
+          .subscribe({
+            next: () => {
+              this._snackbarService.openSuccess(`Successfully deleted product`);
+              this.loadProducts();
+            },
+            error: (e) => {
+              console.error(e);
+            },
+          });
+      }
+    });
   }
 
   toggleLike(product: ProductViewModel): void {

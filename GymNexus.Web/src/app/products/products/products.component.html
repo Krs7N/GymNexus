@@ -1,6 +1,6 @@
 <div *ngIf="!error" class="container mx-auto p-6">
   <div class="container mx-auto flex justify-end">
-    <button mat-raised-button color="primary">Add Product</button>
+    <button mat-raised-button [routerLink]="['/products', 'add']" color="primary">Add Product</button>
   </div>
   <div
     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
@@ -43,6 +43,7 @@
             <button
               mat-icon-button
               color="warn"
+              (click)="deleteProduct(product.id)"
             >
               <mat-icon>delete</mat-icon>
             </button>
