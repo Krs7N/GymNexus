@@ -2,7 +2,7 @@ declare var cloudinary: any;
 
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryViewModel } from 'src/app/shared/models/category-view-model';
 import { MarketplaceViewModel } from 'src/app/shared/models/marketplace-view-model';
 import { StoreViewModel } from 'src/app/shared/models/store-view-model';
@@ -10,6 +10,7 @@ import { ProductsService } from '../products.service';
 import { StoresService } from 'src/app/stores/stores.service';
 import { MatSelectChange } from '@angular/material/select';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { ProductModel } from '../product-model';
 
 @Component({
   selector: 'app-product-details',
@@ -27,6 +28,7 @@ export class ProductDetailsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private _route: ActivatedRoute,
+    private _router: Router,
     private _snackbarService: SnackbarService,
     private _storesService: StoresService,
     private _productsService: ProductsService
@@ -36,9 +38,9 @@ export class ProductDetailsComponent implements OnInit {
       description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
       price: ['', [Validators.required, Validators.min(1.00), Validators.max(1000.00)]],
       imageUrl: [null, [Validators.required]],
-      store: [null, [Validators.required]],
-      category: [null, [Validators.required]],
-      marketplace: [null, [Validators.required]]
+      storeId: ['', [Validators.required]],
+      categoryId: ['', [Validators.required]],
+      marketplaceId: ['', [Validators.required]]
     });
   }
 
@@ -60,9 +62,9 @@ export class ProductDetailsComponent implements OnInit {
           description: product.description,
           price: product.price,
           imageUrl: product.imageUrl,
-          store: product.store.id,
-          category: product.category.id,
-          marketplace: product.marketplace?.id
+          storeId: product.store.id,
+          categoryId: product.category.id,
+          marketplaceId: product.marketplace?.id
         });
       });
     }
@@ -111,6 +113,8 @@ export class ProductDetailsComponent implements OnInit {
   onMarketplaceChanged(event: MatSelectChange) {
     this._storesService.getStoresByMarketplace(event.value).subscribe(stores => {
       if (stores.length === 0) {
+        this.productForm.get('store')?.reset();
+        this.productForm.updateValueAndValidity();
         this._snackbarService.openWarning('No stores are associated with this marketplace. Please choose a different marketplace area.');
       }
       this.stores = stores;
@@ -119,7 +123,15 @@ export class ProductDetailsComponent implements OnInit {
 
   saveProduct(): void {
     if (this.productForm.valid) {
-      console.log(this.productForm.value);
+      this._productsService.update(this.id, this.productForm.value as ProductModel).subscribe({
+        next: () => {
+          this._snackbarService.openSuccess('Product updated successfully.');
+          this._router.navigate(['/products']);
+        },
+        error: () => {
+          this._snackbarService.openError('An error occurred while updating the product.');
+        }
+      });
     }
   }
 }

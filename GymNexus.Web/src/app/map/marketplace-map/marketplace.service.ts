@@ -17,6 +17,10 @@ export class MarketplaceService extends CrudService<MarketplaceModel> {
     return this.httpClient.get<MarketplaceModel[]>(`${environment.apiBaseUrl}/${this.getResourceUrl()}`);
   }
 
+  getAllMarketplacesWithStores(): Observable<MarketplaceModel[]> {
+    return this.httpClient.get<MarketplaceModel[]>(`${environment.apiBaseUrl}/${this.getResourceUrl()}/withStores`);
+  }
+
   override getResourceUrl(): string {
     return 'api/marketplaces';
   }

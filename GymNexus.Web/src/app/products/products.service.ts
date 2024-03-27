@@ -3,7 +3,6 @@ import { CrudService } from '../core/services/crud.service';
 import { ProductModel } from './product-model';
 import { Observable } from 'rxjs';
 import { ProductViewModel } from './product-view-model';
-import { StoreViewModel } from '../shared/models/store-view-model';
 
 @Injectable({
   providedIn: 'root'

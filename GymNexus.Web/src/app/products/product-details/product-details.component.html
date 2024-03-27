@@ -47,7 +47,7 @@
       *ngIf="marketplaces.length > 0"
     >
       <mat-label>Global Marketplace</mat-label>
-      <mat-select (selectionChange)="onMarketplaceChanged($event)" formControlName="marketplace">
+      <mat-select (selectionChange)="onMarketplaceChanged($event)" formControlName="marketplaceId">
         <mat-option
           *ngFor="let marketplace of marketplaces"
           [value]="marketplace.id"
@@ -58,7 +58,7 @@
 
     <mat-form-field appearance="fill" class="w-full" *ngIf="stores.length > 1">
       <mat-label>Store</mat-label>
-      <mat-select formControlName="store">
+      <mat-select formControlName="storeId">
         <mat-option *ngFor="let store of stores" [value]="store.id">{{
           store.name
         }}</mat-option>
@@ -67,7 +67,7 @@
 
     <mat-form-field appearance="fill" class="w-full">
       <mat-label>Category</mat-label>
-      <mat-select formControlName="category">
+      <mat-select formControlName="categoryId">
         <mat-option *ngFor="let category of categories" [value]="category.id">{{
           category.name
         }}</mat-option>
@@ -79,7 +79,7 @@
           <mat-icon>arrow_back</mat-icon>
           Go Back
         </button>
-        <button mat-raised-button color="primary" (click)="saveProduct()">
+        <button mat-raised-button [disabled]="productForm.invalid" color="primary" (click)="saveProduct()">
           Save
         </button>
     </div>
