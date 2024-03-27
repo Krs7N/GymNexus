@@ -1,7 +1,9 @@
 ﻿using GymNexus.Core.Contracts;
 using GymNexus.Core.Models;
+using GymNexus.Core.Utils;
 using GymNexus.Infrastructure.Data;
 using GymNexus.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using static GymNexus.Infrastructure.Constants.DataConstants;
 
@@ -10,10 +12,12 @@ namespace GymNexus.Core.Services;
 public class ProductService : IProductService
 {
     private readonly ApplicationDbContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public ProductService(ApplicationDbContext context)
+    public ProductService(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
     public async Task<IEnumerable<ProductDto>> GetAllAsync(string userId)
@@ -119,5 +123,41 @@ public class ProductService : IProductService
                 }
             })
             .FirstOrDefaultAsync();
+    }
+
+    public async Task<ProductFormDto> UpdateProductByIdAsync(int id, ProductFormDto productFormDto, ApplicationUser user)
+    {
+        var product = await _context.Products.Include(product => product.Store).FirstOrDefaultAsync(p => p.IsActive && p.Id == id);
+
+        if (product == null)
+        {
+            throw new InvalidOperationException();
+        }
+
+        if (!(await _userManager.IsInRoleAsync(user, Roles.Owner) ||
+              await _userManager.IsInRoleAsync(user, Roles.Seller)))
+        {
+            throw new InvalidOperationException();
+        }
+
+        product.Name = productFormDto.Name;
+        product.Description = productFormDto.Description;
+        product.Price = productFormDto.Price;
+        product.ImageUrl = productFormDto.ImageUrl;
+        product.CategoryId = productFormDto.CategoryId;
+        product.StoreId = productFormDto.StoreId;
+
+        await _context.SaveChangesAsync();
+
+        return new ProductFormDto()
+        {
+            Name = product.Name,
+            Description = product.Description,
+            ImageUrl = product.ImageUrl,
+            Price = product.Price,
+            StoreId = product.StoreId,
+            CategoryId = product.CategoryId,
+            MarketplaceId = product.Store.MarketplaceId
+        };
     }
 }

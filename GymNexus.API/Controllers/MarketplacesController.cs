@@ -28,5 +28,19 @@ namespace GymNexus.API.Controllers
             var marketplaces = await _marketplaceService.GetAllAsync();
             return Ok(marketplaces);
         }
+
+        /// <summary>
+        /// Gets all marketplaces that are currently active in the system and have at least one active store
+        /// </summary>
+        /// <returns>All currently active marketplaces with at least one active store</returns>
+        [HttpGet("withStores")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<MarketplaceViewDto>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAllMarketplacesWithStores()
+        {
+            var marketplaces = await _marketplaceService.GetAllWithStoresAsync();
+            return Ok(marketplaces);
+        }
     }
 }

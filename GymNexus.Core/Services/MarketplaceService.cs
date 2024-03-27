@@ -31,4 +31,17 @@ public class MarketplaceService : IMarketplaceService
             })
             .ToListAsync();
     }
+
+    public async Task<IEnumerable<MarketplaceViewDto>> GetAllWithStoresAsync()
+    {
+        return await _context.Marketplaces
+            .AsNoTracking()
+            .Where(m => m.IsActive && m.Stores.Any())
+            .Select(m => new MarketplaceViewDto()
+            {
+                Id = m.Id,
+                Name = m.Name
+            })
+            .ToListAsync();
+    }
 }

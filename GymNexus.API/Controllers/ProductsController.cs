@@ -86,6 +86,42 @@ namespace GymNexus.API.Controllers
         }
 
         /// <summary>
+        /// Updates an active product by it's id
+        /// </summary>
+        /// <returns>Updated product</returns>
+        [HttpPut("{id:int}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> EditProductById([FromRoute] int id, [FromBody] ProductFormDto model)
+        {
+            if (id < 0)
+            {
+                return BadRequest();
+            }
+
+            var userId = GetUserId();
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _productService.UpdateProductByIdAsync(id, model, user);
+
+            return Ok(product);
+        }
+
+        /// <summary>
         /// Toggles like for specific user on a product
         /// </summary>
         /// <returns>If the current User has liked the product</returns>
