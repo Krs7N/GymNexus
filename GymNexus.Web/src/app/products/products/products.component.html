@@ -11,7 +11,7 @@
           <mat-card-title>{{ product.name }}</mat-card-title>
           <mat-card-subtitle>{{ product.category.name }}</mat-card-subtitle>
         </mat-card-header>
-        <img mat-card-image [src]="product.imageUrl" alt="{{ product.name }}" />
+        <img class="h-64" mat-card-image [src]="product.imageUrl" alt="{{ product.name }}" />
         <mat-card-content class="flex-grow">
           <p>{{ product.description }}</p>
           <p class="text-sm text-gray-600">Store: <b>{{ product.store.name }}</b></p>
@@ -19,9 +19,11 @@
           <p class="text-sm text-gray-600">Added: {{ product.createdOn }}</p>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-button *ngIf="!user?.roles?.includes('Seller')">
-            Add to Cart
-          </button>
+          <div [matTooltip]="'Price: ' + product.price + ' BGN'">
+            <button mat-button *ngIf="!user?.roles?.includes('Seller')">
+              Add to Cart
+            </button>
+          </div>
           <button mat-button (click)="toggleLike(product)">
             <i
               [class]="

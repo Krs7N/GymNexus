@@ -18,7 +18,7 @@
             </mat-card-subtitle>
         </div>
         <div *ngIf="post.createdBy === user?.email" class="action-buttons absolute right-0 top-0 mt-2 mr-2 gap-2">
-            <button mat-icon-button color="primary" (click)="editPost(post.id)">
+            <button mat-icon-button color="primary" (click)="editPost(post)">
                 <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button color="warn" (click)="deletePost(post.id)">

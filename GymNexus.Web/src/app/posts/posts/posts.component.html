@@ -1,4 +1,20 @@
-<div *ngIf="!error" class="max-w-7xl mx-auto w-4/5 flex justify-end mt-3 mb-3">
+<div *ngIf="!error" class="max-w-7xl mx-auto w-4/5 flex justify-between mt-3 mb-3">
+  <div class="flex items-center">
+    <mat-form-field class="w-80 mr-2">
+      <mat-label>Filter by Post title</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Filter..">
+    </mat-form-field>
+
+    <mat-form-field class="mr-2">
+      <mat-label>Sort By</mat-label>
+      <mat-select [value]="'none'" (selectionChange)="sortPosts($event.value)">
+        <mat-option value="none">--</mat-option>
+        <hr />
+        <mat-option value="date">Date Posted</mat-option>
+        <mat-option value="likes">Likes Count</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
   <button
     mat-raised-button
     color="primary"

@@ -1,8 +1,7 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PostsService } from '../posts.service';
 import { PostViewModel } from '../post-view-model';
 import { Subject, takeUntil } from 'rxjs';
-import { format } from 'date-fns';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { PostFormComponent } from '../post-form/post-form.component';
@@ -17,12 +16,13 @@ import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-di
   templateUrl: './posts.component.html',
   styleUrls: ['./posts.component.scss'],
 })
-export class PostsComponent implements OnInit, OnDestroy {
+export class PostsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   commentMap: Map<number, string> = new Map<number, string>();
   posts: PostViewModel[] = [];
+  allPosts: PostViewModel[] = [];
   user: UserModel | undefined;
   currentPosts: PostViewModel[] = [];
   error: any;
@@ -37,9 +37,11 @@ export class PostsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.loadPosts();
-
     this.user = this._authService.getUser();
+  }
+
+  ngAfterViewInit(): void {
+    this.loadPosts();
   }
 
   toggleLike(post: PostViewModel): void {
@@ -147,13 +149,32 @@ export class PostsComponent implements OnInit, OnDestroy {
     this.setPage(event.pageIndex, event.pageSize);
   }
 
+  applyFilter(event: KeyboardEvent) {
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    this.posts = this.allPosts.filter((post) => post.title.toLowerCase().includes(filterValue));
+    this.updatePaginator();
+    this.setPage(this.paginator.pageIndex, this.paginator.pageSize);
+  }
+  
+  sortPosts(sortValue: 'date' | 'likes') {
+    if (sortValue === 'date') {
+      this.posts.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime());
+    } else if (sortValue === 'likes') {
+      this.posts.sort((a, b) => b.likes - a.likes);
+    } else {
+      this.loadPosts();
+    }
+    this.setPage(this.paginator.pageIndex, this.paginator.pageSize);
+  }
+
   private loadPosts(innerLoad: boolean = false): void {
     this._postsService
       .getAllPosts()
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
         next: (posts) => {
-          this.posts = posts;
+          this.allPosts = posts;
+          this.posts = [...this.allPosts];
 
           if (!innerLoad) {
             this.paginator.pageIndex = 0;
@@ -166,7 +187,12 @@ export class PostsComponent implements OnInit, OnDestroy {
           this.error = e;
         },
       });
-    }
+  }
+
+  private updatePaginator() {
+    this.paginator.length = this.currentPosts.length;
+    this.paginator.pageIndex = 0;
+  }
 
   private setPage(pageIndex: number, pageSize: number): void {
     const start = pageIndex * pageSize;

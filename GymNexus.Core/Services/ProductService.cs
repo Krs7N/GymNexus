@@ -95,7 +95,7 @@ public class ProductService : IProductService
     {
         return await _context.Products
             .AsNoTracking()
-            .Where(p => p.IsActive)
+            .Where(p => p.IsActive && p.Id == id)
             .Select(p => new ProductDto()
             {
                 Id = p.Id,

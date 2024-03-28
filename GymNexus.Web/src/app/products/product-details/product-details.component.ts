@@ -47,7 +47,6 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    debugger
     this.id = this._route.snapshot.params['id'];
     this.categories = this._route.snapshot.data['categories'];
     this.marketplaces = this._route.snapshot.data['marketplaces'];
@@ -127,7 +126,6 @@ export class ProductDetailsComponent implements OnInit {
 
   saveProduct(): void {
     if (this.productForm.valid) {
-      debugger
       if (this.action === Actions.CREATE) {
         this._productsService.create(this.productForm.value as ProductModel).subscribe({
           next: () => {

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PostViewModel } from '../post-view-model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PostsService } from '../posts.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
@@ -9,6 +9,7 @@ import { UserModel } from 'src/app/auth/models/user-model';
 import { CommentViewModel } from '../comment-view-model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
+import { PostFormComponent } from '../post-form/post-form.component';
 
 @Component({
   selector: 'app-post-details',
@@ -22,11 +23,13 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
   postId: number = 0;
   user?: UserModel;
   post: PostViewModel = {} as PostViewModel;
+  error: any;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     private _route: ActivatedRoute,
+    private _router: Router,
     private _authService: AuthService,
     private _postsService: PostsService,
     private _snackbarService: SnackbarService,
@@ -40,12 +43,45 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
     this.loadPost();
   }
 
-  editPost(id: number) {
+  editPost(post: PostViewModel) {
+    const dialogRef = this.dialog.open(PostFormComponent, {
+      width: '60%',
+      height: '80%',
+      data: {
+        post: post,
+        title: 'Edit Post'
+      },
+    });
 
+    dialogRef.componentInstance.postAdded
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(() => {
+        this.loadPost();
+      });
   }
 
   deletePost(id: number) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Delete Post',
+        message: 'Are you sure you want to delete this post?'
+      }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this._postsService.delete(id).pipe(takeUntil(this._unsubscribeAll)).subscribe({
+          next: () => {
+            this._snackbarService.openSuccess('Post deleted successfully');
+            this._router.navigate(['/posts']);
+          },
+          error: (e) => {
+            this.error = e;
+          },
+        });
+      }
+    });
   }
 
   toggleLike(): void {
