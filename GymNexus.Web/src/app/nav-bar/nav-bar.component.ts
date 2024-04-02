@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserModel } from '../auth/models/user-model';
 import { AuthService } from '../auth/services/auth.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 import { ProfileDialogComponent } from '../shared/profile-dialog/profile-dialog.component';
 import { SnackbarService } from '../shared/services/snackbar.service';
+import { CartService } from '../products/cart.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -15,12 +16,16 @@ import { SnackbarService } from '../shared/services/snackbar.service';
 })
 export class NavBarComponent implements OnInit, OnDestroy {
 
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  
   user?: UserModel;
 
-  private _unsubscribeAll: Subject<any> = new Subject<any>();
-
-  constructor(private _authService: AuthService, private _snackbarService: SnackbarService,
-    private _router: Router, public dialog: MatDialog) { }
+  constructor(
+    private _authService: AuthService,
+    private _snackbarService: SnackbarService,
+    private _router: Router,
+    public dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
     this._authService.user().pipe(takeUntil(this._unsubscribeAll)).subscribe(user => {

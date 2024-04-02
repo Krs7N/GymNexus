@@ -26,6 +26,7 @@ export class ProductDetailsComponent implements OnInit {
   categories: CategoryViewModel[] = [];
   marketplaces: MarketplaceViewModel[] = [];
   action: string = '';
+  title: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -51,6 +52,12 @@ export class ProductDetailsComponent implements OnInit {
     this.categories = this._route.snapshot.data['categories'];
     this.marketplaces = this._route.snapshot.data['marketplaces'];
     this.action = this._route.snapshot.data['action'];
+
+    if (this.action === Actions.CREATE) {
+      this.title = 'Create Product';
+    } else {
+      this.title = 'Edit Product';
+    }
 
     if (this.id) {
       this._productsService.getProduct(this.id).subscribe(product => {

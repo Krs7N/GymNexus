@@ -20,8 +20,11 @@
         </mat-card-content>
         <mat-card-actions>
           <div [matTooltip]="'Price: ' + product.price + ' BGN'">
-            <button mat-button *ngIf="!user?.roles?.includes('Seller')">
+            <button mat-button (click)="addToCart(product)" *ngIf="!(cartService.isInCart(product) | async) && !user?.roles?.includes('Seller')">
               Add to Cart
+            </button>
+            <button mat-button (click)="removeFromCart(product.id)" *ngIf="(cartService.isInCart(product) | async) && !user?.roles?.includes('Seller')">
+                Remove from Cart
             </button>
           </div>
           <button mat-button (click)="toggleLike(product)">

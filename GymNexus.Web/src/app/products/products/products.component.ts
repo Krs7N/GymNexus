@@ -11,6 +11,8 @@ import { StoreViewModel } from 'src/app/shared/models/store-view-model';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { CartService } from '../cart.service';
+import { ProductCartModel } from '../product-cart-model';
 
 @Component({
   selector: 'app-products',
@@ -29,6 +31,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   error: any;
 
   constructor(
+    public cartService: CartService,
     private _sanitizer: DomSanitizer,
     private _snackbarService: SnackbarService,
     private _productsService: ProductsService,
@@ -73,6 +76,26 @@ export class ProductsComponent implements OnInit, OnDestroy {
           });
       }
     });
+  }
+
+  addToCart(product: ProductViewModel): void {
+    debugger
+    const cartProduct = {
+      id: product.id,
+      imageUrl: product.imageUrl,
+      name: product.name,
+      price: product.price
+    } as ProductCartModel;
+
+    this.cartService.addToCart(cartProduct);
+    this._snackbarService.openSuccess('Product added to cart.');
+  }
+
+  removeFromCart(id: number): void {
+    debugger
+
+    this.cartService.removeFromCart(id);
+    this._snackbarService.openSuccess('Product removed from cart.');
   }
 
   toggleLike(product: ProductViewModel): void {

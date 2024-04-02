@@ -46,7 +46,7 @@ export class LoginComponent {
           this._router.navigate(['/']);
         },
         error: (e) => {
-          this._snackbarService.openError(e.error.errors.message[0], 'Okay');
+          this._snackbarService.openError(e.error.errors?.message[0], 'Okay');
         }
       });
     } else {

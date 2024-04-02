@@ -12,11 +12,13 @@ import { AuthModule } from './auth/auth.module';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { MaterialModule } from './shared/material.module';
 import { ErrorPageComponent } from "./shared/error-page/error-page.component";
+import { CartComponent } from './cart/cart.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        NavBarComponent
+        NavBarComponent,
+        CartComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
