@@ -2,18 +2,21 @@
     <mat-icon class="text-white">shopping_cart</mat-icon>
 </button>
 
-<mat-menu #cartMenu="matMenu" class="flex items-center justify-center w-96 h-96">
+<mat-menu #cartMenu="matMenu" class="flex items-center justify-center w-96 h-96 p-2">
     <div *ngIf="cartProducts.length > 0; else noProducts">
         <div *ngFor="let product of cartProducts; let i = index" class="flex items-center justify-between mb-4">
             <div class="flex items-center space-x-4">
 
-            <img [src]="product.imageUrl" alt="Product Image" class="w-16 h-16 object-cover rounded">
+                <img [src]="product.imageUrl" alt="Product Image" class="w-16 h-16 object-cover rounded">
             
-            <div>
-                <div class="font-semibold">{{ product.name }}</div>
-                <div class="text-gray-700">{{ product.price }} BGN</div>
+                <div>
+                    <div class="font-semibold">{{ product.name }}</div>
+                    <div class="text-gray-700">{{ product.price }} BGN</div>
+                </div>
             </div>
-            </div>
+            <button (click)="removeFromCart(product.id)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+                X
+            </button>
         </div>
 
         <div class="mt-4 text-lg font-bold">

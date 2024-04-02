@@ -79,7 +79,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   addToCart(product: ProductViewModel): void {
-    debugger
     const cartProduct = {
       id: product.id,
       imageUrl: product.imageUrl,
@@ -92,10 +91,20 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   removeFromCart(id: number): void {
-    debugger
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Remove from Cart',
+        message: 'Are you sure you want to remove the product from your cart?'
+      }
+    });
 
-    this.cartService.removeFromCart(id);
-    this._snackbarService.openSuccess('Product removed from cart.');
+    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+      if (result) {
+        this.cartService.removeFromCart(id);
+        this._snackbarService.openSuccess('Product removed from cart.');
+      }
+    });
   }
 
   toggleLike(product: ProductViewModel): void {

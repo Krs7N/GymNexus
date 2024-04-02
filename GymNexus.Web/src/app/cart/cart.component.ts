@@ -2,6 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from '../products/cart.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { ProductCartModel } from '../products/product-cart-model';
+import { SnackbarService } from '../shared/services/snackbar.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-cart',
@@ -17,7 +20,9 @@ export class CartComponent implements OnInit, OnDestroy {
   cartProducts: ProductCartModel[] = [];
 
   constructor(
-    private _cartService: CartService
+    private _cartService: CartService,
+    private _snackbarService: SnackbarService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -39,7 +44,21 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   removeFromCart(index: number): void {
-    this._cartService.removeFromCart(index);
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Remove from Cart',
+        message: 'Are you sure you want to remove the product from your cart?'
+      }
+    });
+
+    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+      if (result) {
+        this._cartService.removeFromCart(index);
+        this._snackbarService.openSuccess('Product removed from cart.');
+      }
+    });
   }
 
   ngOnDestroy(): void {

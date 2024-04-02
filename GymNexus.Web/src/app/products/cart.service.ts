@@ -33,7 +33,6 @@ export class CartService {
   }
 
   removeFromCart(id: number): void {
-    debugger
     const index = this.productsInCart.findIndex(product => product.id === id);
     if (index > -1) {
         this.productsInCart.splice(index, 1);
