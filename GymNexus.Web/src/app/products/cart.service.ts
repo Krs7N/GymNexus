@@ -12,9 +12,16 @@ export class CartService {
   private cartProductCountSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   constructor() {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      this.productsInCart = JSON.parse(savedCart);
+      this.productsInCartSubject.next(this.productsInCart);
+    }
+
     this.productsInCartSubject.subscribe(products => {
       this.productsInCart = products;
       this.cartProductCountSubject.next(this.productsInCart.length);
+      localStorage.setItem('cart', JSON.stringify(this.productsInCart));
     });
   }
 
@@ -43,6 +50,7 @@ export class CartService {
   clearCart(): void {
     this.productsInCart = [];
     this.productsInCartSubject.next(this.productsInCart);
+    localStorage.removeItem('cart');
   }
 
   getCartProductsCount(): Observable<number> {
