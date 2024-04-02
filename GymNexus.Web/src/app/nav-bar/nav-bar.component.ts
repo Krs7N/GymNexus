@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 import { ProfileDialogComponent } from '../shared/profile-dialog/profile-dialog.component';
 import { SnackbarService } from '../shared/services/snackbar.service';
-import { CartService } from '../products/cart.service';
+import { CartService } from '../cart/cart.service';
 
 @Component({
   selector: 'app-nav-bar',

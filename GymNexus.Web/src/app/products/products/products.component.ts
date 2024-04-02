@@ -11,7 +11,7 @@ import { StoreViewModel } from 'src/app/shared/models/store-view-model';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { CartService } from '../cart.service';
+import { CartService } from '../../cart/cart.service';
 import { ProductCartModel } from '../product-cart-model';
 
 @Component({
