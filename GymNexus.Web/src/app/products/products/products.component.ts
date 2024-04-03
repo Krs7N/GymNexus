@@ -83,7 +83,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
       id: product.id,
       imageUrl: product.imageUrl,
       name: product.name,
-      price: product.price
+      price: product.price,
+      quantity: 1,
     } as ProductCartModel;
 
     this.cartService.addToCart(cartProduct);

@@ -1,17 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { ProductCartModel } from '../products/product-cart-model';
+import { ProductViewModel } from '../products/product-view-model';
+import { CrudService } from '../core/services/crud.service';
+import { OrderModel } from './order-model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CartService {
+export class CartService extends CrudService<OrderModel> {
   private productsInCartSubject: BehaviorSubject<ProductCartModel[]> = new BehaviorSubject<ProductCartModel[]>([]);
   private productsInCart: ProductCartModel[] = [];
 
   private cartProductCountSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
-  constructor() {
+  constructor(injector: Injector) {
+    super(injector);
+
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
       this.productsInCart = JSON.parse(savedCart);
@@ -25,6 +30,10 @@ export class CartService {
     });
   }
 
+  createOrder(order: OrderModel): Observable<void> {
+    return this.httpClient.post<void>(`${this.APIUrl}`, order);
+  }
+
   addToCart(product: ProductCartModel): void {
     this.productsInCartSubject.next([...this.productsInCart, product]);
   }
@@ -33,7 +42,7 @@ export class CartService {
     return this.productsInCartSubject.asObservable();
   }
 
-  isInCart(product: ProductCartModel): Observable<boolean> {
+  isInCart(product: ProductCartModel | ProductViewModel): Observable<boolean> {
     return this.getProducts().pipe(
       map(products => products.some(p => p.id === product.id))
     );
@@ -55,5 +64,9 @@ export class CartService {
 
   getCartProductsCount(): Observable<number> {
     return this.cartProductCountSubject.asObservable();
+  }
+
+  override getResourceUrl(): string {
+    return 'order';
   }
 }

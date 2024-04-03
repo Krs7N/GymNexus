@@ -12,6 +12,7 @@
                 <div>
                     <div class="font-semibold">{{ product.name }}</div>
                     <div class="text-gray-700">{{ product.price }} BGN</div>
+                    <span class="text-gray-500">x {{ product.quantity }}</span>
                 </div>
             </div>
             <button (click)="removeFromCart(product.id)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
@@ -23,10 +24,7 @@
             Total Price: <span class="text-green-500">{{ totalPrice.toFixed(2) }} BGN</span>
         </div>
 
-        <div class="flex gap-x-3">
-            <button mat-flat-button color="primary" [routerLink]="['/cart']">View Details</button>
-            <button (click)="checkout()" class="bg-green-500 hover:bg-green-700 text-white py-1 px-4 font-bold rounded">Checkout</button>
-        </div>
+        <button mat-flat-button color="primary" [routerLink]="['/cart']">View Details</button>
     </div>
 
     <ng-template #noProducts>

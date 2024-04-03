@@ -5,6 +5,7 @@ import { ProductCartModel } from '../products/product-cart-model';
 import { SnackbarService } from '../shared/services/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -21,12 +22,17 @@ export class CartComponent implements OnInit, OnDestroy {
 
   constructor(
     private _cartService: CartService,
+    private _router: Router,
     private _snackbarService: SnackbarService,
     public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
     this._cartService.getProducts().pipe(takeUntil(this._unsubscribeAll)).subscribe(products => {
+      if (products.length === 0) {
+        this._router.navigate(['/products']);
+        this._snackbarService.openWarning('Your cart is currently empty. Please add products first');
+      }
       this.cartProducts = products;
     });
 
@@ -36,11 +42,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   get totalPrice(): number {
-    return this.cartProducts.reduce((acc, product) => acc + product.price, 0);
-  }
-
-  checkout(): void {
-
+    return this.cartProducts.reduce((total, product) => total + (product.price * product.quantity), 0);
   }
 
   removeFromCart(index: number): void {

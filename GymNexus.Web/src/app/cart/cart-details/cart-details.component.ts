@@ -3,6 +3,7 @@ import { CartService } from '../cart.service';
 import { ProductCartModel } from 'src/app/products/product-cart-model';
 import { Subject, takeUntil } from 'rxjs';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { OrderModel } from '../order-model';
 
 @Component({
   selector: 'app-cart-details',
@@ -10,6 +11,8 @@ import { SnackbarService } from 'src/app/shared/services/snackbar.service';
   styleUrls: ['./cart-details.component.scss']
 })
 export class CartDetailsComponent implements OnInit, OnDestroy {
+
+  totalPrice: number = 0;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -25,20 +28,37 @@ export class CartDetailsComponent implements OnInit, OnDestroy {
       this._cartService.getProducts().pipe(takeUntil(this._unsubscribeAll)).subscribe(products => {
         this.cartProducts = products;
       });
+
+      this.totalPrice = this.cartProducts.reduce((acc, product) => acc + (product.price * product.quantity), 0);
   }
 
-  get totalPrice(): number {
-    return this.cartProducts.reduce((acc, product) => acc + product.price, 0);
+  recalculateTotalPrice(product: ProductCartModel) {
+    localStorage.removeItem('cart');
+    localStorage.setItem('cart', JSON.stringify(this.cartProducts));
+    this.totalPrice = this.cartProducts.reduce((total, product) => total + (product.price * product.quantity), 0);
   }
 
   onCheckout(): void {
+    debugger
     if (!this.paymentMethod) {
       this._snackbarService.openError('Please select a payment method');
       return;
     }
 
-    this._cartService.clearCart();
-    this._snackbarService.openSuccess('Your order has been placed. Thank you for your purchase!');
+    const order = {
+      products: this.cartProducts,
+      paymentMethod: this.paymentMethod
+    } as OrderModel;
+
+    this._cartService.createOrder(order).pipe(takeUntil(this._unsubscribeAll)).subscribe({
+      next: () => {
+        this._cartService.clearCart();
+        this._snackbarService.openSuccess('Your order has been placed. Thank you for your purchase!');
+      },
+      error: (e) => {
+        this._snackbarService.openError('An error occurred while processing your order. Please try again later.');
+      }
+    });
   }
 
   ngOnDestroy(): void {

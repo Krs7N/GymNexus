@@ -14,6 +14,7 @@ import { MaterialModule } from './shared/material.module';
 import { ErrorPageComponent } from "./shared/error-page/error-page.component";
 import { CartComponent } from './cart/cart.component';
 import { CartDetailsComponent } from './cart/cart-details/cart-details.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -34,6 +35,7 @@ import { CartDetailsComponent } from './cart/cart-details/cart-details.component
         BrowserAnimationsModule,
         PostsModule,
         AuthModule,
+        FormsModule,
         HttpClientModule,
         ErrorPageComponent
     ]
