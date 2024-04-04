@@ -91,6 +91,15 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this._snackbarService.openSuccess('Product added to cart.');
   }
 
+  sortProducts(sortValue: string) {
+    if (sortValue === 'likes') {
+      this.products.sort((a, b) => b.likes - a.likes);
+    } else {
+      this.loadProducts();
+    }
+    this.setPage(this.paginator.pageIndex, this.paginator.pageSize);
+  }
+
   removeFromCart(id: number): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',

@@ -45,7 +45,6 @@ export class CartDetailsComponent implements OnInit, OnDestroy {
   }
 
   onCheckout(): void {
-    debugger
     if (!this.paymentMethod) {
       this._snackbarService.openError('Please select a payment method');
       return;

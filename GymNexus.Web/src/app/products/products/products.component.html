@@ -1,5 +1,14 @@
 <div *ngIf="!error" class="container mx-auto p-6">
-  <div class="container mx-auto flex justify-end">
+  <div class="container mx-auto flex justify-between">
+    <mat-form-field class="mr-2">
+      <mat-label>Sort By</mat-label>
+      <mat-select [value]="'none'" (selectionChange)="sortProducts($event.value)">
+        <mat-option value="none">--</mat-option>
+        <hr />
+        <mat-option value="likes">Likes</mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <button mat-raised-button [routerLink]="['/products', 'add']" color="primary">Add Product</button>
   </div>
   <div
