@@ -1,39 +1,88 @@
 <div *ngIf="!error" class="container mx-auto p-6">
   <div class="container mx-auto flex justify-between">
-    <mat-form-field class="mr-2">
-      <mat-label>Sort By</mat-label>
-      <mat-select [value]="'none'" (selectionChange)="sortProducts($event.value)">
-        <mat-option value="none">--</mat-option>
-        <hr />
-        <mat-option value="likes">Likes</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div>
+      <mat-form-field class="mr-2">
+        <mat-label>Sort By</mat-label>
+        <mat-select
+          [value]="'none'"
+          (selectionChange)="sortProducts($event.value)"
+        >
+          <mat-option value="none">--</mat-option>
+          <hr />
+          <mat-option value="likes">Likes</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <button mat-raised-button [routerLink]="['/products', 'add']" color="primary">Add Product</button>
+      <mat-form-field class="w-80 mr-2">
+        <mat-label>Filter by Category</mat-label>
+        <mat-select (selectionChange)="applyFilter($event)" [value]="'all'">
+          <mat-option value="all">All</mat-option>
+          <hr />
+          <mat-option
+            *ngFor="let category of categories"
+            [value]="category.id"
+            >{{ category.name }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <button
+      mat-raised-button
+      class="w-40"
+      [routerLink]="['/products', 'add']"
+      color="primary"
+    >
+      Add Product
+    </button>
   </div>
   <div
     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
   >
-    <ng-container *ngFor="let product of products">
+    <ng-container *ngFor="let product of currentProducts">
       <mat-card class="flex flex-col">
         <mat-card-header>
           <mat-card-title>{{ product.name }}</mat-card-title>
           <mat-card-subtitle>{{ product.category.name }}</mat-card-subtitle>
         </mat-card-header>
-        <img class="h-64" mat-card-image [src]="product.imageUrl" alt="{{ product.name }}" />
+        <img
+          class="h-64"
+          mat-card-image
+          [src]="product.imageUrl"
+          alt="{{ product.name }}"
+        />
         <mat-card-content class="flex-grow">
           <p>{{ product.description }}</p>
-          <p class="text-sm text-gray-600">Store: <b>{{ product.store.name }}</b></p>
-          <p class="text-sm text-gray-600" [innerHTML]="getMarketplaceText(product)"></p>
+          <p class="text-sm text-gray-600">
+            Store: <b>{{ product.store.name }}</b>
+          </p>
+          <p
+            class="text-sm text-gray-600"
+            [innerHTML]="getMarketplaceText(product)"
+          ></p>
           <p class="text-sm text-gray-600">Added: {{ product.createdOn }}</p>
         </mat-card-content>
         <mat-card-actions>
           <div [matTooltip]="'Price: ' + product.price + ' BGN'">
-            <button mat-button (click)="addToCart(product)" *ngIf="!(cartService.isInCart(product) | async) && !user?.roles?.includes('Seller')">
+            <button
+              mat-button
+              (click)="addToCart(product)"
+              *ngIf="
+                !(cartService.isInCart(product) | async) &&
+                !user?.roles?.includes('Seller')
+              "
+            >
               Add to Cart
             </button>
-            <button mat-button (click)="removeFromCart(product.id)" *ngIf="(cartService.isInCart(product) | async) && !user?.roles?.includes('Seller')">
-                Remove from Cart
+            <button
+              mat-button
+              (click)="removeFromCart(product.id)"
+              *ngIf="
+                (cartService.isInCart(product) | async) &&
+                !user?.roles?.includes('Seller')
+              "
+            >
+              Remove from Cart
             </button>
           </div>
           <button mat-button (click)="toggleLike(product)">

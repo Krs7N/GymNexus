@@ -28,6 +28,10 @@
             </div>
               
             <mat-menu #profileMenu="matMenu">
+                <div *ngIf="user!.roles!.includes('Owner') && user!.roles!.includes('Seller') && user!.roles!.includes('Writer')">
+                    <button mat-menu-item >Admin Dashboard</button>
+                    <hr />
+                </div>
                 <button mat-menu-item (click)="navigateToProfile()">Profile</button>
                 <button mat-menu-item (click)="logout()">Logout</button>
             </mat-menu>

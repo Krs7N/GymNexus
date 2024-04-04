@@ -13,7 +13,8 @@ export const productsRoutes: Route[] = [
         pathMatch: 'full',
         component: ProductsComponent,
         resolve: {
-            userStores: () => inject(ProfileService).getUserStores()
+            userStores: () => inject(ProfileService).getUserStores(),
+            categories: () => inject(NomenclatureService).getCategories()
         }
     },
     {
