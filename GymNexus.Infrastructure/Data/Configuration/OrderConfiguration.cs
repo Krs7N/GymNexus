@@ -8,9 +8,5 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 {
     public void Configure(EntityTypeBuilder<Order> builder)
     {
-        builder
-            .HasOne(o => o.Store)
-            .WithMany(s => s.Orders)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }

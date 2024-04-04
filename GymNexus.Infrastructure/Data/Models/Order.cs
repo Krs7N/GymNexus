@@ -20,19 +20,6 @@ public class Order
     public int Id { get; set; }
 
     /// <summary>
-    /// The unique identifier of the store from which the order was made. It is required. It is a foreign key to the Store entity.
-    /// </summary>
-    [Required]
-    [Comment("The unique identifier of the store from which the order was made")]
-    public int StoreId { get; set; }
-
-    /// <summary>
-    /// The store entity representation (Navigation property) from which the order was made. It is required.
-    /// </summary>
-    [ForeignKey(nameof(StoreId))]
-    public Store Store { get; set; } = null!;
-
-    /// <summary>
     /// The unique identifier of the user who made the order. It is required. It is a foreign key to the ApplicationUser entity.
     /// </summary>
     [Required]
@@ -53,15 +40,7 @@ public class Order
     public DateTime CreatedOn { get; set; }
 
     /// <summary>
-    /// The price for a unit in the order. It is required. It is a decimal number with 4 digits in total, and 2 of them are after the decimal point.
-    /// </summary>
-    [Required]
-    [Comment("The price for a unit in the order")]
-    [Column(TypeName = "decimal(4,2)")]
-    public decimal UnitPrice { get; set; }
-
-    /// <summary>
-    /// The quantity of the products in the order. It is required. Based on this quantity and the unit price, the total price is calculated.
+    /// The quantity of the products in the order. It is required. Based on this quantity, the total price is calculated.
     /// </summary>
     [Required]
     [Comment("The quantity of the products in the order")]
@@ -98,7 +77,7 @@ public class Order
     public bool IsActive { get; set; } = true;
 
     /// <summary>
-    /// The collection of all order details that the order has. It is a navigation property. Gets the other products that could be in this order
+    /// The collection of all product details that the order has. It is a navigation property. Gets the other products that could be in this order
     /// </summary>
     public virtual IEnumerable<OrderDetail> OrdersDetails { get; set; } = new List<OrderDetail>();
 }

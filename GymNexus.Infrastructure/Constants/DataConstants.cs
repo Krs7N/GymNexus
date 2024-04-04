@@ -50,4 +50,7 @@ public static class DataConstants
     // Order
     public const int OrderStatusMaxLength = 20;
     public const int OrderPaymentMethodMaxLength = 20;
+
+    // OrderDetails
+    public const int OrderDetailsQuantityMinValue = 1;
 }

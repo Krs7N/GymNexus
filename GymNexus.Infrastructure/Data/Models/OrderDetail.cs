@@ -35,4 +35,11 @@ public class OrderDetail
     /// </summary>
     [ForeignKey(nameof(ProductId))]
     public Product Product { get; set; } = null!;
+
+    /// <summary>
+    /// The quantity of each product in the order. It is required. Based on this quantity, the total price is calculated.
+    /// </summary>
+    [Required]
+    [Comment("The quantity of each product in the order")]
+    public int Quantity { get; set; }
 }

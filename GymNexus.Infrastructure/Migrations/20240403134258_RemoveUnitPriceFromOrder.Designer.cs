@@ -4,6 +4,7 @@ using GymNexus.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GymNexus.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240403134258_RemoveUnitPriceFromOrder")]
+    partial class RemoveUnitPriceFromOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,15 +100,15 @@ namespace GymNexus.Infrastructure.Migrations
                         {
                             Id = "60889746-673c-4e86-8040-c4465e10c8b7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "83c5d6e6-7cdc-453f-9b6a-f6e756275e7e",
+                            ConcurrencyStamp = "1059de9a-6e57-46b9-a59c-0d0006744836",
                             Email = "root@abv.bg",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ROOT@ABV.BG",
                             NormalizedUserName = "ROOT@ABV.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFVYIbsBGhA2wsni4Vd3tQK+2YnmE5qPyJ+4BYf05YNNmLY+V5E6ZjCFJ00VI1T2rQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOWiVbWv+gnOMLWi918NzHa5q0Itt1TsQH6hfIqjjlepkYAahg+OSkRIspB0gOso0w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7c87de15-864a-4450-bd44-5ec4bb52fd22",
+                            SecurityStamp = "3dfa1ec0-b777-49e6-8ac7-3cd81a8fdf3d",
                             TwoFactorEnabled = false,
                             UserName = "root@abv.bg"
                         },
@@ -114,15 +116,15 @@ namespace GymNexus.Infrastructure.Migrations
                         {
                             Id = "76bb4713-0ad4-4e3e-a356-d3f24a435ec9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a2f490e4-1996-4275-a53a-96e7a8b0423f",
+                            ConcurrencyStamp = "da3e91e3-d2cc-45b3-9ebe-99d7c54433c7",
                             Email = "test@abv.bg",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "TEST@ABV.BG",
                             NormalizedUserName = "TEST@ABV.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGDuFPBdUtwhJ66rjC5DZD2Hfrn3UkMF2P8W0sZmPchKKD2HYMeysq1kXNrD0bw13g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECbru3C77P9xCIkJW90NIdk5G+EzsHjYkkVGGB3e4dfflKrOXlgaCwRPSVOk6TVPng==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6fff3ebf-2bbb-40ca-a008-7d54ec7f2308",
+                            SecurityStamp = "f28b0f8c-18d9-4a35-9ec9-d59cc615072e",
                             TwoFactorEnabled = false,
                             UserName = "test@abv.bg"
                         });
@@ -363,6 +365,10 @@ namespace GymNexus.Infrastructure.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasComment("The status of the order");
 
+                    b.Property<int>("StoreId")
+                        .HasColumnType("int")
+                        .HasComment("The unique identifier of the store from which the order was made");
+
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(9,2)")
                         .HasComment("The total price of the order");
@@ -370,6 +376,8 @@ namespace GymNexus.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("StoreId");
 
                     b.ToTable("Orders");
 
@@ -385,12 +393,6 @@ namespace GymNexus.Infrastructure.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int")
                         .HasComment("The unique identifier of the product that is included in the order");
-
-                    b.Property<int>("Quantity")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1)
-                        .HasComment("The quantity of each product in the order");
 
                     b.HasKey("OrderId", "ProductId");
 
@@ -454,7 +456,7 @@ namespace GymNexus.Infrastructure.Migrations
                             Id = 1,
                             Content = "Welcome to GymNexus! This is a social network for fitness enthusiasts. Share your progress, ask for advice, and connect with other people who share your passion for fitness.",
                             CreatedBy = "60889746-673c-4e86-8040-c4465e10c8b7",
-                            CreatedOn = new DateTime(2024, 3, 30, 9, 39, 55, 485, DateTimeKind.Local).AddTicks(782),
+                            CreatedOn = new DateTime(2024, 3, 29, 16, 42, 58, 190, DateTimeKind.Local).AddTicks(2247),
                             IsActive = true,
                             Title = "Welcome to GymNexus"
                         },
@@ -463,7 +465,7 @@ namespace GymNexus.Infrastructure.Migrations
                             Id = 2,
                             Content = "To get started, create an account and start sharing your fitness journey with the world. You can also connect with other users and see their progress.",
                             CreatedBy = "60889746-673c-4e86-8040-c4465e10c8b7",
-                            CreatedOn = new DateTime(2024, 2, 4, 9, 39, 55, 485, DateTimeKind.Local).AddTicks(811),
+                            CreatedOn = new DateTime(2024, 2, 3, 16, 42, 58, 190, DateTimeKind.Local).AddTicks(2321),
                             IsActive = true,
                             Title = "How to get started"
                         },
@@ -472,7 +474,7 @@ namespace GymNexus.Infrastructure.Migrations
                             Id = 3,
                             Content = "I am looking to start increasing my bench press and bench more, and put more pressure on my chest muscles. I am looking for advices, thanks in advance!",
                             CreatedBy = "60889746-673c-4e86-8040-c4465e10c8b7",
-                            CreatedOn = new DateTime(2023, 4, 4, 9, 39, 55, 485, DateTimeKind.Local).AddTicks(814),
+                            CreatedOn = new DateTime(2023, 4, 3, 16, 42, 58, 190, DateTimeKind.Local).AddTicks(2324),
                             IsActive = true,
                             Title = "How can I bench more?"
                         });
@@ -559,7 +561,7 @@ namespace GymNexus.Infrastructure.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreatedOn = new DateTime(2024, 3, 30, 9, 39, 55, 485, DateTimeKind.Local).AddTicks(2396),
+                            CreatedOn = new DateTime(2024, 3, 29, 16, 42, 58, 190, DateTimeKind.Local).AddTicks(3775),
                             Description = "Special whey protein made by Kevin Levrone's own brand. Comes in 2000 grams package, with a spoon that is 30g and recommended daily usage of 30g",
                             ImageUrl = "https://www.kevinlevrone.com/wp-content/uploads/2021/06/levrone-whey-protein-2000g.jpg",
                             IsActive = true,
@@ -571,7 +573,7 @@ namespace GymNexus.Infrastructure.Migrations
                         {
                             Id = 2,
                             CategoryId = 2,
-                            CreatedOn = new DateTime(2024, 2, 4, 9, 39, 55, 485, DateTimeKind.Local).AddTicks(2400),
+                            CreatedOn = new DateTime(2024, 2, 3, 16, 42, 58, 190, DateTimeKind.Local).AddTicks(3780),
                             Description = "This is the default brand of proteins that we can give you for now. Comes in 1000 grams package, with a spoon that is 30g and recommended daily usage of 30g",
                             ImageUrl = "https://gymbeam.bg/media/catalog/product/cache/bf5a31e851f50f3ed6850cbbf183db11/j/u/just_whey_chocolate_milkshake_1_kg_gymbeam_1.png",
                             IsActive = true,
@@ -661,7 +663,7 @@ namespace GymNexus.Infrastructure.Migrations
                         {
                             Id = 1,
                             AverageRating = 0m,
-                            CreatedOn = new DateTime(2024, 4, 4, 9, 39, 55, 485, DateTimeKind.Local).AddTicks(1767),
+                            CreatedOn = new DateTime(2024, 4, 3, 16, 42, 58, 190, DateTimeKind.Local).AddTicks(3295),
                             Description = "This is the Root's store that is created to be useful for you and easier to start with. It is owned by the root user.",
                             IsActive = true,
                             MarketplaceId = 1,
@@ -876,7 +878,15 @@ namespace GymNexus.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("GymNexus.Infrastructure.Data.Models.Store", "Store")
+                        .WithMany("Orders")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Creator");
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("GymNexus.Infrastructure.Data.Models.OrderDetail", b =>
@@ -1072,6 +1082,8 @@ namespace GymNexus.Infrastructure.Migrations
 
             modelBuilder.Entity("GymNexus.Infrastructure.Data.Models.Store", b =>
                 {
+                    b.Navigation("Orders");
+
                     b.Navigation("Products");
                 });
 #pragma warning restore 612, 618

@@ -92,9 +92,4 @@ public class Store
     /// The collection of all products that the store is selling (Navigation property).
     /// </summary>
     public virtual IEnumerable<Product> Products { get; set; } = new List<Product>();
-
-    /// <summary>
-    /// The collection of all orders that the store has made (Navigation property).
-    /// </summary>
-    public virtual IEnumerable<Order> Orders { get; set; } = new List<Order>();
 }

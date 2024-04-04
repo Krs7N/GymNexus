@@ -18,11 +18,6 @@ public class StoreConfiguration : IEntityTypeConfiguration<Store>
             .WithMany(mp => mp.Stores);
 
         builder
-            .HasMany(s => s.Orders)
-            .WithOne(o => o.Store)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder
             .HasData(ConfigurationHelper.GetSeedStores());
     }
 }

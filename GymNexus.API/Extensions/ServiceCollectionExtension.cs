@@ -24,6 +24,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<INomenclatureService, NomenclatureService>();
         services.AddScoped<IStoreService, StoreService>();
+        services.AddScoped<IOrderService, OrderService>();
 
         return services;
     }
