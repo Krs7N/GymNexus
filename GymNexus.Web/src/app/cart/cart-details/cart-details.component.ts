@@ -4,6 +4,7 @@ import { ProductCartModel } from 'src/app/products/product-cart-model';
 import { Subject, takeUntil } from 'rxjs';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { OrderModel } from '../order-model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart-details',
@@ -21,13 +22,18 @@ export class CartDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private _cartService: CartService,
+    private _router: Router,
     private _snackbarService: SnackbarService
   ) { }
 
   ngOnInit(): void {
-      this._cartService.getProducts().pipe(takeUntil(this._unsubscribeAll)).subscribe(products => {
-        this.cartProducts = products;
-      });
+    this._cartService.getProducts().pipe(takeUntil(this._unsubscribeAll)).subscribe(products => {
+      if (products.length === 0) {
+        this._router.navigate(['/products']);
+        this._snackbarService.openWarning('Your cart is currently empty. Please add products first');
+      }
+      this.cartProducts = products;
+    });
 
       this.totalPrice = this.cartProducts.reduce((acc, product) => acc + (product.price * product.quantity), 0);
   }
