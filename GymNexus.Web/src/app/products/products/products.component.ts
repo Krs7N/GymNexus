@@ -15,6 +15,7 @@ import { CartService } from '../../cart/cart.service';
 import { ProductCartModel } from '../product-cart-model';
 import { CategoryViewModel } from 'src/app/shared/models/category-view-model';
 import { MatSelectChange } from '@angular/material/select';
+import { parse } from 'date-fns';
 
 @Component({
   selector: 'app-products',
@@ -112,6 +113,20 @@ export class ProductsComponent implements OnInit, OnDestroy {
   sortProducts(sortValue: string) {
     if (sortValue === 'likes') {
       this.products.sort((a, b) => b.likes - a.likes);
+    } else if (sortValue === 'dateOld') {
+      this.products.sort((a, b) => {
+        const dateA = parse(a.createdOn, 'dd/MM/yyyy HH:mm', new Date());
+        const dateB = parse(b.createdOn, 'dd/MM/yyyy HH:mm', new Date());
+
+        return dateA.getTime() - dateB.getTime();
+      });
+    } else if (sortValue === 'dateNew') {
+      this.products.sort((a, b) => {
+        const dateA = parse(a.createdOn, 'dd/MM/yyyy HH:mm', new Date());
+        const dateB = parse(b.createdOn, 'dd/MM/yyyy HH:mm', new Date());
+
+        return dateB.getTime() - dateA.getTime();
+      });
     } else {
       this.loadProducts();
     }

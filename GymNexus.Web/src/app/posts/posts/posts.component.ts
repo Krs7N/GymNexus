@@ -10,6 +10,7 @@ import { UserModel } from 'src/app/auth/models/user-model';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { CommentViewModel } from '../comment-view-model';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
+import { parse } from 'date-fns';
 
 @Component({
   selector: 'app-posts',
@@ -156,9 +157,21 @@ export class PostsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setPage(this.paginator.pageIndex, this.paginator.pageSize);
   }
   
-  sortPosts(sortValue: 'date' | 'likes') {
-    if (sortValue === 'date') {
-      this.posts.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime());
+  sortPosts(sortValue: string) {
+    if (sortValue === 'dateOld') {
+      this.posts.sort((a, b) => {
+        const dateA = parse(a.createdOn, 'dd/MM/yyyy HH:mm', new Date());
+        const dateB = parse(b.createdOn, 'dd/MM/yyyy HH:mm', new Date());
+
+        return dateA.getTime() - dateB.getTime();
+      });
+    } else if (sortValue === 'dateNew') {
+      this.posts.sort((a, b) => {
+        const dateA = parse(a.createdOn, 'dd/MM/yyyy HH:mm', new Date());
+        const dateB = parse(b.createdOn, 'dd/MM/yyyy HH:mm', new Date());
+
+        return dateB.getTime() - dateA.getTime();
+      });
     } else if (sortValue === 'likes') {
       this.posts.sort((a, b) => b.likes - a.likes);
     } else {
