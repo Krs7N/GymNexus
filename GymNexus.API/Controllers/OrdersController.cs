@@ -9,6 +9,9 @@ using System.Security.Claims;
 
 namespace GymNexus.API.Controllers
 {
+    /// <summary>
+    /// Orders management controller. Handles user orders and other order related operations
+    /// </summary>
     [Route("api/order")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -23,6 +26,10 @@ namespace GymNexus.API.Controllers
             _orderService = orderService;
         }
 
+        /// <summary>
+        /// Creates the order for the user and saves it to the database
+        /// </summary>
+        /// <param name="orderDto">Represents the already sent order model</param>
         [HttpPost]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]

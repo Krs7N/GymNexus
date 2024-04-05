@@ -25,6 +25,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<INomenclatureService, NomenclatureService>();
         services.AddScoped<IStoreService, StoreService>();
         services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IAdminService, AdminService>();
 
         return services;
     }
@@ -88,6 +89,15 @@ public static class ServiceCollectionExtension
                 };
                 facebookOptions.CallbackPath = new PathString("/login/facebook-callback");
             });
+
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("AdminRoles", policy => 
+                policy.RequireAssertion(context =>
+                    context.User.IsInRole("Owner") &&
+                    context.User.IsInRole("Seller") &&
+                    context.User.IsInRole("Writer")));
+        });
 
         return services;
     }
