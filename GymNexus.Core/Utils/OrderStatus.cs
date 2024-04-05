@@ -3,5 +3,6 @@
 public enum OrderStatus
 {
     Pending,
-    Confirmed
+    Confirmed,
+    Completed
 }
