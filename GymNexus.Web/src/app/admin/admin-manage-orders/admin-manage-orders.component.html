@@ -1,0 +1,45 @@
+<div *ngIf="orders && orders.length > 0; else noOrders">
+    <div class="mt-3">
+        <h2 class="flex justify-center w-1/2">Orders Management</h2>
+    </div>
+    <div class="flex justify-center items-center">
+        <mat-accordion *ngFor="let order of orders" class="w-2/3 example-headers-align">
+
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Order #{{ order.id }}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        <div>
+                            Status: <span [ngStyle]="{'color': getStatusColor(order.status.toLowerCase())}">{{ order.status.toUpperCase() }}</span>
+                        </div>
+                        <div [matBadge]="order.quantity" matBadgeOverlap="false">Total Count of products in the order: </div>
+                        <div>
+                            Total Price of the order: <span class="text-green-600">{{ order.totalPrice }} BGN</span>
+                        </div>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="flex flex-col">
+                    <div>
+                        Ordered by: <span class="font-semibold underline underline-offset-2">{{ order.createdBy }}</span>
+                    </div>
+                    <span class="font-medium text-lg py-2">Product Details:</span>
+                </div>
+                
+                <app-products-table [products]="order.products"></app-products-table>
+        
+                <mat-action-row>
+                    <button mat-stroked-button color="primary">Change Status</button>
+                </mat-action-row>
+
+            </mat-expansion-panel>
+
+        </mat-accordion>
+    </div>
+</div>
+<ng-template #noOrders>
+    <div class="flex justify-center items-center h-5/6">
+        <span class="text-lg text-gray-600">There are no records of made orders yet.</span>
+    </div>
+</ng-template>
