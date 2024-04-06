@@ -1,7 +1,11 @@
 ﻿using GymNexus.Core.Contracts;
+using GymNexus.Core.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using GymNexus.Infrastructure.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace GymNexus.API.Controllers
 {
@@ -14,10 +18,12 @@ namespace GymNexus.API.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IAdminService _adminService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AdminController(IAdminService adminService)
+        public AdminController(IAdminService adminService, UserManager<ApplicationUser> userManager)
         {
             _adminService = adminService;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -83,5 +89,37 @@ namespace GymNexus.API.Controllers
 
             return Ok(count);
         }
+
+        /// <summary>
+        /// Gets all orders that have been made with their product details inside
+        /// </summary>
+        /// <returns>All orders and their details along with the products inside</returns>
+        [HttpGet("orders/details")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrderDto>))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAllOrders()
+        {
+            var userId = GetUserId();
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var orders = await _adminService.GetAllOrdersAsync(user);
+
+            return Ok(orders);
+        }
+
+        private string? GetUserId() => User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
     }
 }
