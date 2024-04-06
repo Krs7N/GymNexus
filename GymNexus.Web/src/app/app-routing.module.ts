@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'products', loadChildren: () => import('./products/products.module').then(m => m.ProductsModule) },
   { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), canActivate: [authGuard] },
   { path: 'cart', component: CartDetailsComponent, canActivate: [authGuard]},
-  { path: 'map', component: MarketplaceMapComponent, canActivate: [authGuard] },
+  { path: 'map', component: MarketplaceMapComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: '404', component: NotFoundComponent },

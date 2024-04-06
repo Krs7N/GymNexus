@@ -13,6 +13,7 @@ import { jwtDecode } from 'jwt-decode';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  hide: boolean = true;
   loginForm: FormGroup = new FormGroup({});
 
   constructor(

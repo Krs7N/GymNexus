@@ -1,11 +1,11 @@
 <nav class="flex items-center justify-between flex-wrap bg-gray-800 p-6 sticky top-0 z-50">
     <div class="flex gap-x-5 items-center flex-shrink-0 text-white">
         <a [routerLink]="['/']" class="font-semibold text-xl tracking-tight">GymNexus</a>
-        <a routerLinkActive="active" [routerLink]="['/map']" class="block mt-4 lg:inline-block text-base lg:mt-0 text-teal-200 hover:text-white">
-            Marketplace Map
-        </a>
-        <div *ngIf="user">
-            <a routerLinkActive="active" [routerLink]="['/posts']" class="block mt-4 lg:inline-block text-base lg:mt-0 text-teal-200 hover:text-white mr-4">
+        <div class="space-x-4" *ngIf="user">
+            <a routerLinkActive="active" [routerLink]="['/map']" class="block mt-4 lg:inline-block text-base lg:mt-0 text-teal-200 hover:text-white">
+                Marketplace Map
+            </a>
+            <a routerLinkActive="active" [routerLink]="['/posts']" class="block mt-4 lg:inline-block text-base lg:mt-0 text-teal-200 hover:text-white">
                 Posts
             </a>
             <a routerLinkActive="active" [routerLink]="['/products']" class="block mt-4 lg:inline-block text-base lg:mt-0 text-teal-200 hover:text-white">
