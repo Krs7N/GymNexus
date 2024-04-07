@@ -29,7 +29,7 @@ export const productsRoutes: Route[] = [
         }
     },
     {
-        path: ':id',
+        path: 'edit/:id',
         component: ProductDetailsComponent,
         data: {
             action: Actions.EDIT

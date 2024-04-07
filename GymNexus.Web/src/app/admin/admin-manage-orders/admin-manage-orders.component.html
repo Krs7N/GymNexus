@@ -1,8 +1,12 @@
 <div *ngIf="orders && orders.length > 0; else noOrders">
-    <div class="mt-3">
-        <h2 class="flex justify-center w-1/2">Orders Management</h2>
+    <div class="flex justify-around mt-3">
+        <h2>Orders Management</h2>
+        <button mat-raised-button color="primary" [routerLink]="['/admin', 'dashboard']">
+            <mat-icon>arrow_back_ios</mat-icon>
+            Back to Dashboard
+        </button>
     </div>
-    <div class="flex justify-center items-center">
+    <div class="flex flex-col gap-y-2 justify-center items-center">
         <mat-accordion *ngFor="let order of orders" class="w-2/3 example-headers-align">
 
             <mat-expansion-panel>
@@ -16,7 +20,7 @@
                         </div>
                         <div [matBadge]="order.quantity" matBadgeOverlap="false">Total Count of products in the order: </div>
                         <div>
-                            Total Price of the order: <span class="text-green-600">{{ order.totalPrice }} BGN</span>
+                            Total Price: <span class="text-green-600">{{ order.totalPrice }} BGN</span>
                         </div>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
@@ -30,7 +34,7 @@
                 <app-products-table [products]="order.products"></app-products-table>
         
                 <mat-action-row>
-                    <button mat-stroked-button color="primary">Change Status</button>
+                    <button mat-stroked-button (click)="changeOrderStatus(order.id, order.status)" color="primary">Change Status</button>
                 </mat-action-row>
 
             </mat-expansion-panel>

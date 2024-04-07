@@ -30,6 +30,10 @@ export const authGuard: CanActivateFn = (route, state) => {
       return false;
     }
 
+    if (user.roles.includes('Owner')) {
+      return true;
+    }
+
     if (user.roles.includes('Writer')) {
       return true;
     }

@@ -1,6 +1,6 @@
 declare var cloudinary: any;
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryViewModel } from 'src/app/shared/models/category-view-model';
@@ -12,13 +12,16 @@ import { MatSelectChange } from '@angular/material/select';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { ProductModel } from '../product-model';
 import { Actions } from 'src/app/enums/actions';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.scss']
 })
-export class ProductDetailsComponent implements OnInit {
+export class ProductDetailsComponent implements OnInit, OnDestroy {
+
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   id: number = 0;
   productForm: FormGroup;
@@ -60,8 +63,8 @@ export class ProductDetailsComponent implements OnInit {
     }
 
     if (this.id) {
-      this._productsService.getProduct(this.id).subscribe(product => {
-        this._storesService.getStoresByMarketplace(product.marketplace?.id).subscribe(stores => {
+      this._productsService.getProduct(this.id).pipe(takeUntil(this._unsubscribeAll)).subscribe(product => {
+        this._storesService.getStoresByMarketplace(product.marketplace?.id).pipe(takeUntil(this._unsubscribeAll)).subscribe(stores => {
           if (stores.length === 0) {
             this._snackbarService.openWarning('No stores are associated with this marketplace. Please choose a different marketplace area.');
           }
@@ -121,7 +124,7 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   onMarketplaceChanged(event: MatSelectChange) {
-    this._storesService.getStoresByMarketplace(event.value).subscribe(stores => {
+    this._storesService.getStoresByMarketplace(event.value).pipe(takeUntil(this._unsubscribeAll)).subscribe(stores => {
       if (stores.length === 0) {
         this.productForm.get('store')?.reset();
         this.productForm.updateValueAndValidity();
@@ -134,7 +137,7 @@ export class ProductDetailsComponent implements OnInit {
   saveProduct(): void {
     if (this.productForm.valid) {
       if (this.action === Actions.CREATE) {
-        this._productsService.create(this.productForm.value as ProductModel).subscribe({
+        this._productsService.create(this.productForm.value as ProductModel).pipe(takeUntil(this._unsubscribeAll)).subscribe({
           next: () => {
             this._snackbarService.openSuccess('Product created successfully.');
             this._router.navigate(['/products']);
@@ -147,7 +150,7 @@ export class ProductDetailsComponent implements OnInit {
         return;
       }
 
-      this._productsService.update(this.id, this.productForm.value as ProductModel).subscribe({
+      this._productsService.update(this.id, this.productForm.value as ProductModel).pipe(takeUntil(this._unsubscribeAll)).subscribe({
         next: () => {
           this._snackbarService.openSuccess('Product updated successfully.');
           this._router.navigate(['/products']);
@@ -157,5 +160,10 @@ export class ProductDetailsComponent implements OnInit {
         }
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
   }
 }

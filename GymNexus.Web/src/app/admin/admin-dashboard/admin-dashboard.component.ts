@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, forkJoin, takeUntil } from 'rxjs';
 import { AdminService } from '../admin.service';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
