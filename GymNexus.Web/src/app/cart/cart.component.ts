@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from './cart.service';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { ProductCartModel } from '../products/product-cart-model';
 import { SnackbarService } from '../shared/services/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -22,17 +22,12 @@ export class CartComponent implements OnInit, OnDestroy {
 
   constructor(
     private _cartService: CartService,
-    private _router: Router,
     private _snackbarService: SnackbarService,
     public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
     this._cartService.getProducts().pipe(takeUntil(this._unsubscribeAll)).subscribe(products => {
-      if (products.length === 0) {
-        this._router.navigate(['/products']);
-        this._snackbarService.openWarning('Your cart is currently empty. Please add products first');
-      }
       this.cartProducts = products;
     });
 

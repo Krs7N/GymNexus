@@ -5,13 +5,14 @@
       <input matInput (keyup)="applyFilter($event)" placeholder="Filter..">
     </mat-form-field>
 
-    <mat-form-field class="mr-2">
+    <mat-form-field class="w-80 mr-2">
       <mat-label>Sort By</mat-label>
       <mat-select [value]="'none'" (selectionChange)="sortPosts($event.value)">
         <mat-option value="none">--</mat-option>
         <hr />
-        <mat-option value="date">Date Posted</mat-option>
-        <mat-option value="likes">Likes Count</mat-option>
+        <mat-option value="dateNew">Date Posted (Newest First)</mat-option>
+        <mat-option value="dateOld">Date Posted (Oldest First)</mat-option>
+        <mat-option value="likes">Likes</mat-option>
       </mat-select>
     </mat-form-field>
   </div>

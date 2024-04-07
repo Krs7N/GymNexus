@@ -13,6 +13,9 @@ import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-di
 import { MatDialog } from '@angular/material/dialog';
 import { CartService } from '../../cart/cart.service';
 import { ProductCartModel } from '../product-cart-model';
+import { CategoryViewModel } from 'src/app/shared/models/category-view-model';
+import { MatSelectChange } from '@angular/material/select';
+import { parse } from 'date-fns';
 
 @Component({
   selector: 'app-products',
@@ -26,8 +29,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   user: UserModel | undefined;
   userStores: StoreViewModel[] = [];
+  allProducts: ProductViewModel[] = [];
   products: ProductViewModel[] = [];
   currentProducts: ProductViewModel[] = [];
+  categories: CategoryViewModel[] = [];
+
   error: any;
 
   constructor(
@@ -42,6 +48,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.userStores = this._route.snapshot.data['userStores'];
+    this.categories = this._route.snapshot.data['categories'];
 
     this.loadProducts();
 
@@ -78,6 +85,18 @@ export class ProductsComponent implements OnInit, OnDestroy {
     });
   }
 
+  applyFilter(event: MatSelectChange): void {
+    const categoryFilter: number | string = event.value;
+
+    if (categoryFilter === 'all') {
+      this.loadProducts(true);
+    } else {
+      this.products = this.allProducts.filter((product) => product.category.id === categoryFilter);
+      this.updatePaginator();
+      this.setPage(this.paginator.pageIndex, this.paginator.pageSize);
+    }
+  }
+
   addToCart(product: ProductViewModel): void {
     const cartProduct = {
       id: product.id,
@@ -89,6 +108,29 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
     this.cartService.addToCart(cartProduct);
     this._snackbarService.openSuccess('Product added to cart.');
+  }
+
+  sortProducts(sortValue: string) {
+    if (sortValue === 'likes') {
+      this.products.sort((a, b) => b.likes - a.likes);
+    } else if (sortValue === 'dateOld') {
+      this.products.sort((a, b) => {
+        const dateA = parse(a.createdOn, 'dd/MM/yyyy HH:mm', new Date());
+        const dateB = parse(b.createdOn, 'dd/MM/yyyy HH:mm', new Date());
+
+        return dateA.getTime() - dateB.getTime();
+      });
+    } else if (sortValue === 'dateNew') {
+      this.products.sort((a, b) => {
+        const dateA = parse(a.createdOn, 'dd/MM/yyyy HH:mm', new Date());
+        const dateB = parse(b.createdOn, 'dd/MM/yyyy HH:mm', new Date());
+
+        return dateB.getTime() - dateA.getTime();
+      });
+    } else {
+      this.loadProducts();
+    }
+    this.setPage(this.paginator.pageIndex, this.paginator.pageSize);
   }
 
   removeFromCart(id: number): void {
@@ -156,11 +198,12 @@ export class ProductsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
         next: (products) => {
-          this.products = products;
+          this.allProducts = products;
+          this.products = [...this.allProducts];
 
           if (!innerLoad) {
             this.paginator.pageIndex = 0;
-            this.setPage(0, 2);
+            this.setPage(0, 4);
           } else {
             this.setPage(this.paginator.pageIndex, this.paginator.pageSize);
           }
@@ -169,6 +212,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
           this.error = e;
         },
       });
+  }
+
+  private updatePaginator() {
+    this.paginator.length = this.products.length;
+    this.paginator.pageIndex = 0;
   }
 
   private setPage(pageIndex: number, pageSize: number): void {

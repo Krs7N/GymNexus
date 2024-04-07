@@ -11,6 +11,12 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const snackbarService = inject(SnackbarService);
   const user = authService.getUser();
+  const adminRoles = ['Owner', 'Seller', 'Writer'];
+
+  if (state.url.includes('admin') && !adminRoles.every(role => user?.roles.includes(role))) {
+    router.navigate(['/404']);
+    return false;
+  }
 
   if (cookieService.get('Authorization') && user) {
     let token = cookieService.get('Authorization');
