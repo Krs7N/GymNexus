@@ -102,22 +102,26 @@ namespace GymNexus.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAllOrders()
         {
-            var userId = GetUserId();
-
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
-
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var orders = await _adminService.GetAllOrdersAsync(user);
+            var orders = await _adminService.GetAllOrdersAsync();
 
             return Ok(orders);
+        }
+
+        /// <summary>
+        /// Changes the status of an order that is still active within the admin dashboard
+        /// </summary>
+        /// <returns>The new changed status</returns>
+        [HttpPut("orders/{id}/changeStatus")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ChangeOrderStatus([FromRoute] int id, [FromBody] string status)
+        {
+            var newStatus = await _adminService.ChangeOrderStatusAsync(id, status);
+
+            return Ok(newStatus);
         }
 
         private string? GetUserId() => User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;

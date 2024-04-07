@@ -5,7 +5,7 @@ namespace GymNexus.Core.Contracts;
 
 public interface IAdminService
 {
-    Task<IEnumerable<OrderDto>> GetAllOrdersAsync(ApplicationUser user);
+    Task<IEnumerable<OrderDto>> GetAllOrdersAsync();
 
     Task<int> GetAllOrdersCountAsync();
 
@@ -14,4 +14,6 @@ public interface IAdminService
     Task<int> GetConfirmedOrdersCountAsync();
 
     Task<int> GetCompletedOrdersCountAsync();
+
+    Task<string> ChangeOrderStatusAsync(int id, string status);
 }

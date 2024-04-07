@@ -28,6 +28,7 @@ public class OrderService : IOrderService
         };
 
         await _context.Orders.AddAsync(order);
+        await _context.SaveChangesAsync();
 
         foreach (var orderProduct in orderDto.Products)
         {

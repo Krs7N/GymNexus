@@ -3,6 +3,8 @@ using GymNexus.Core.Models;
 using GymNexus.Core.Utils;
 using GymNexus.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 using static GymNexus.Infrastructure.Constants.DataConstants;
 
 namespace GymNexus.Core.Services;
@@ -10,13 +12,15 @@ namespace GymNexus.Core.Services;
 public class AdminService : IAdminService
 {
     private readonly ApplicationDbContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public AdminService(ApplicationDbContext context)
+    public AdminService(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
-    public async Task<IEnumerable<OrderDto>> GetAllOrdersAsync(ApplicationUser user)
+    public async Task<IEnumerable<OrderDto>> GetAllOrdersAsync()
     {
         return await _context.Orders
             .Include(o => o.OrdersDetails)
@@ -26,7 +30,7 @@ public class AdminService : IAdminService
             .Select(o => new OrderDto()
             {
                 Id = o.Id,
-                CreatedBy = user.UserName,
+                CreatedBy = o.Creator.Email,
                 CreatedOn = o.CreatedOn.ToString(DateTimeFormat),
                 Quantity = o.Quantity,
                 Status = o.Status,
@@ -61,5 +65,40 @@ public class AdminService : IAdminService
     public async Task<int> GetCompletedOrdersCountAsync()
     {
         return await _context.Orders.AsNoTracking().CountAsync(o => o.Status == OrderStatus.Completed.ToString() && !o.IsActive);
+    }
+
+    public async Task<string> ChangeOrderStatusAsync(int id, string status)
+    {
+        if (id < 1)
+        {
+            throw new InvalidOperationException();
+        }
+
+        if (!Enum.IsDefined(typeof(OrderStatus), status) || string.IsNullOrEmpty(status))
+        {
+            throw new InvalidOperationException("The provided status is invalid");
+        }
+
+        var newStatus = status == OrderStatus.Pending.ToString()
+            ? OrderStatus.Confirmed.ToString()
+            : OrderStatus.Completed.ToString();
+
+        var order = await _context.Orders.FindAsync(id);
+
+        if (order != null && !order.IsActive)
+        {
+            throw new InvalidOperationException();
+        }
+
+        if (newStatus == OrderStatus.Completed.ToString())
+        {
+            order!.IsActive = false;
+        }
+
+        order!.Status = newStatus;
+
+        await _context.SaveChangesAsync();
+
+        return newStatus;
     }
 }
