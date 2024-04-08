@@ -1,5 +1,11 @@
 <section class="px-5 pt-3">
-  <h2 class="text-2xl text-center font-bold mb-4">Top Posts</h2>
+    <div class="flex justify-around">
+        <h2 class="text-2xl text-center font-bold mb-4">Posts that gained the most activity</h2>
+        <button mat-raised-button color="primary" [routerLink]="['/admin', 'dashboard']">
+            <mat-icon>arrow_back_ios</mat-icon>
+            Back to Dashboard
+        </button>
+    </div>
   <div class="grid md:grid-cols-2 gap-4">
     <mat-card class="rounded-lg shadow-lg">
       <mat-card-header class="flex justify-center">
