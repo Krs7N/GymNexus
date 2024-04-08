@@ -7,6 +7,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { ErrorPageComponent } from '../shared/error-page/error-page.component';
 import { AdminManageOrdersComponent } from './admin-manage-orders/admin-manage-orders.component';
 import { ProductsTableComponent } from './admin-manage-orders/products-table/products-table.component';
+import { AdminManagePostsComponent } from './admin-manage-posts/admin-manage-posts.component';
 
 
 
@@ -14,7 +15,8 @@ import { ProductsTableComponent } from './admin-manage-orders/products-table/pro
   declarations: [
     AdminDashboardComponent,
     AdminManageOrdersComponent,
-    ProductsTableComponent
+    ProductsTableComponent,
+    AdminManagePostsComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),

@@ -3,6 +3,7 @@ import { AdminDashboardComponent } from "./admin-dashboard/admin-dashboard.compo
 import { AdminManageOrdersComponent } from "./admin-manage-orders/admin-manage-orders.component";
 import { inject } from "@angular/core";
 import { AdminService } from "./admin.service";
+import { AdminManagePostsComponent } from "./admin-manage-posts/admin-manage-posts.component";
 
 export const adminRoutes: Route[] = [
     {
@@ -10,10 +11,18 @@ export const adminRoutes: Route[] = [
         component: AdminDashboardComponent,
     },
     {
-        path: 'orders',
+        path: 'manage/orders',
         component: AdminManageOrdersComponent,
         resolve: {
             orders: () => inject(AdminService).getAllOrders()
+        }
+    },
+    {
+        path: 'manage/posts',
+        component: AdminManagePostsComponent,
+        resolve: {
+            mostLikedPost: () => inject(AdminService).getMostLikedPost(),
+            mostCommentedPost: () => inject(AdminService).getMostCommentedPost()
         }
     }
 ]

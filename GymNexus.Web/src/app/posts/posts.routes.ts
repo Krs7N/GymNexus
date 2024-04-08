@@ -9,7 +9,7 @@ export const postsRoutes: Route[] = [
         component: PostsComponent
     },
     {
-        path: ':id',
+        path: 'details/:id',
         component: PostDetailsComponent
     }
 ]

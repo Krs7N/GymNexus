@@ -25,7 +25,7 @@ export const productsRoutes: Route[] = [
         },
         resolve: {
             categories: () => inject(NomenclatureService).getCategories(),
-            marketplaces: () => inject(MarketplaceService).getAllMarketplaces()
+            marketplaces: () => inject(MarketplaceService).getAllMarketplacesWithStores()
         }
     },
     {

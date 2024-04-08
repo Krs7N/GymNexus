@@ -27,10 +27,13 @@
         <button
         mat-raised-button
         class="w-40"
-        [routerLink]="['/admin', 'orders']"
+        [routerLink]="['/admin', 'manage', 'orders']"
         color="primary"
         >
             Manage Orders
+        </button>
+        <button mat-raised-button class="w-40" [routerLink]="['/admin', 'manage', 'posts']" color="accent">
+          Manage Posts
         </button>
       </div>
     </section>

@@ -3,6 +3,7 @@ import { CrudService } from '../core/services/crud.service';
 import { Observable } from 'rxjs';
 import { OrderDetailsModel } from './order-details-model';
 import { HttpHeaders } from '@angular/common/http';
+import { PostOverviewModel } from '../posts/post-overview-model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,14 @@ export class AdminService extends CrudService<any> {
 
   constructor(injector: Injector) {
     super(injector)
+  }
+
+  getMostLikedPost(): Observable<PostOverviewModel> {
+    return this.httpClient.get<PostOverviewModel>(`${this.APIUrl}/posts/mostLiked`);
+  }
+
+  getMostCommentedPost(): Observable<PostOverviewModel> {
+    return this.httpClient.get<PostOverviewModel>(`${this.APIUrl}/posts/mostCommented`);
   }
 
   getAllOrders(): Observable<OrderDetailsModel[]> {
