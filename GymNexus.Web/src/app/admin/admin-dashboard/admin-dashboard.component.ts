@@ -40,6 +40,30 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
+  addMarketplace(): void {
+    // const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    //   width: '400px',
+    //   data: {
+    //     title: 'Delete Post',
+    //     message: 'Are you sure you want to delete this post?'
+    //   }
+    // });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result) {
+    //     this._postsService.delete(id).pipe(takeUntil(this._unsubscribeAll)).subscribe({
+    //       next: () => {
+    //         this._snackbarService.openSuccess('Post deleted successfully');
+    //         this._router.navigate(['/posts']);
+    //       },
+    //       error: (e) => {
+    //         this.error = e;
+    //       },
+    //     });
+    //   }
+    // });
+  }
+
   ngOnDestroy(): void {
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
