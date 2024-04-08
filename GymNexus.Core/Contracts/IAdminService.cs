@@ -1,5 +1,4 @@
 ﻿using GymNexus.Core.Models;
-using GymNexus.Infrastructure.Data;
 
 namespace GymNexus.Core.Contracts;
 
@@ -16,4 +15,6 @@ public interface IAdminService
     Task<int> GetCompletedOrdersCountAsync();
 
     Task<string> ChangeOrderStatusAsync(int id, string status);
+    Task<PostPreviewDto?> GetMostLikedPostAsync();
+    Task<PostPreviewDto?> GetMostCommentedPostAsync();
 }

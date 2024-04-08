@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using GymNexus.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
+using GymNexus.Core.Services;
 
 namespace GymNexus.API.Controllers
 {
@@ -24,6 +25,48 @@ namespace GymNexus.API.Controllers
         {
             _adminService = adminService;
             _userManager = userManager;
+        }
+
+        /// <summary>
+        /// Gets most liked post that is currently active in the system
+        /// </summary>
+        /// <returns>Most liked post</returns>
+        [HttpGet("posts/mostLiked")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PostPreviewDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetMostLikedPost()
+        {
+            var post = await _adminService.GetMostLikedPostAsync();
+
+            if (post == null)
+            {
+                return NoContent();
+            }
+
+            return Ok(post);
+        }
+
+        /// <summary>
+        /// Gets most commented post that is currently active in the system
+        /// </summary>
+        /// <returns>Most commented post</returns>
+        [HttpGet("posts/mostCommented")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PostPreviewDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetMostCommentedPost()
+        {
+            var post = await _adminService.GetMostCommentedPostAsync();
+
+            if (post == null)
+            {
+                return NoContent();
+            }
+
+            return Ok(post);
         }
 
         /// <summary>

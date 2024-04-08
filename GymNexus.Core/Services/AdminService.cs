@@ -2,9 +2,8 @@
 using GymNexus.Core.Models;
 using GymNexus.Core.Utils;
 using GymNexus.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using static GymNexus.Infrastructure.Constants.DataConstants;
 
 namespace GymNexus.Core.Services;
@@ -100,5 +99,37 @@ public class AdminService : IAdminService
         await _context.SaveChangesAsync();
 
         return newStatus;
+    }
+
+    public async Task<PostPreviewDto?> GetMostLikedPostAsync()
+    {
+        return await _context.Posts
+            .AsNoTracking()
+            .Where(p => p.IsActive)
+            .OrderByDescending(p => p.PostsLikes.Count())
+            .Select(p => new PostPreviewDto()
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Content = p.Content.Length > 50 ? p.Content.Substring(0, 50) + "..." : p.Content,
+                Likes = p.PostsLikes.Count()
+            })
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<PostPreviewDto?> GetMostCommentedPostAsync()
+    {
+        return await _context.Posts
+            .AsNoTracking()
+            .Where(p => p.IsActive)
+            .OrderByDescending(p => p.Comments.Count(c => c.IsActive))
+            .Select(p => new PostPreviewDto()
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Content = p.Content.Length > 50 ? p.Content.Substring(0, 50) + "..." : p.Content,
+                Comments = p.Comments.Count(c => c.IsActive)
+            })
+            .FirstOrDefaultAsync();
     }
 }
