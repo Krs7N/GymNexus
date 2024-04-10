@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { OrderDetailsModel } from './order-details-model';
 import { HttpHeaders } from '@angular/common/http';
 import { PostOverviewModel } from '../posts/post-overview-model';
+import { MarketplaceFormModel } from './marketplace-form-model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,10 @@ export class AdminService extends CrudService<any> {
 
   constructor(injector: Injector) {
     super(injector)
+  }
+
+  addMarketplace(marketplaceModel: MarketplaceFormModel): Observable<void> {
+    return this.httpClient.post<void>(`${this.APIUrl}/marketplaces`, marketplaceModel);
   }
 
   getMostLikedPost(): Observable<PostOverviewModel> {

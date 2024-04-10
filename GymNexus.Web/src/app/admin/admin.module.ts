@@ -8,6 +8,7 @@ import { ErrorPageComponent } from '../shared/error-page/error-page.component';
 import { AdminManageOrdersComponent } from './admin-manage-orders/admin-manage-orders.component';
 import { ProductsTableComponent } from './admin-manage-orders/products-table/products-table.component';
 import { AdminManagePostsComponent } from './admin-manage-posts/admin-manage-posts.component';
+import { CreateMarketplaceFormComponent } from './create-marketplace-form/create-marketplace-form.component';
 
 
 
@@ -16,7 +17,8 @@ import { AdminManagePostsComponent } from './admin-manage-posts/admin-manage-pos
     AdminDashboardComponent,
     AdminManageOrdersComponent,
     ProductsTableComponent,
-    AdminManagePostsComponent
+    AdminManagePostsComponent,
+    CreateMarketplaceFormComponent
   ],
   imports: [
     RouterModule.forChild(adminRoutes),

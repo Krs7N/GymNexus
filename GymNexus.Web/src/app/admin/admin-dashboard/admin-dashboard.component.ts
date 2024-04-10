@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, forkJoin, takeUntil } from 'rxjs';
 import { AdminService } from '../admin.service';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateMarketplaceFormComponent } from '../create-marketplace-form/create-marketplace-form.component';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -18,6 +22,9 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   error: any;
 
   constructor(
+    public dialog: MatDialog,
+    private _snackbarService: SnackbarService,
+    private _router: Router,
     private _adminService: AdminService
   ) { }
 
@@ -41,27 +48,24 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   }
 
   addMarketplace(): void {
-    // const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-    //   width: '400px',
-    //   data: {
-    //     title: 'Delete Post',
-    //     message: 'Are you sure you want to delete this post?'
-    //   }
-    // });
+    const dialogRef = this.dialog.open(CreateMarketplaceFormComponent, {
+      width: '500px'
+    });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result) {
-    //     this._postsService.delete(id).pipe(takeUntil(this._unsubscribeAll)).subscribe({
-    //       next: () => {
-    //         this._snackbarService.openSuccess('Post deleted successfully');
-    //         this._router.navigate(['/posts']);
-    //       },
-    //       error: (e) => {
-    //         this.error = e;
-    //       },
-    //     });
-    //   }
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      debugger
+      if (result) {
+        this._adminService.addMarketplace(result).pipe(takeUntil(this._unsubscribeAll)).subscribe({
+          next: () => {
+            this._snackbarService.openSuccess('Successfully added new global marketplace partner to GymNexus!');
+            this._router.navigate(['/map']);
+          },
+          error: (e) => {
+            this.error = e;
+          },
+        });
+      }
+    });
   }
 
   ngOnDestroy(): void {

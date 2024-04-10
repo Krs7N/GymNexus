@@ -23,8 +23,8 @@
             <mat-error *ngIf="postForm.get('content')?.errors?.['minlength']">
                 Content must be at least {{ postForm.get('content')?.errors?.['minlength']['requiredLength'] }} characters long
             </mat-error>
-            <mat-error *ngIf="postForm.get('title')?.errors?.['maxlength']">
-                Content can't be more than {{ postForm.get('title')?.errors?.['maxlength']['requiredLength'] }} characters long. You typed {{ postForm.get('title')?.errors?.['maxlength']['actualLength'] }} characters
+            <mat-error *ngIf="postForm.get('content')?.errors?.['maxlength']">
+                Content can't be more than {{ postForm.get('content')?.errors?.['maxlength']['requiredLength'] }} characters long. You typed {{ postForm.get('content')?.errors?.['maxlength']['actualLength'] }} characters
             </mat-error>
         </mat-form-field>
         <button mat-raised-button color="primary" (click)="openCloudinaryUploader()">Upload Image</button>

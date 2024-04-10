@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>Add a Marketplace</h2>
+<mat-dialog-content style="height: calc(100% - 130px);">
+    <form [formGroup]="marketplaceForm">
+        <mat-form-field appearance="fill" class="w-full mb-4">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name">
+            <mat-error *ngIf="marketplaceForm.get('name')?.errors?.['required']">
+                Name field is required
+            </mat-error>
+            <mat-error *ngIf="marketplaceForm.get('name')?.errors?.['minlength']">
+                Name must be at least {{ marketplaceForm.get('title')?.errors?.['minlength']['requiredLength'] }} characters long
+            </mat-error>
+            <mat-error *ngIf="marketplaceForm.get('name')?.errors?.['maxlength']">
+                Name can't be more than {{ marketplaceForm.get('name')?.errors?.['maxlength']['requiredLength'] }} characters long. You typed {{ marketplaceForm.get('name')?.errors?.['maxlength']['actualLength'] }} characters
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-full mb-4">
+            <mat-label>Additional Information</mat-label>
+            <textarea cdkTextareaAutosize rows="5" matInput formControlName="description"></textarea>
+            <mat-error *ngIf="marketplaceForm.get('description')?.errors?.['required']">
+                Additional Information field is required
+            </mat-error>
+            <mat-error *ngIf="marketplaceForm.get('description')?.errors?.['minlength']">
+                Additional Information must be at least {{ marketplaceForm.get('description')?.errors?.['minlength']['requiredLength'] }} characters long
+            </mat-error>
+            <mat-error *ngIf="marketplaceForm.get('description')?.errors?.['maxlength']">
+                Additional Information can't be more than {{ marketplaceForm.get('description')?.errors?.['maxlength']['requiredLength'] }} characters long. You typed {{ marketplaceForm.get('description')?.errors?.['maxlength']['actualLength'] }} characters
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-full mb-4">
+            <mat-label>Address</mat-label>
+            <input matInput formControlName="address">
+            <mat-hint>Provide address in the following format: [Address] [Address Number] [City] [PostCode] (optional)</mat-hint>
+            <mat-error *ngIf="marketplaceForm.get('address')?.errors?.['required']">
+                Address field is required
+            </mat-error>
+            <mat-error *ngIf="marketplaceForm.get('address')?.errors?.['minlength']">
+                Address must be at least {{ marketplaceForm.get('address')?.errors?.['minlength']['requiredLength'] }} characters long
+            </mat-error>
+            <mat-error *ngIf="marketplaceForm.get('address')?.errors?.['maxlength']">
+                Address can't be more than {{ marketplaceForm.get('address')?.errors?.['maxlength']['requiredLength'] }} characters long. You typed {{ marketplaceForm.get('address')?.errors?.['maxlength']['actualLength'] }} characters
+            </mat-error>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [mat-dialog-close]="true" color="primary" [disabled]="!marketplaceForm.valid" (click)="onSubmit()">Save</button>
+</mat-dialog-actions>
