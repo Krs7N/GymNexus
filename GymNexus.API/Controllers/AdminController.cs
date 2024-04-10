@@ -167,6 +167,23 @@ namespace GymNexus.API.Controllers
             return Ok(newStatus);
         }
 
+        /// <summary>
+        /// Adds a new marketplace partner to the system
+        /// </summary>
+        /// <returns>The new changed status</returns>
+        [HttpPost("marketplaces")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddMarketplace([FromBody] MarketplaceFormDto marketplaceModel)
+        {
+            await _adminService.AddMarketplaceAsync(marketplaceModel);
+
+            return Ok();
+        }
+
         private string? GetUserId() => User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
     }
 }

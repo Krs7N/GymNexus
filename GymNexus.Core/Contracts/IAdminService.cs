@@ -15,6 +15,10 @@ public interface IAdminService
     Task<int> GetCompletedOrdersCountAsync();
 
     Task<string> ChangeOrderStatusAsync(int id, string status);
+
     Task<PostPreviewDto?> GetMostLikedPostAsync();
+
     Task<PostPreviewDto?> GetMostCommentedPostAsync();
+
+    Task AddMarketplaceAsync(MarketplaceFormDto marketplaceFormDto);
 }

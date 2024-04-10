@@ -2,8 +2,11 @@
 using GymNexus.Core.Models;
 using GymNexus.Core.Utils;
 using GymNexus.Infrastructure.Data;
+using GymNexus.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System.Net;
 using static GymNexus.Infrastructure.Constants.DataConstants;
 
 namespace GymNexus.Core.Services;
@@ -131,5 +134,35 @@ public class AdminService : IAdminService
                 Comments = p.Comments.Count(c => c.IsActive)
             })
             .FirstOrDefaultAsync();
+    }
+
+    public async Task AddMarketplaceAsync(MarketplaceFormDto marketplaceFormDto)
+    {
+        var formattedAddress = Uri.EscapeDataString(marketplaceFormDto.Address);
+        var url = $"https://nominatim.openstreetmap.org/search?format=json&q={formattedAddress}";
+
+        using var httpClient = new HttpClient();
+
+        httpClient.DefaultRequestHeaders.Add("User-Agent", "GymNexus");
+
+        var response = await httpClient.GetStringAsync(url);
+        var geocodeResults = JsonConvert.DeserializeObject<List<GeocodeResult>>(response);
+
+        if (geocodeResults != null && geocodeResults.Count == 0)
+        {
+            throw new InvalidOperationException("The provided address is invalid");
+        }
+
+        var marketplace = new Marketplace()
+        {
+            Name = marketplaceFormDto.Name,
+            Description = marketplaceFormDto.Description,
+            Address = marketplaceFormDto.Address,
+            Latitude = decimal.Parse(geocodeResults[0].Latitude),
+            Longitude = decimal.Parse(geocodeResults[0].Longitude)
+        };
+
+        await _context.Marketplaces.AddAsync(marketplace);
+        await _context.SaveChangesAsync();
     }
 }
