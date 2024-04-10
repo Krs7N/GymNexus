@@ -19,6 +19,8 @@ public class ProfileService : IProfileService
 
     public async Task<ProfileUpdateResponseDto> UpdateProfileAsync(ProfileUpdateDto profileUpdateDto, ApplicationUser user)
     {
+        user.FirstName = profileUpdateDto.FirstName;
+        user.LastName = profileUpdateDto.LastName;
         user.ProfilePictureUrl = profileUpdateDto.ImageUrl;
         await _userManager.UpdateAsync(user);
 
@@ -26,6 +28,8 @@ public class ProfileService : IProfileService
 
         return new ProfileUpdateResponseDto()
         {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
             Email = user.Email,
             ImageUrl = user.ProfilePictureUrl,
             Roles = await _userManager.GetRolesAsync(user)

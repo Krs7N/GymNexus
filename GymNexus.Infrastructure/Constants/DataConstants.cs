@@ -7,6 +7,8 @@ public static class DataConstants
 
     // User
     public const int ProfilePictureMaxLength = 250;
+    public const int FirstNameMaxLength = 12;
+    public const int LastNameMaxLength = 15;
 
     // Product
     public const int ProductNameMinLength = 5;

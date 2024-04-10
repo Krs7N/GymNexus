@@ -20,6 +20,20 @@ public class ApplicationUser : IdentityUser
     public string? ProfilePictureUrl { get; set; }
 
     /// <summary>
+    /// The first name of the user. It is not required at first and has a maximum length of 12 characters.
+    /// </summary>
+    [MaxLength(FirstNameMaxLength)]
+    [Comment("The first name of the user")]
+    public string? FirstName { get; set; }
+
+    /// <summary>
+    /// The last name of the user. It is not required at first and has a maximum length of 15 characters.
+    /// </summary>
+    [MaxLength(LastNameMaxLength)]
+    [Comment("The last name of the user")]
+    public string? LastName { get; set; }
+
+    /// <summary>
     /// The collection of posts that the current user has created. A user can have many posts. It is a navigation property.
     /// </summary>
     public virtual IEnumerable<Post> Posts { get; set; } = new List<Post>();
