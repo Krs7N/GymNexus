@@ -1,6 +1,17 @@
 <h2 mat-dialog-title>Profile Details</h2>
 <mat-dialog-content>
   <form [formGroup]="profileForm">
+    
+    <mat-form-field class="w-full">
+      <mat-label>First Name</mat-label>
+      <input matInput formControlName="firstName" />
+    </mat-form-field>
+
+    <mat-form-field class="w-full">
+      <mat-label>Last Name</mat-label>
+      <input matInput formControlName="lastName" />
+    </mat-form-field>
+
     <mat-form-field class="w-full">
       <mat-label>Email</mat-label>
       <input matInput formControlName="email" />

@@ -42,7 +42,7 @@ export class LoginComponent {
 
           this._cookieService.set('Authorization', `Bearer ${response.token}`, expirationDate, '/', undefined, true, 'Strict');
 
-          this._authService.setUser({ email: response.email, roles: response.roles, imageUrl: response.imageUrl });
+          this._authService.setUser({ email: response.email, roles: response.roles, imageUrl: response.imageUrl, firstName: response.firstName, lastName: response.lastName });
 
           this._router.navigate(['/']);
         },

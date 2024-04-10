@@ -23,7 +23,7 @@
             <app-cart class="mr-5"></app-cart>
 
             <div mat-button [matMenuTriggerFor]="profileMenu" class="flex items-center cursor-pointer">
-                <span class="text-teal-200 text-base hover:text-white mr-2">Welcome to the body temple, {{ user?.email }}</span>
+                <span class="text-teal-200 text-base hover:text-white mr-2">Welcome to the body temple, {{ (user!.firstName && user!.lastName) ? (user!.firstName + ' ' + user!.lastName) : user!.email }}</span>
                 <img [src]="user?.imageUrl" class="rounded-full mr-5" width="30" height="30" style="border-radius: 50%;" *ngIf="user?.imageUrl">
             </div>
               

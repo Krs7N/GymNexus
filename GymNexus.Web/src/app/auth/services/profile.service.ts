@@ -13,7 +13,8 @@ export class ProfileService extends CrudService<UserModel> {
     super(injector);
   }
 
-  updateProfilePicture(model: { email: string, imageUrl: string }): Observable<UserModel> {
+  updateProfile(model: { firstName: string, lastName: string, email: string, imageUrl: string }): Observable<UserModel> {
+    debugger
     return this.httpClient.put<UserModel>(`${this.APIUrl}/update`, model);
   }
 

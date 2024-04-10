@@ -36,12 +36,16 @@ export class AuthService extends CrudService<RegisterModel | LoginModel>{
   }
 
   getUser(): UserModel | undefined {
+    const firstName = localStorage.getItem('firstName');
+    const lastName = localStorage.getItem('lastName');
     const email = localStorage.getItem('email');
     const imageUrl = localStorage.getItem('imageUrl');
     const roles = localStorage.getItem('roles');
 
     if (email && roles) {
       const user: UserModel = {
+        firstName: firstName ? firstName : undefined,
+        lastName: lastName ? lastName : undefined,
         email: email,
         imageUrl: imageUrl ? imageUrl : undefined,
         roles: roles.split(',')
@@ -55,9 +59,18 @@ export class AuthService extends CrudService<RegisterModel | LoginModel>{
   }
 
   setUser(user: UserModel): void {
+    debugger
     this.user$.next(user);
 
     localStorage.setItem('email', user.email);
+
+    if (user.firstName) {
+      localStorage.setItem('firstName', user.firstName);
+    }
+
+    if (user.lastName) {
+      localStorage.setItem('lastName', user.lastName);
+    }
 
     if (user.imageUrl) {
       localStorage.setItem('imageUrl', user.imageUrl);

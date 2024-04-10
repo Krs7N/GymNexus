@@ -27,6 +27,8 @@ export class ProfileDialogComponent implements OnInit {
 
   ngOnInit(): void {
       this.profileForm = this._fb.group({
+        firstName: [this.data.firstName, [Validators.minLength(3), Validators.maxLength(12)]],
+        lastName: [this.data.lastName, [Validators.minLength(5), Validators.maxLength(15)]],
         email: [{value: this.data.email, disabled: true}, Validators.required],
         imageUrl: [this.data.imageUrl]
       });
@@ -75,8 +77,9 @@ export class ProfileDialogComponent implements OnInit {
 
   save(): void {
     if (this.profileForm.valid) {
-      this._profileService.updateProfilePicture(this.profileForm.getRawValue()).subscribe({
+      this._profileService.updateProfile(this.profileForm.getRawValue()).subscribe({
         next: (user) => {
+          debugger
           this._snackbarService.openSuccess('Profile updated successfully');
           this._authService.setUser(user);
           this.dialogRef.close();
