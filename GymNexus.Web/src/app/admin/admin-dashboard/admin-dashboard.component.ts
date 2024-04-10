@@ -53,7 +53,6 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      debugger
       if (result) {
         this._adminService.addMarketplace(result).pipe(takeUntil(this._unsubscribeAll)).subscribe({
           next: () => {
