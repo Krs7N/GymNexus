@@ -59,7 +59,6 @@ export class AuthService extends CrudService<RegisterModel | LoginModel>{
   }
 
   setUser(user: UserModel): void {
-    debugger
     this.user$.next(user);
 
     localStorage.setItem('email', user.email);

@@ -14,7 +14,6 @@ export class ProfileService extends CrudService<UserModel> {
   }
 
   updateProfile(model: { firstName: string, lastName: string, email: string, imageUrl: string }): Observable<UserModel> {
-    debugger
     return this.httpClient.put<UserModel>(`${this.APIUrl}/update`, model);
   }
 
