@@ -1,15 +1,16 @@
-﻿using GymNexus.Core.Utils;
-using GymNexus.Infrastructure.Data;
+﻿using GymNexus.Infrastructure.Data;
 using GymNexus.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 
 namespace GymNexus.Tests;
 
 public class TestBase
 {
     protected ApplicationDbContext _context;
-    protected UserManager<ApplicationUser> _userManager;
+    protected Mock<UserManager<ApplicationUser>> _userManagerMock;
+    protected Mock<RoleManager<IdentityRole>> _roleManagerMock;
 
     [SetUp]
     public async Task SetUpBase()
@@ -20,27 +21,50 @@ public class TestBase
 
         _context = new ApplicationDbContext(options);
 
+        var userStoreMock = new Mock<IUserStore<ApplicationUser>>();
+        _userManagerMock = new Mock<UserManager<ApplicationUser>>(
+            userStoreMock.Object, null, null, null, null, null, null, null, null);
+
+        var roleStoreMock = new Mock<IRoleStore<IdentityRole>>();
+        _roleManagerMock = new Mock<RoleManager<IdentityRole>>(
+                roleStoreMock.Object, null, null, null, null);
+
+        var roles = new List<string>()
+        {
+            "Owner",
+            "Seller"
+        };
+
+        _userManagerMock.Setup(x => x.FindByEmailAsync("test@example.com"))
+            .ReturnsAsync(UserWithRoles);
+        _userManagerMock.Setup(x => x.AddToRolesAsync(UserWithRoles, roles))
+            .ReturnsAsync(IdentityResult.Success);
+
+        _userManagerMock.Setup(x => x.IsInRoleAsync(It.Is<ApplicationUser>(u => u.Email == "test@example.com"), "Owner")).ReturnsAsync(true);
+        _userManagerMock.Setup(x => x.IsInRoleAsync(It.Is<ApplicationUser>(u => u.Email == "test@example.com"), "Seller")).ReturnsAsync(true);
+
+        foreach (var roleName in roles)
+        {
+            _roleManagerMock.Setup(x => x.RoleExistsAsync(roleName)).ReturnsAsync(true);
+        }
+
+        await _userManagerMock.Object.AddToRolesAsync(UserWithRoles, roles);
+
         await _context.Database.EnsureDeletedAsync();
         await _context.Database.EnsureCreatedAsync();
 
         await SeedDatabase();
     }
 
+    public ApplicationUser UserWithRoles { get; set; } = new ApplicationUser()
+    {
+        UserName = "test@example.com",
+        Email = "test@example.com"
+    };
+
     public ApplicationUser User { get; set; } = null!;
 
-    public Category Category { get; set; } = null!;
-
-    public Marketplace Marketplace { get; set; } = null!;
-
     public Product Product { get; set; } = null!;
-
-    public Order Order { get; set; } = null!;
-
-    public Post Post { get; set; } = null!;
-
-    public Store Store { get; set; } = null!;
-
-    public Comment Comment { get; set; } = null!;
 
     private async Task SeedDatabase()
     {
@@ -54,87 +78,20 @@ public class TestBase
 
         await _context.Users.AddAsync(User);
 
-        Category = new Category
-        {
-            Id = 35,
-            Name = "Test Category",
-            Description = "Test Category description which is very long"
-        };
-
-        await _context.Categories.AddAsync(Category);
-
-        Marketplace = new Marketplace
-        {
-            Id = 35,
-            Name = "Test Marketplace",
-            Description = "Test Marketplace description which is very long and the users will not have any information about it",
-            Address = "Test Address 65 8000",
-            Latitude = 42.698334m,
-            Longitude = 23.319941m
-        };
-
-        await _context.Marketplaces.AddAsync(Marketplace);
-
         Product = new Product
         {
-            Id = 35,
-            Name = "Test Product",
-            Description = "Test Product description which is very long and the users will not have any information about it",
-            Price = 10.00m,
-            CategoryId = Category.Id,
-            CreatedOn = DateTime.Now,
-            ImageUrl = "https://test.com/test.jpg"
+            Id = 3,
+            Name = "Kevin Levrone's Whey Protein",
+            Description =
+                "Special whey protein made by Kevin Levrone's own brand. Comes in 2000 grams package, with a spoon that is 30g and recommended daily usage of 30g",
+            CategoryId = 1,
+            CreatedOn = DateTime.Now.AddDays(-5),
+            ImageUrl = "https://www.kevinlevrone.com/wp-content/uploads/2021/06/levrone-whey-protein-2000g.jpg",
+            StoreId = 1,
+            Price = 50.00m,
         };
 
         await _context.Products.AddAsync(Product);
-
-        Order = new Order
-        {
-            Id = 35,
-            CreatedBy = User.Id,
-            CreatedOn = DateTime.Now,
-            Quantity = 1,
-            TotalPrice = Product.Price,
-            PaymentMethod = "InCash",
-            Status = OrderStatus.Pending.ToString()
-        };
-
-        await _context.Orders.AddAsync(Order);
-
-        Post = new Post
-        {
-            Id = 35,
-            Title = "Test Post",
-            Content = "Test Post content which is very long and the users will not have any information about it",
-            CreatedBy = User.Id,
-            CreatedOn = DateTime.Now
-        };
-
-        await _context.Posts.AddAsync(Post);
-
-        Store = new Store
-        {
-            Id = 35,
-            Name = "Test Store",
-            Description = "Test Store description which is very long and the users will not have any information about it",
-            MarketplaceId = Marketplace.Id,
-            OwnerId = User.Id,
-            AverageRating = 5.00m
-        };
-
-        await _context.Stores.AddAsync(Store);
-
-        Comment = new Comment
-        {
-            Id = 35,
-            Content = "Test Comment",
-            CreatedBy = User.Id,
-            CreatedOn = DateTime.Now,
-            PostId = Post.Id
-        };
-
-        await _context.Comments.AddAsync(Comment);
-
         await _context.SaveChangesAsync();
     }
 

@@ -10,25 +10,25 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     { }
 
-    public DbSet<Marketplace> Marketplaces { get; set; } = null!;
+    public virtual DbSet<Marketplace> Marketplaces { get; set; } = null!;
 
-    public DbSet<Store> Stores { get; set; } = null!;
+    public virtual DbSet<Store> Stores { get; set; } = null!;
 
-    public DbSet<Category> Categories { get; set; } = null!;
+    public virtual DbSet<Category> Categories { get; set; } = null!;
 
-    public DbSet<Product> Products { get; set; } = null!;
+    public virtual DbSet<Product> Products { get; set; } = null!;
 
-    public DbSet<Comment> Comments { get; set; } = null!;
+    public virtual DbSet<Comment> Comments { get; set; } = null!;
 
-    public DbSet<Order> Orders { get; set; } = null!;
+    public virtual DbSet<Order> Orders { get; set; } = null!;
 
-    public DbSet<OrderDetail> OrdersDetails { get; set; } = null!;
+    public virtual DbSet<OrderDetail> OrdersDetails { get; set; } = null!;
 
-    public DbSet<Post> Posts { get; set; } = null!;
+    public virtual DbSet<Post> Posts { get; set; } = null!;
 
-    public DbSet<PostLike> PostsLikes { get; set; } = null!;
+    public virtual DbSet<PostLike> PostsLikes { get; set; } = null!;
 
-    public DbSet<ProductLike> ProductsLikes { get; set; } = null!;
+    public virtual DbSet<ProductLike> ProductsLikes { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

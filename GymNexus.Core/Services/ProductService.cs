@@ -63,7 +63,7 @@ public class ProductService : IProductService
 
         if (product == null)
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("Product does not exist.");
         }
 
         var like = product.ProductsLikes.FirstOrDefault(pl => pl.UserId == userId);
@@ -131,7 +131,7 @@ public class ProductService : IProductService
 
         if (product == null)
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("Product does not exist.");
         }
 
         if (!(await _userManager.IsInRoleAsync(user, Roles.Owner) ||
@@ -168,7 +168,7 @@ public class ProductService : IProductService
 
         if (product == null)
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("Product does not exist.");
         }
 
         product.IsActive = false;
