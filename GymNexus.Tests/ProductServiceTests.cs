@@ -5,6 +5,7 @@ using GymNexus.Infrastructure.Data.Models;
 
 namespace GymNexus.Tests;
 
+[TestFixture]
 public class ProductServiceTests : TestBase
 {
     private IProductService _productService = null!;
