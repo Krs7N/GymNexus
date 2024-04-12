@@ -66,6 +66,8 @@ public class TestBase
 
     public Product Product { get; set; } = null!;
 
+    public Post Post { get; set; } = null!;
+
     private async Task SeedDatabase()
     {
         User = new ApplicationUser
@@ -92,6 +94,19 @@ public class TestBase
         };
 
         await _context.Products.AddAsync(Product);
+
+        Post = new Post()
+        {
+            Id = 4,
+            Title = "Test Post",
+            Content = "Test Content",
+            CreatedBy = User.Id,
+            CreatedOn = DateTime.Now,
+            ImageUrl = "https://test.com/image.jpg"
+        };
+
+        await _context.Posts.AddAsync(Post);
+
         await _context.SaveChangesAsync();
     }
 
