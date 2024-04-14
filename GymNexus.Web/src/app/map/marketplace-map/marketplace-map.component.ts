@@ -1,8 +1,10 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import { MarketplaceService } from './marketplace.service';
 import { Subject, takeUntil } from 'rxjs';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -24,13 +26,30 @@ L.Marker.prototype.options.icon = iconDefault;
   templateUrl: './marketplace-map.component.html',
   styleUrls: ['./marketplace-map.component.scss']
 })
-export class MarketplaceMapComponent implements AfterViewInit, OnDestroy {
+export class MarketplaceMapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
+    private _router: Router,
+    private _route: ActivatedRoute,
+    private _authService: AuthService,
     private _marketplaceService: MarketplaceService,
     private _snackbarService: SnackbarService) { }
+
+  ngOnInit(): void {
+    if (this._route.snapshot.fragment) {
+      this._authService.getExternalLoginData(this._route.snapshot.fragment).pipe(
+        takeUntil(this._unsubscribeAll)
+      ).subscribe({
+        next: (res) => {
+          this._authService.setUser(res);
+          this._router.navigate(['/']);
+          this._snackbarService.openSuccess('Login successful', 'Okay');
+        }
+      });
+    }
+  }
 
   ngAfterViewInit(): void {
     const map = L.map('map').setView([42.7339, 25.4858], 8);

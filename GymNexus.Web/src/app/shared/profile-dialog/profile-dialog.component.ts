@@ -27,8 +27,8 @@ export class ProfileDialogComponent implements OnInit {
 
   ngOnInit(): void {
       this.profileForm = this._fb.group({
-        firstName: [this.data.firstName, [Validators.minLength(3), Validators.maxLength(12)]],
-        lastName: [this.data.lastName, [Validators.minLength(5), Validators.maxLength(15)]],
+        firstName: [{value: this.data.firstName, disabled: this.data.isExternal}, [Validators.minLength(3), Validators.maxLength(12)]],
+        lastName: [{value: this.data.lastName, disabled: this.data.isExternal}, [Validators.minLength(5), Validators.maxLength(15)]],
         email: [{value: this.data.email, disabled: true}, Validators.required],
         imageUrl: [this.data.imageUrl]
       });

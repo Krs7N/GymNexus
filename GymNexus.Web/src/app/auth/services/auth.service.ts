@@ -8,6 +8,7 @@ import { LoginResponseModel } from '../models/login-response-model';
 import { environment } from 'src/environments/environment.development';
 import { UserModel } from '../models/user-model';
 import { CookieService } from 'ngx-cookie-service';
+import { LoginResponsePartialModel } from '../models/login-response-partial-model';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,7 @@ export class AuthService extends CrudService<RegisterModel | LoginModel>{
     const email = localStorage.getItem('email');
     const imageUrl = localStorage.getItem('imageUrl');
     const roles = localStorage.getItem('roles');
+    const isExternal = localStorage.getItem('isExternal');
 
     if (email && roles) {
       const user: UserModel = {
@@ -48,7 +50,8 @@ export class AuthService extends CrudService<RegisterModel | LoginModel>{
         lastName: lastName ? lastName : undefined,
         email: email,
         imageUrl: imageUrl ? imageUrl : undefined,
-        roles: roles.split(',')
+        roles: roles.split(','),
+        isExternal: isExternal === 'true' ? true : false
       };
 
       return user;
@@ -75,7 +78,13 @@ export class AuthService extends CrudService<RegisterModel | LoginModel>{
       localStorage.setItem('imageUrl', user.imageUrl);
     }
 
+    localStorage.setItem('isExternal', user.isExternal.toString());
+
     localStorage.setItem('roles', user.roles.join(','));
+  }
+
+  getExternalLoginData(email: string): Observable<LoginResponsePartialModel> {
+    return this.httpClient.get<LoginResponsePartialModel>(`${environment.apiBaseUrl}/${this.getResourceUrl()}/externalLogin/${email}`);
   }
 
   user(): Observable<UserModel | undefined> {

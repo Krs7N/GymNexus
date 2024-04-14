@@ -100,9 +100,12 @@ namespace GymNexus.API.Controllers
 
                     var response = new LoginResponseDto()
                     {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
                         Email = user.Email,
                         ImageUrl = user.ProfilePictureUrl,
                         Roles = roles.ToList(),
+                        IsExternal = false,
                         Token = jwtToken
                     };
 
@@ -155,9 +158,11 @@ namespace GymNexus.API.Controllers
                 await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
             }
 
+            var firstName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
+            var lastName = info.Principal.FindFirstValue(ClaimTypes.Surname);
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);
             var imageUrl = info.Principal.FindFirstValue("picture");
-            var user = new ApplicationUser { ProfilePictureUrl = imageUrl, UserName = email, Email = email };
+            var user = new ApplicationUser { FirstName = firstName, LastName = lastName, ProfilePictureUrl = imageUrl, UserName = email, Email = email };
             var createResult = await _userManager.CreateAsync(user);
 
             if (createResult.Succeeded)
@@ -171,27 +176,51 @@ namespace GymNexus.API.Controllers
                 }
             }
 
-            var roleResult = await _userManager.AddToRoleAsync(user, Roles.Writer);
-            var roles = new List<string>();
-
-            if (!roleResult.Succeeded)
-            {
-                roles.Add(Roles.Writer);
-            }
+            await _userManager.AddToRoleAsync(user, Roles.Writer);
+            var roles = new List<string> { Roles.Writer };
 
             var jwtToken = _tokenService.CreateJwtToken(user, roles.ToList());
 
             var cookieOptions = new CookieOptions()
             {
-                HttpOnly = true,
-                Expires = DateTime.Now.AddDays(2),
+                Expires = DateTime.Now.AddDays(1),
                 Secure = true,
                 SameSite = SameSiteMode.Strict
             };
 
             Response.Cookies.Append("Authorization", $"Bearer {jwtToken}", cookieOptions);
 
-            return Redirect("http://localhost:4200/map");
+            return Redirect($"http://localhost:4200/map#{user.Email}");
+        }
+
+        /// <summary>
+        /// Gets the external information for the user for the different providers.
+        /// </summary>
+        /// <returns>Log in information</returns>
+        [HttpGet("externalLogin/{email}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetExternalLoginInfo([FromRoute] string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                throw new Exception("Error loading external login information.");
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var response = new LoginResponsePartialDto()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                ImageUrl = user.ProfilePictureUrl,
+                Roles = roles.ToList(),
+                IsExternal = true
+            };
+
+            return Ok(response);
         }
     }
 }

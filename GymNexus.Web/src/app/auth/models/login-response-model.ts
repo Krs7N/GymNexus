@@ -1,17 +1,10 @@
-export class LoginResponseModel {
-    firstName?: string;
-    lastName?: string;
-    email: string;
-    imageUrl?: string;
-    token: string;
-    roles: string[];
+import { LoginResponsePartialModel } from "./login-response-partial-model";
 
-    constructor(firstName: string, lastName: string, email: string, token: string, roles: string[], imageUrl?: string, ) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.imageUrl = imageUrl;
+export class LoginResponseModel extends LoginResponsePartialModel {
+    token: string;
+
+    constructor(firstName: string, lastName: string, email: string, token: string, roles: string[], isExternal: boolean, imageUrl?: string, ) {
+        super(firstName, lastName, email, roles, isExternal, imageUrl)
         this.token = token;
-        this.roles = roles;
     }
 }

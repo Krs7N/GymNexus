@@ -9,12 +9,14 @@ import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
+import { SnackbarService } from '../shared/services/snackbar.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
   constructor(
     private _cookieService: CookieService,
+    private _snackbarService: SnackbarService,
     private _authService: AuthService,
     private _router: Router
   ) {}
@@ -29,6 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
         }
       });
     } else {
+      this._snackbarService.openWarning('Your session has expired. Please log in again.');
       this._authService.logout();
       this._router.navigate(['/login']);
     }

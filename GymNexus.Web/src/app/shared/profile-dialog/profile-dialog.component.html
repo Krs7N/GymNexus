@@ -17,7 +17,7 @@
       <input matInput formControlName="email" />
     </mat-form-field>
 
-    <div class="text-center">
+    <div *ngIf="!data.isExternal" class="text-center">
       <button
         mat-stroked-button
         type="button"
@@ -49,7 +49,7 @@
 
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [disabled]="profileForm.pristine" (click)="save()">
+  <button mat-button *ngIf="!data.isExternal" [disabled]="profileForm.pristine" (click)="save()">
     Save
   </button>
 </mat-dialog-actions>
