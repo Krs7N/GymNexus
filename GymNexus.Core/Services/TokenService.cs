@@ -20,14 +20,25 @@ public class TokenService : ITokenService
 
     public string CreateJwtToken(ApplicationUser user, IEnumerable<string> roles)
     {
-        var claims = new List<Claim>()
+        var claims = new List<Claim>();
+
+        if (user.FirstName != null && user.LastName != null)
         {
-            new Claim(ClaimTypes.GivenName, user.FirstName),
-            new Claim(ClaimTypes.Surname, user.LastName),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.NameIdentifier, user.Id)
-        };
+            claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.GivenName, user.FirstName),
+                new Claim(ClaimTypes.Surname, user.LastName),
+            };
+        }
+        else
+        {
+            claims.AddRange(new List<Claim>()
+            {   
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
+            });
+        }
 
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
