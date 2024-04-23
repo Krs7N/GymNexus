@@ -39,7 +39,6 @@ export const authGuard: CanActivateFn = (route, state) => {
     }
   }
 
-  snackbarService.openWarning('Your session has expired. Please log in again.');
   authService.logout();
   router.navigate(['/login']);
   return false;

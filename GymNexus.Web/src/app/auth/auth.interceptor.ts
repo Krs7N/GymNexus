@@ -30,7 +30,8 @@ export class AuthInterceptor implements HttpInterceptor {
           Authorization: `${token}`
         }
       });
-    } else {
+    } 
+    else if (!(request.url.includes('login') || request.url.includes('register'))) {
       this._snackbarService.openWarning('Your session has expired. Please log in again.');
       this._authService.logout();
       this._router.navigate(['/login']);

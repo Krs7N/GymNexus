@@ -78,7 +78,7 @@ export class AuthService extends CrudService<RegisterModel | LoginModel>{
       localStorage.setItem('imageUrl', user.imageUrl);
     }
 
-    localStorage.setItem('isExternal', user.isExternal.toString());
+    localStorage.setItem('isExternal', user.isExternal?.toString());
 
     localStorage.setItem('roles', user.roles.join(','));
   }

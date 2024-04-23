@@ -79,6 +79,7 @@ export class ProfileDialogComponent implements OnInit {
     if (this.profileForm.valid) {
       this._profileService.updateProfile(this.profileForm.getRawValue()).subscribe({
         next: (user) => {
+          debugger
           this._snackbarService.openSuccess('Profile updated successfully');
           this._authService.setUser(user);
           this.dialogRef.close();
