@@ -15,11 +15,11 @@ public class OrderService : IOrderService
         _context = context;
     }
 
-    public async Task CreateOrderAsync(OrderFormDto orderDto, ApplicationUser user)
+    public async Task CreateOrderAsync(OrderFormDto orderDto, string userId)
     {
         var order = new Order
         {
-            CreatedBy = user.Id,
+            CreatedBy = userId,
             CreatedOn = DateTime.Now,
             Quantity = orderDto.Products.Sum(p => p.Quantity),
             TotalPrice = orderDto.Products.Sum(p => p.Quantity * p.Price),

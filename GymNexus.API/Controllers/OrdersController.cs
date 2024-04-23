@@ -50,13 +50,7 @@ namespace GymNexus.API.Controllers
                 return Unauthorized();
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            await _orderService.CreateOrderAsync(orderDto, user);
+            await _orderService.CreateOrderAsync(orderDto, userId);
 
             return Ok();
         }
