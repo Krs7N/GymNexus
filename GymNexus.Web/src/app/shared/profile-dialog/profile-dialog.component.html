@@ -1,47 +1,50 @@
 <h2 mat-dialog-title>Profile Details</h2>
 <mat-dialog-content>
   <form [formGroup]="profileForm">
-    
-    <mat-form-field class="w-full">
-      <mat-label>First Name</mat-label>
-      <input matInput formControlName="firstName" />
-    </mat-form-field>
+    <div class="grid grid-cols-2 gap-x-2">
+      <mat-form-field class="col-span-1">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName" />
+      </mat-form-field>
 
-    <mat-form-field class="w-full">
-      <mat-label>Last Name</mat-label>
-      <input matInput formControlName="lastName" />
-    </mat-form-field>
+      <mat-form-field class="col-span-1">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName" />
+      </mat-form-field>
 
-    <mat-form-field class="w-full">
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email" />
-    </mat-form-field>
+      <mat-form-field class="col-span-2">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" />
+      </mat-form-field>
 
-    <div *ngIf="!data.isExternal" class="text-center">
-      <button
-        mat-stroked-button
-        type="button"
-        (click)="openCloudinaryUploader()"
-      >
-        {{ profileForm.value.imageUrl ? 'Update' : 'Upload' }} Profile Picture
-      </button>
-    </div>
-
-    <div
-      *ngIf="profileForm.value.imageUrl"
-      class="mt-4 flex flex-col items-center"
-    >
-      <div class="relative">
-        <div
-          class="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center text-white font-bold"
-        >
-          Image Preview
+      <div class="col-span-2">
+        <div *ngIf="!data.isExternal" class="text-center">
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="openCloudinaryUploader()"
+          >
+            {{ profileForm.value.imageUrl ? 'Update' : 'Upload' }} Profile Picture
+          </button>
         </div>
-        <img
-          [src]="profileForm.value.imageUrl"
-          alt="Uploaded Image"
-          class="w-64 h-64 object-cover rounded-lg shadow-lg"
-        />
+
+        <div
+          *ngIf="profileForm.value.imageUrl"
+          class="mt-4 flex flex-col items-center"
+        >
+          <div class="relative">
+            <div
+              class="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center text-white font-bold"
+            >
+              Image Preview
+            </div>
+            <img
+              [src]="profileForm.value.imageUrl"
+              alt="Uploaded Image"
+              class="w-64 h-64 object-cover rounded-lg shadow-lg"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </form>

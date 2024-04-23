@@ -62,7 +62,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   navigateToProfile(): void {
     this.dialog.open(ProfileDialogComponent, {
-      width: '400px',
+      width: '500px',
       data: this.user
     });
   }
