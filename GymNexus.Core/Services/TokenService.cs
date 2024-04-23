@@ -30,15 +30,13 @@ public class TokenService : ITokenService
                 new Claim(ClaimTypes.Surname, user.LastName),
             };
         }
-        else
-        {
-            claims.AddRange(new List<Claim>()
-            {   
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.NameIdentifier, user.Id)
-            });
-        }
+
+        claims.AddRange(new List<Claim>()
+        {   
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(ClaimTypes.NameIdentifier, user.Id)
+        });
 
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
