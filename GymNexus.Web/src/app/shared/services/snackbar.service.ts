@@ -18,13 +18,13 @@ export class SnackbarService {
     this.openSnackBar(message, 'warning', action);
   }
 
-  openError(message: string, action?: string) {
-    this.openSnackBar(message, 'error', action);
+  openError(message: string, action?: string, duration?: number) {
+    this.openSnackBar(message, 'error', action, duration);
   }
 
-  private openSnackBar(message: string, className: 'error' | 'success' | 'warning', action?: string, ) {
+  private openSnackBar(message: string, className: 'error' | 'success' | 'warning', action?: string, duration: number = 3000) {
     this._snackbar.open(message, action, {
-      duration: 3000,
+      duration: duration,
       panelClass: [className]
     });
   }

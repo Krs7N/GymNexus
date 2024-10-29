@@ -56,7 +56,7 @@ namespace GymNexus.API.Controllers
                 {
                     foreach (var error in result.Errors)
                     {
-                        ModelState.AddModelError("", error.Description);
+                        ModelState.AddModelError("roleError", error.Description);
                     }
                 }
             }
@@ -66,7 +66,7 @@ namespace GymNexus.API.Controllers
                 {
                     foreach (var error in result.Errors)
                     {
-                        ModelState.AddModelError("", error.Description);
+                        ModelState.AddModelError("incorrectPasswordFormat", error.Description);
                     }
                 }
             }

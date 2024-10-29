@@ -72,7 +72,7 @@ export class RegisterComponent {
           }
         }
       }, (error: Error, result: any) => {
-        if (!error && result && result.event === "success") {
+        if (result && result.event === "success") {
           this.registerForm.get('imageUrl')?.setValue(result.info.secure_url);
         }
       });
@@ -86,7 +86,10 @@ export class RegisterComponent {
           this._snackbarService.openSuccess('Registration successful', 'Okay');
         },
         error: (e) => {
-          this._snackbarService.openError(e.error.errors.message[0], 'Okay');
+          if (e.error.errors.incorrectPasswordFormat) {
+            const errorMessage = e.error.errors.incorrectPasswordFormat.join();
+            this._snackbarService.openError(errorMessage, undefined, 6000);
+          }
         }
       });
     }
